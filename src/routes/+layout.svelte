@@ -1,7 +1,19 @@
 
 <script>
     import Logo from '../assets/logo.svg';
+
+    let innerWidth = 0;
+    let innerHeight = 0;
+    let clicked = false;
+
+    //should make conditions for multiple resolutions
+    $: condition = innerWidth < 900;
+    const handleClick = (() => {
+        clicked = !clicked;
+    });
 </script>
+
+<svelte:window bind:innerWidth bind:innerHeight/>
 
 <style>
     .navBar{
@@ -24,6 +36,9 @@
         padding:0 .5rem;
         display:flex;
         align-items: center;
+    }
+    .navBar button {
+        height:100%;
     }
 
     .navBar a {
@@ -94,6 +109,31 @@
     }
 </style>
 
+{#if condition}
+{#if clicked}
+<nav class='sideBar'>
+    <b><img src={Logo} alt="Logo" /></b>
+    <ul>
+        <li><button on:click={handleClick}>X LMAO</li>
+        <li><a href='/home'>Home</a></li>
+        <li><a href='/settings'>Settings</a></li>
+        <li><a href='/profile'>Profile</a></li>
+        <li><a href='/notifications'>Notifications</a></li>
+        <li><a href='/chats'>Chats</a></li>
+        <li><a href='/jobs'>Jobs</a></li>
+        <li><a href='/network'>Network</a></li>
+    </ul>
+</nav>
+{/if}
+<nav class='navBar'>
+    <b><img src={Logo} alt="Logo" /></b>
+    <ul>
+        <li><a href='/home'>Home</a></li>
+        <li><a href='/settings'>Settings</a></li>
+        <li><button on:click={handleClick}>LMAO</button></li>
+    </ul>
+</nav>
+{:else}
 <nav class='navBar'>
     <b><img src={Logo} alt="Logo" /></b>
     <ul>
@@ -106,17 +146,5 @@
         <li><a href='/network'>Network</a></li>
     </ul>
 </nav>
-
-<nav class='sideBar'>
-    <b><img src={Logo} alt="Logo" /></b>
-    <ul>
-        <li><a href='/home'>Home</a></li>
-        <li><a href='/settings'>Settings</a></li>
-        <li><a href='/profile'>Profile</a></li>
-        <li><a href='/notifications'>Notifications</a></li>
-        <li><a href='/chats'>Chats</a></li>
-        <li><a href='/jobs'>Jobs</a></li>
-        <li><a href='/network'>Network</a></li>
-    </ul>
-</nav>
+{/if}
 <slot/>

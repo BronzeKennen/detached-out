@@ -1,13 +1,5 @@
 <script>
     import Logo from '../assets/logo.svg';
-    import Home from '../routes/home/+page.svelte';
-    export let count = 0;
-    function Increment() {
-        count += 1;
-    }
-    const routes = {
-        '/home': Home,
-    };
 </script>
 
 <style>

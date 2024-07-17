@@ -1,9 +1,13 @@
 <script>
     import Logo from '../assets/logo.svg';
+    import Home from '../routes/home/+page.svelte';
     export let count = 0;
     function Increment() {
         count += 1;
     }
+    const routes = {
+        '/home': Home,
+    };
 </script>
 
 <style>
@@ -38,13 +42,13 @@
 </style>
 
 <div class='navBar'>
-    <a href='#Settings'>Settings</a>
-    <a href='#Profile'>Profile</a>
-    <a href='#Notifications'>Notifications</a>
-    <a href='#Chats'>Chats</a>
-    <a href='#Jobs'>Jobs</a>
-    <a href='#Network'>Network</a>
-    <a href='#Home'>Home</a>
+    <a href='/settings'>Settings</a>
+    <a href='/profile'>Profile</a>
+    <a href='/notifications'>Notifications</a>
+    <a href='/chats'>Chats</a>
+    <a href='/jobs'>Jobs</a>
+    <a href='/network'>Network</a>
+    <a href='/home'>Home</a>
     <b><img src={Logo} alt="Logo" /></b>
 </div>
 

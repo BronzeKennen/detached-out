@@ -49,6 +49,49 @@
         height: 40px; /* Adjust the height as needed */
         padding: 5px; /* Adjust the padding as needed */
     }
+    .sideBar {
+        background-color: rgb(245, 244, 244);
+        position:fixed;
+        top:0;
+        right:0;
+        height:100vh;
+        z-index: 999;
+        box-shadow: -10px 0 10px rgba(0,0,0,.1);
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .sideBar ul {
+        list-style: none;
+        width:100%;
+    }
+    .sideBar li {
+        width:100%;
+        padding:1rem;
+    }
+    .sideBar a {
+        height:100%;
+        width:100%;
+        color: rgb(150, 50, 150);
+        font-size: 20px;
+        transition-duration: 0.2s;
+        display:flex;
+        align-items: center;
+        border: 0px;
+        padding: .4em 1em;
+        text-decoration: none;
+        border-radius:10px;
+    }
+    .sideBar li:hover {
+        color: rgb(150, 50, 150);
+        background-color: rgb(225, 225, 225);
+        font-size: 20px;
+        transition-duration: 0.2s;
+        display:flex;
+        align-items: center;
+        text-decoration: none;
+    }
 </style>
 
 <nav class='navBar'>
@@ -64,4 +107,16 @@
     </ul>
 </nav>
 
+<nav class='sideBar'>
+    <b><img src={Logo} alt="Logo" /></b>
+    <ul>
+        <li><a href='/home'>Home</a></li>
+        <li><a href='/settings'>Settings</a></li>
+        <li><a href='/profile'>Profile</a></li>
+        <li><a href='/notifications'>Notifications</a></li>
+        <li><a href='/chats'>Chats</a></li>
+        <li><a href='/jobs'>Jobs</a></li>
+        <li><a href='/network'>Network</a></li>
+    </ul>
+</nav>
 <slot/>

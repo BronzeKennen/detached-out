@@ -1,9 +1,12 @@
 <script>
-    import Profile from '../components/profile.svelte'
+    import Navbar from '../components/navbar.svelte';
+    import SignIn from '../components/signin.svelte';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<Navbar />
+<SignIn />
+<h1>Future Login/Signup</h1>
+<p>Navbar Will be removed</p>
 
 <Profile name="kennen"/>
 <Profile name="christos"/>

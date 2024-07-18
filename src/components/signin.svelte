@@ -2,8 +2,12 @@
     import Logo from '../assets/logo.svg';
     let innerWidth = 0;
     let innerHeight = 0;
-    let clicked = false;
-    $: condition = innerWidth > 900;
+    let signupBool = false;
+    $: condition = innerWidth > 450;
+
+    const signUpPopUp = (() => {
+        signupBool = !signupBool;
+    });
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight/>
@@ -57,10 +61,10 @@
         color: rgb(225, 225, 225);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
-        width: 25%; 
-        margin-left: 15%;
+        width: 40%; 
+        margin-left: 10%;
         height: 50%;
-        margin-right: 10%;
+        margin-right: 0;
     }
 
     #forgot {
@@ -81,6 +85,7 @@
         width: 80%; 
         height: 65%;
         margin: 5% auto;
+        cursor: pointer;
     }
 
     .button-container {
@@ -89,6 +94,10 @@
     align-items: center;
     width: 100%;
     height: 10%;
+    }
+
+    .signUp {
+
     }
     
     
@@ -116,8 +125,12 @@
             <a href='/home' id="forgot">Forgot Password?</a>
         </div>
         <div class="button-container">
-            <a href='/home' id="signup">Don't have an account? Sign up!</a> 
+            <button id="signup" on:click={signUpPopUp}>Don't have an account? Sign up!</button> 
         </div>
     </div>
+    {#if signupBool}
+        <div class="signUp">HEEY</div>
+    {/if}
 </div>
 {/if}
+

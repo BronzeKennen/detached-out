@@ -1,6 +1,14 @@
-<script>
-    import SignIn from '../components/signin.svelte';
+<script context="module">
+  export const meta = {
+    layout: null
+  };
 </script>
 
-<SignIn />
-<h1>Future Login/Signup</h1>
+<script>
+    import SignIn from '../components/signin.svelte';
+    import Container from '../components/container.svelte'
+</script>
+
+<Container className="login">
+    <SignIn />
+</Container>

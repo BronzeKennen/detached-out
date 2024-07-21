@@ -256,4 +256,6 @@
     </ul>
 </nav>
 </Container>
+<Container>
 <slot/>
+</Container>

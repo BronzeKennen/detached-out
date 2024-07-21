@@ -155,43 +155,43 @@
             </a>
         </li>
         <li>
-            <a href='/home'>
+            <a href='/pages/home'>
                 <i class="fa-solid fa-house"></i>
                 <span>Home</span>
             </a>
         </li>
         <li>
-            <a href='/profile'>
+            <a href='/pages/profile'>
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
             </a>
         </li>
         <li>
-            <a href='/settings'>
+            <a href='/pages/settings'>
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
         </li>
         <li>
-            <a href='/notifications'>
+            <a href='/pages/notifications'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>
         </li>
         <li>
-            <a href='/chats'>
+            <a href='/pages/chats'>
                 <i class="fa-solid fa-comments"></i>
                 <span>Chats</span>
             </a>
         </li>
         <li>
-            <a href='/jobs'>
+            <a href='/pages/jobs'>
                 <i class="fa-solid fa-suitcase"></i>
                 <span>Jobs</span>
             </a>
         </li>
         <li>
-            <a href='/network'>
+            <a href='/pages/network'>
                 <i class="fa-solid fa-person"></i>
                 <span>Network</span>
             </a>
@@ -205,26 +205,26 @@
     <b><img src={Logo} alt="Logo" /></b>
     <ul>
         <li>
-            <a href='/home'>
+            <a href='/pages/home'>
                 <i class="fa-solid fa-house"></i>
                 <span>Home</span>
             </a>
         </li>
         <li>
-            <a href='/profile'>
+            <a href='/pages/profile'>
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
             </a>
         </li>
         {#if condition <= 2}
         <li>
-            <a href='/settings'>
+            <a href='/pages/settings'>
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
         </li>
         <li>
-            <a href='/notifications'>
+            <a href='/pages/notifications'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>
@@ -232,13 +232,13 @@
         {/if}
         {#if condition <= 1}
         <li>
-            <a href='/chats'>
+            <a href='/pages/chats'>
                 <i class="fa-solid fa-comments"></i>
                 <span>Chats</span>
             </a>
         </li>
         <li>
-            <a href='/jobs'>
+            <a href='/pages/jobs'>
                 <i class="fa-solid fa-suitcase"></i>
                 <span>Jobs</span>
             </a>
@@ -246,7 +246,7 @@
         {/if}
         {#if condition <= 0}
         <li>
-            <a href='/network'>
+            <a href='/pages/network'>
                 <i class="fa-solid fa-person"></i>
                 <span>Network</span>
             </a>

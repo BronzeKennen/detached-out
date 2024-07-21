@@ -1,11 +1,6 @@
 <script>
     import Logo from '../assets/logo.svg';
-    let innerWidth = 0;
-    let innerHeight = 0;
-    $: condition = innerWidth > 450;
 </script>
-
-<svelte:window bind:innerWidth bind:innerHeight/>
 
 
 <style>
@@ -45,7 +40,7 @@
         margin: 0 auto;
     }
 
-    #login, #forgot, #signup {
+    #login, #signup {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -76,11 +71,11 @@
     }
 
     .button-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 10%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 10%;
     }
 
     #info {
@@ -90,10 +85,9 @@
         margin-top: 2.5%;
         color: rgb(0, 0, 0);
         font-size: larger;
-        
     }
 
-    input {
+    .input-wrapper input {
         text-align: center;
         margin: 1% auto 1% auto; 
         width: 80%; 
@@ -102,6 +96,64 @@
         border-radius: 6px;
         border: 2px solid black;
         box-sizing: border-box; 
+        position: relative; 
+    }
+
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        margin: 0 auto;
+    }
+
+    input:invalid ~ .invalid-feedback{
+        visibility: visible;
+    }
+
+    .invalid-feedback {
+        z-index: 1;
+        position:absolute;
+        background-color: red;
+        border-radius: 50%;
+        color: white;
+        text-align: center;
+        font-weight: bolder;
+        right: 15%;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 50%;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+    }
+
+    .invalid-feedback:hover ~ .feedbackText {
+        cursor: pointer;
+        visibility: visible;
+    }
+
+    .feedbackText {
+        z-index: 1;
+        position:absolute;
+        background-color: red;
+        color: white;
+        text-align: center;
+        font-size: x-small;
+        transform: translateY(-50%);
+        border-radius: 5px;
+        right: 21%;
+        top: 50%;
+        height: 50%;
+        width: fit-content;
+        padding: 0.25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+        opacity: 0.8;
     }
 
     @media (max-width: 450px) {
@@ -120,22 +172,58 @@
             width: 90%;
         }
 
-        #forgot, #login, #signup {
+        #login, #signup {
             font-size: 0.8rem;
         }
     }
 </style>
 
-
-
 <div class="container">
     <div class='signIn'>
         <b><img src={Logo} alt="Logo" /></b>
         <div id="info">Sign up quick and easy!</div>
-        <input type='name' placeholder="First Name"/>
-        <input type='name' placeholder="Last Name"/>
-        <input type='email' placeholder="Email"/>
-        <input type='password' placeholder="Password"/>
+        <div class="input-wrapper">
+            <input 
+            type='name' 
+            placeholder="First Name" 
+            required/>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Cannot be empty.</span>
+        </div>
+        <div class="input-wrapper">
+            <input 
+            type='name' 
+            placeholder="Last Name" 
+            required/>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Cannot be empty.</span>
+        </div>
+        <div class="input-wrapper">
+            <input 
+            type='email'
+            placeholder="Email" 
+            required/>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Must be a valid e-mail address.</span>
+        </div>
+        <div class="input-wrapper">
+            <input 
+            type='password' 
+            placeholder="Password" 
+            required
+            minlength="8"
+            maxlength="32"/>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Must be between 8 and 32 characters.</span>
+        </div>
         <div class="button-container">
             <a href='/home' id="signup">Join now!</a>
         </div>
@@ -144,4 +232,3 @@
         </div>
     </div>
 </div>
-

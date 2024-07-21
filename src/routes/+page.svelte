@@ -1,7 +1,14 @@
-<script>
-    import Navbar from '../components/navbar.svelte';
-    import SignIn from '../components/signin.svelte';
+<script context="module">
+  export const meta = {
+    layout: null
+  };
 </script>
-<!-- 
-<Navbar /> -->
-<SignIn />
+
+<script>
+    import SignIn from '../components/signin.svelte';
+    import Container from '../components/container.svelte'
+</script>
+
+<Container className="login">
+    <SignIn />
+</Container>

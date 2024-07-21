@@ -14,7 +14,7 @@
         position:absolute;
         width:75px;
         height:75px;
-        top:50%;
+        top:10%;
         left:40%;
         background-color:aqua;
     }

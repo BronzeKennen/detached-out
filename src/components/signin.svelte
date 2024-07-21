@@ -144,8 +144,8 @@
         <input type='email' placeholder="Email"/>
         <input type='password' placeholder="Password"/>
         <div class="button-container">
-            <a href='/home' id="login">Log In</a>
-            <a href='/home' id="forgot">Forgot Password?</a>
+            <a href='/pages/home' id="login">Log In</a>
+            <a href='/pages/home' id="forgot">Forgot Password?</a>
         </div>
         <div class="button-container">
             <a id="signup" href='/signup'>Don't have an account? Sign up!</a> 

@@ -2,11 +2,14 @@
 </script>
 <style>
     .side-profile {
+        border-radius:10%;
+        margin:.5em;
         width:30%;
         position:relative;
     }
     .background {
-        margin-top:1rem;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
         height:75px;
         background-color: beige;
     }
@@ -14,21 +17,25 @@
         position:absolute;
         width:75px;
         height:75px;
-        top:50%;
-        left:40%;
+        top:43%;
+        left:50%;
+        border-radius:50%;
+        border:3px white solid;
         background-color:aqua;
+        transform: translate(-50%, -50%);
     }
     .details {
-        background-color:red;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
+        background-color:rgb(90, 61, 89);
         height:100px;
     }
 </style>
 <div class="side-profile">
     <div class="background">
-        BACKGROUND        
     </div>
     <div class="pfp">
-        a
+        
 
     </div>
     <div class="details">

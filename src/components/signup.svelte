@@ -1,11 +1,7 @@
 <script>
     import Logo from '../assets/logo.svg';
-    let innerWidth = 0;
-    let innerHeight = 0;
-    $: condition = innerWidth > 450;
 </script>
 
-<svelte:window bind:innerWidth bind:innerHeight/>
 
 <style>
     .container {
@@ -126,7 +122,7 @@
         right: 15%;
         top: 50%;
         transform: translateY(-50%);
-        height: 35%;
+        height: 50%;
         aspect-ratio: 1/1;
         display: flex;
         align-items: center;
@@ -134,8 +130,30 @@
         visibility: hidden;
     }
 
-    .invalid-feedback:hover {
+    .invalid-feedback:hover ~ .feedbackText {
         cursor: pointer;
+        visibility: visible;
+    }
+
+    .feedbackText {
+        z-index: 1;
+        position:absolute;
+        background-color: red;
+        color: white;
+        text-align: center;
+        font-size: x-small;
+        transform: translateY(-50%);
+        border-radius: 5px;
+        right: 21%;
+        top: 50%;
+        height: 50%;
+        width: fit-content;
+        padding: 0.25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+        opacity: 0.8;
     }
 
     @media (max-width: 450px) {
@@ -169,21 +187,30 @@
             type='name' 
             placeholder="First Name" 
             required/>
-            <span class="invalid-feedback">!</span>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Cannot be empty.</span>
         </div>
         <div class="input-wrapper">
             <input 
             type='name' 
             placeholder="Last Name" 
             required/>
-            <span class="invalid-feedback">!</span>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Cannot be empty.</span>
         </div>
         <div class="input-wrapper">
             <input 
             type='email'
             placeholder="Email" 
             required/>
-            <span class="invalid-feedback">!</span>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Must be a valid e-mail address.</span>
         </div>
         <div class="input-wrapper">
             <input 
@@ -192,7 +219,10 @@
             required
             minlength="8"
             maxlength="32"/>
-            <span class="invalid-feedback">!</span>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Must be between 8 and 32 characters.</span>
         </div>
         <div class="button-container">
             <a href='/home' id="signup">Join now!</a>

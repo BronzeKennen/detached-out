@@ -35,7 +35,7 @@
         display: flex; 
         background-color: rgb(225, 225, 225);
         text-align: center;
-        margin: 5% auto 20%;
+        margin: 5% auto 5%;
     }
 
     .signIn b img {
@@ -53,41 +53,31 @@
         border-radius: 4px;
     }
 
-    #login {
-        background-color: rgb(150, 50, 150);
+    #signup {
+        background-color: rgb(60, 170, 30);
         color: rgb(225, 225, 225);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
         width: 40%; 
-        margin-left: 10%;
+        margin-left: 0;
         height: 50%;
         margin-right: 0;
     }
 
-    #forgot {
-        background-color: rgb(225, 225, 225);
-        color: rgb(150, 50, 150);
-        text-decoration: none;
-        font-family: Helvetica, sans-serif;
-        width: 35%; 
-        margin-left: 5%;
-        margin-right: 10%;
-    }
-
-    #signup {
-        background-color: rgb(60, 170, 30);
+    #login {
+        background-color: rgb(150, 50, 150);
         color: rgb(255, 255, 255);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
         width: 80%; 
         height: 65%;
-        margin: 5% auto 5%;
+        margin: 5% auto;
         cursor: pointer;
     }
 
     .button-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
     height: 10%;
@@ -102,9 +92,10 @@
         font-size: larger;
         
     }
+
     input {
         text-align: center;
-        margin: 2% auto 2% auto; 
+        margin: 1% auto 1% auto; 
         width: 80%; 
         padding: 1.5%; 
         display: flex;
@@ -119,7 +110,7 @@
         }
         .container {
             flex-direction: column;
-            justify-content: space-around; /* Or use 'space-between' if you prefer */
+            justify-content: space-around; 
             margin: 0;
             padding: 0;
             width: 100%;
@@ -140,15 +131,16 @@
 <div class="container">
     <div class='signIn'>
         <b><img src={Logo} alt="Logo" /></b>
-        <div id="info">Welcome Back!</div>
+        <div id="info">Sign up quick and easy!</div>
+        <input type='name' placeholder="First Name"/>
+        <input type='name' placeholder="Last Name"/>
         <input type='email' placeholder="Email"/>
         <input type='password' placeholder="Password"/>
         <div class="button-container">
-            <a href='/pages/home' id="login">Log In</a>
-            <a href='/pages/home' id="forgot">Forgot Password?</a>
+            <a href='/home' id="signup">Join now!</a>
         </div>
         <div class="button-container">
-            <a id="signup" href='/signup'>Don't have an account? Sign up!</a> 
+            <a id="login" href='../'>Already have an account? Log in!</a> 
         </div>
     </div>
 </div>

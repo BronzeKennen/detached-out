@@ -225,7 +225,7 @@
             <span class="feedbackText">Must be between 8 and 32 characters.</span>
         </div>
         <div class="button-container">
-            <a href='/home' id="signup">Join now!</a>
+            <a href='/pages/home' id="signup">Join now!</a>
         </div>
         <div class="button-container">
             <a id="login" href='../'>Already have an account? Log in!</a> 

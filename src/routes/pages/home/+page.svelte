@@ -1,9 +1,27 @@
 <script>
+    import FeedPost from "../../../components/feedPost.svelte";
     import SideProfile from "../../../components/sideProfile.svelte";
+    import Connections from "../../../components/connections.svelte";
 </script>
 
-<h1>Welcome to Home Page</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<SideProfile/>
 <style>
+    .feed {
+        display:flex;
+        flex-direction: row;
+    }
+    /* will be removed */
+    @media (max-width : 1000px) {
+    }
+
+    @media (max-width: 600px) {
+        .feed {
+            display:flex;
+            flex-direction: column;
+        }
+    }
 </style>
+<div class="feed">
+    <SideProfile />
+    <FeedPost />
+    <Connections />
+</div>

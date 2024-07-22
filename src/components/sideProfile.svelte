@@ -2,10 +2,10 @@
 </script>
 <style>
     .side-profile {
+        margin:.5rem;
         border-radius:10%;
-        margin:.5em;
-        width:30%;
         position:relative;
+        flex:1;
     }
     .background {
         border-top-left-radius:10px;
@@ -35,9 +35,9 @@
             width:50%;
         }
     }
-    @media (max-width: 400px) {
+    @media (max-width: 600px) {
         .side-profile {
-            margin:0;
+            margin:.5rem 0;
             width:100%;
         }
     }

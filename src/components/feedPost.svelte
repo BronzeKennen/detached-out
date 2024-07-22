@@ -1,0 +1,183 @@
+<script>
+    let likes = 0;
+    let comments = 0;
+    let reposts = 0;
+    let liked = false;
+    let reposted = false;
+    let commenter = false;
+    let comment =''
+    function handleLikes() {
+        if (liked) {
+            likes -= 1;
+        } else {
+            likes +=1;
+        }
+        liked = !liked;
+        
+    }
+    function handleReposts() {
+        if(reposted) {
+            reposts -= 1;
+        } else {
+            reposts += 1;
+        }
+        reposted = !reposted;
+    }
+
+    function toggleCommenter() {
+        commenter = !commenter
+        autoResize();
+    }
+    const submitComment = (() => {
+        console.log('dogshit');
+    })
+
+    function autoResize(event) {
+        const textarea = event.target;
+        textarea.style.height = 'auto';
+
+        if(textarea.scrollHeight < 70) {// wtf is this 
+            textarea.style.height = `${textarea.scrollHeight - 15}px`;
+        } else {
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    }
+
+</script>
+<style>
+    .feed-post {
+        background-color:white;
+        align-items: center;
+        flex: 2;
+        border-radius:10px;
+        padding:1rem;
+        margin:.5rem;
+    }
+
+    .reactions {
+        display:flex;
+        width:100%;
+        justify-content: space-between;
+
+    }
+    .poster {
+        padding:1rem;
+        display:flex;
+        flex-direction: row;
+    }
+    .post {
+        margin:1.5rem 0rem;
+    }
+    .buttons {
+        justify-content: space-between;
+        display:flex;
+        padding: 2rem;
+        border-top:2px rgba(0,0,0,.3) solid;
+    }
+    .buttons b {
+        font-size:20px;
+    }
+    @media(max-width: 500px) {
+        .buttons b {
+            display:none;
+        }
+    }
+    #likebutton:hover {
+        cursor:pointer;
+        color:rgb(88, 88, 182);
+        transition-duration: 0.3s;
+    }
+    #repostbutton:hover {
+        cursor:pointer;
+        color:rgb(209, 201, 153);
+        transition-duration: 0.3s;
+    }
+    #commentbutton:hover {
+        cursor:pointer;
+        color:rgb(146, 192, 177);
+        transition-duration: 0.3s;
+    }
+    .comment-box {
+        position:relative;
+        width:100%;
+    }
+    .comment-box textarea {
+        resize:none;
+        height:46px;
+        overflow: hidden;
+        width:100%;
+        padding:1rem;
+        border-radius: 50px;
+        border:none;
+        padding-right:10%;
+        box-sizing: border-box;
+        transition-duration: 0.5s;
+        box-shadow: 0px 1px 1px rgba(155, 17, 113, 1.452);
+    }
+    .comment-box textarea:hover {
+        box-shadow: 0px 2px 5px rgba(155, 17, 113, 1.452);
+    }
+    .comment-box textarea:focus {
+        outline: none;
+        box-shadow: 0px 2px 5px rgba(155, 17, 113, 1.452);
+    }
+    .comment-box button {
+        font-size:23px;
+        position:absolute;
+        right: 1.7%;
+        top: 0;
+        bottom: 6%;
+        border: none;
+        background:none;
+        padding: 0 15px; /* Adjust padding as needed */
+        cursor: pointer;
+    }
+</style>
+    <div class="feed-post">
+    <div class="poster">
+        <img src='' alt='pfp'>
+        <b>Username</b>
+
+    </div>
+    <div class="post">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
+
+    </div>
+    <div class="likes-buttons">
+        <div class="reactions">
+            <span>{likes} Likes</span>
+            <span>
+                <span>{comments} Comments</span>
+                <span>{reposts} Reposts</span>
+            </span>
+        </div>
+        <div class="buttons">
+            <span on:click={handleLikes} id="likebutton">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <b>Like</b>
+            </span>
+            <span id="commentbutton" on:click={toggleCommenter}>
+                <i class="fa-solid fa-comments"></i>
+                <b>Comment</b>
+            </span>
+            <span on:click={handleReposts} id="repostbutton">
+                <i class="fa-solid fa-paper-plane"></i>
+                <b>Repost</b>
+            </span>
+        </div>
+        {#if commenter}
+        <div class="comment-box">
+            <textarea
+                type="text" 
+                placeholder="Type your comment here"
+                bind:value={comment}
+                on:input={autoResize}
+            />
+            <span class="hidden-span"></span>
+            {#if comment !== ''}
+                <button on:click={submitComment}><i class="fa-solid fa-paper-plane"></i></button>
+            {/if}
+        </div>
+        {/if}
+    </div>
+    </div>

@@ -35,7 +35,7 @@
         height:40px;
         display:flex;
         overflow: hidden;
-        background-color: rgb(225, 225, 225);
+        background-color: rgba(225, 225, 225,.4);
         margin-bottom: 1em;
         justify-content: space-between;
         align-items: center;
@@ -85,8 +85,8 @@
     }
 
     .navBar b img {
-        height: 40px; /* Adjust the height as needed */
-        padding: 5px; /* Adjust the padding as needed */
+        height: 40px; 
+        padding: 5px; 
     }
     .sideBar {
         background-color: rgb(245, 244, 244);
@@ -132,15 +132,6 @@
         display:flex;
         align-items: center;
         text-decoration: none;
-    }
-    .sideBar button {
-        display:flex;
-        align-items: center;
-        background:none;
-        border:none;
-        text-align: left;
-        width:100%;
-        height:100%;
     }
 </style>
 
@@ -207,15 +198,37 @@
         <li>
             <a href='/pages/home'>
                 <i class="fa-solid fa-house"></i>
+                {#if condition < 3}
                 <span>Home</span>
+                {/if}
             </a>
         </li>
         <li>
             <a href='/pages/profile'>
                 <i class="fa-solid fa-user"></i>
+                {#if condition < 3}
                 <span>Profile</span>
+                {/if}
             </a>
         </li>
+        <li>
+        {#if condition === 3}
+        <li>
+            <a href='/pages/notifications'>
+                <i class="fa-solid fa-gear"></i>
+            </a>
+        </li>
+        <li>
+            <a href='/pages/chats'>
+                <i class="fa-solid fa-comments"></i>
+            </a>
+        </li>
+        <li>
+            <a href='/pages/jobs'>
+                <i class="fa-solid fa-suitcase"></i>
+            </a>
+        </li>
+        {/if}
         {#if condition <= 2}
         <li>
             <a href='/pages/settings'>

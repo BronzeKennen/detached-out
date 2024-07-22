@@ -133,6 +133,30 @@
         align-items: center;
         text-decoration: none;
     }
+    @media (max-width:600px) {
+        .sideBar {
+            width:100%;
+        }
+        .sideBar img {
+            display:none;
+        }
+        .sideBar ul {
+            width:100%;
+            height:100vh;
+            display:flex;
+            flex-direction: column;
+        }
+        .sideBar li {
+            height:100%;
+            padding:0;
+        }
+        .sideBar a {
+            width:92%;
+            display:flex; 
+            align-items:center ;
+            justify-content: center;
+        }
+    }
 </style>
 
 {#if clicked}

@@ -29,7 +29,9 @@
         autoResize();
     }
     const submitComment = (() => {
-        console.log('dogshit');
+        commenter = !commenter;
+        comments += 1;
+        comment = '';
     })
 
     function autoResize(event) {
@@ -44,6 +46,57 @@
     }
 
 </script>
+
+    <div class="feed-post">
+    <div class="poster">
+        <img src='' alt='pfp'>
+        <b>Username</b>
+
+    </div>
+    <div class="post">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
+
+    </div>
+    <div class="likes-buttons">
+        <div class="reactions">
+            <span>{likes} Likes</span>
+            <span>
+                <span>{comments} Comments</span>
+                <span>{reposts} Reposts</span>
+            </span>
+        </div>
+        <div class="buttons">
+            <span on:click={handleLikes} id="likebutton" class:liked={liked}>
+                <i class="fa-solid fa-thumbs-up"></i>
+                <b>Like</b>
+            </span>
+            <span id="commentbutton" on:click={toggleCommenter} class:commenter={commenter}>
+                <i class="fa-solid fa-comments"></i>
+                <b>Comment</b>
+            </span>
+            <span on:click={handleReposts} id="repostbutton" class:reposted={reposted}>
+                <i class="fa-solid fa-paper-plane"></i>
+                <b>Repost</b>
+            </span>
+        </div>
+        {#if commenter}
+        <div class="comment-box">
+            <span id="pfp"></span>
+            <textarea
+                id="commentbox"
+                type="text" 
+                placeholder="Add a comment"
+                bind:value={comment}
+                on:input={autoResize}
+            />
+            <span class="hidden-span"></span>
+            {#if comment !== ''}
+                <button on:click={submitComment}><i class="fa-solid fa-paper-plane"></i></button>
+            {/if}
+        </div>
+        {/if}
+    </div>
+    </div>
 <style>
     .feed-post {
         background-color:white;
@@ -87,17 +140,34 @@
         color:rgb(88, 88, 182);
         transition-duration: 0.3s;
     }
+    .liked {
+        cursor:pointer;
+        color:rgb(88, 88, 182);
+        transition-duration: 0.3s;
+    }
+    .reposted {
+        cursor:pointer;
+        color:rgb(209, 201, 153);
+        transition-duration: 0.3s;
+    }
     #repostbutton:hover {
         cursor:pointer;
         color:rgb(209, 201, 153);
         transition-duration: 0.3s;
     }
+    .commenter {
+        cursor:pointer;
+        color:rgb(96, 60, 153);
+        transition-duration: 0.3s;
+    }
     #commentbutton:hover {
         cursor:pointer;
-        color:rgb(146, 192, 177);
+        color:rgb(96, 60, 153);
         transition-duration: 0.3s;
     }
     .comment-box {
+        display:flex;
+        flex-direction: row;
         position:relative;
         width:100%;
     }
@@ -112,14 +182,14 @@
         padding-right:10%;
         box-sizing: border-box;
         transition-duration: 0.5s;
-        box-shadow: 0px 1px 1px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 2px rgba(155, 17, 113, 1.452);
     }
     .comment-box textarea:hover {
-        box-shadow: 0px 2px 5px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
     .comment-box textarea:focus {
         outline: none;
-        box-shadow: 0px 2px 5px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
     .comment-box button {
         font-size:23px;
@@ -132,52 +202,13 @@
         padding: 0 15px; /* Adjust padding as needed */
         cursor: pointer;
     }
+    #pfp {
+        margin-top:-.1rem;
+        margin-right: .5rem;
+        min-width:50px;
+        min-height:50px;
+        /* bagkround-image:; */
+        background-color:cyan;
+        border-radius:50%;
+    }
 </style>
-    <div class="feed-post">
-    <div class="poster">
-        <img src='' alt='pfp'>
-        <b>Username</b>
-
-    </div>
-    <div class="post">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
-
-    </div>
-    <div class="likes-buttons">
-        <div class="reactions">
-            <span>{likes} Likes</span>
-            <span>
-                <span>{comments} Comments</span>
-                <span>{reposts} Reposts</span>
-            </span>
-        </div>
-        <div class="buttons">
-            <span on:click={handleLikes} id="likebutton">
-                <i class="fa-solid fa-thumbs-up"></i>
-                <b>Like</b>
-            </span>
-            <span id="commentbutton" on:click={toggleCommenter}>
-                <i class="fa-solid fa-comments"></i>
-                <b>Comment</b>
-            </span>
-            <span on:click={handleReposts} id="repostbutton">
-                <i class="fa-solid fa-paper-plane"></i>
-                <b>Repost</b>
-            </span>
-        </div>
-        {#if commenter}
-        <div class="comment-box">
-            <textarea
-                type="text" 
-                placeholder="Type your comment here"
-                bind:value={comment}
-                on:input={autoResize}
-            />
-            <span class="hidden-span"></span>
-            {#if comment !== ''}
-                <button on:click={submitComment}><i class="fa-solid fa-paper-plane"></i></button>
-            {/if}
-        </div>
-        {/if}
-    </div>
-    </div>

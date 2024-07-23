@@ -3,9 +3,11 @@ import { getUsers, addUser } from '/database.js'
 
 export async function POST({ request }) {
     const data = await request.json();
+    console.log(data);
     addUser(
-        data.firstName,
-        data.lastName,
+        data.username,
+        data.fname,
+        data.lname,
         data.email,
         data.password
     );

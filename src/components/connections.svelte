@@ -4,6 +4,7 @@
 </script>
 <style>
     .connection-profile{
+        align-self: flex-start;
         margin:.5rem;
         flex:1;
         background-color: rgba(192, 161, 161, 0.5);

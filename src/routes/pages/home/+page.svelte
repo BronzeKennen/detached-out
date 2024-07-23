@@ -38,6 +38,8 @@
     {#if users}
     USERS
     {#each users as user}
-        <p> {user.fname} {user.lname}</p>
+        <p> {user.username} </p>
+        <p> {user.fname} </p>
+        <p> {user.lname} </p>
     {/each}
     {/if}

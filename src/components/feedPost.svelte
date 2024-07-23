@@ -1,4 +1,5 @@
 <script>
+    import Comment from "./comment.svelte";
     let likes = 0;
     let comments = 0;
     let reposts = 0;
@@ -48,57 +49,62 @@
 </script>
 
     <div class="feed-post">
-    <div class="poster">
-        <img src='' alt='pfp'>
-        <b>Username</b>
-
-    </div>
-    <div class="post">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
-
-    </div>
-    <div class="likes-buttons">
-        <div class="reactions">
-            <span>{likes} Likes</span>
-            <span>
-                <span>{comments} Comments</span>
-                <span>{reposts} Reposts</span>
-            </span>
+        <div class="stats">
+                <span id="postpfp"> </span>
+                <span>
+                    <h3 class="username">Hamburger</h3>
+                    <p class="subtitle">National Kapodistrian University of Athens</p>
+                </span>
         </div>
-        <div class="buttons">
-            <span on:click={handleLikes} id="likebutton" class:liked={liked}>
-                <i class="fa-solid fa-thumbs-up"></i>
-                <b>Like</b>
-            </span>
-            <span id="commentbutton" on:click={toggleCommenter} class:commenter={commenter}>
-                <i class="fa-solid fa-comments"></i>
-                <b>Comment</b>
-            </span>
-            <span on:click={handleReposts} id="repostbutton" class:reposted={reposted}>
-                <i class="fa-solid fa-paper-plane"></i>
-                <b>Repost</b>
-            </span>
+        <div class="post">
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
+    
         </div>
-        {#if commenter}
-        <div class="comment-box">
-            <span id="pfp"></span>
-            <textarea
-                id="commentbox"
-                type="text" 
-                placeholder="Add a comment"
-                bind:value={comment}
-                on:input={autoResize}
-            />
-            <span class="hidden-span"></span>
-            {#if comment !== ''}
-                <button on:click={submitComment}><i class="fa-solid fa-paper-plane"></i></button>
-            {/if}
+        <div class="likes-buttons">
+            <div class="reactions">
+                <span>{likes} Likes</span>
+                <span>
+                    <span>{comments} Comments</span>
+                    <span>{reposts} Reposts</span>
+                </span>
+            </div>
+            <div class="buttons">
+                <span on:click={handleLikes} id="likebutton" class:liked={liked}>
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <b>Like</b>
+                </span>
+                <span id="commentbutton" on:click={toggleCommenter} class:commenter={commenter}>
+                    <i class="fa-solid fa-comments"></i>
+                    <b>Comment</b>
+                </span>
+                <span on:click={handleReposts} id="repostbutton" class:reposted={reposted}>
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <b>Repost</b>
+                </span>
+            </div>
+            {#if commenter}
+                <Comment user='Mr.Ham' comment='Θα σε αγγιξω'/>
+                <Comment user='AlexK' comment='🥵🥵'/>
+            <div class="comment-box">
+                <span id="pfp"></span>
+                <textarea
+                    id="commentbox"
+                    type="text" 
+                    placeholder="Add a comment"
+                    bind:value={comment}
+                    on:input={autoResize}
+                />
+                <span class="hidden-span"></span>
+                {#if comment !== ''}
+                    <button on:click={submitComment}><i class="fa-solid fa-paper-plane"></i></button>
+                {/if}
         </div>
         {/if}
     </div>
     </div>
 <style>
     .feed-post {
+        align-self: flex-start;
         background-color:white;
         align-items: center;
         flex: 2;
@@ -107,25 +113,32 @@
         margin:.5rem;
     }
 
+    .stats {
+        display:flex;
+    }
+
+    #postpfp {
+        height:50px;
+        width:50px;
+        border-radius: 50%;
+        background-color:blue;
+        margin-right:.5rem;
+    }
+
     .reactions {
         display:flex;
         width:100%;
         justify-content: space-between;
 
     }
-    .poster {
-        padding:1rem;
-        display:flex;
-        flex-direction: row;
-    }
     .post {
-        margin:1.5rem 0rem;
+        margin:2.5rem 0rem;
     }
     .buttons {
         justify-content: space-between;
         display:flex;
-        padding: 2rem;
-        border-top:2px rgba(0,0,0,.3) solid;
+        margin:1rem 0;
+        border-top:2px rgba(u,0,0,.3) solid;
     }
     .buttons b {
         font-size:20px;

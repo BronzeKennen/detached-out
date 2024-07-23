@@ -1,17 +1,19 @@
 <script>
     import Logo from '../assets/logo.svg';
 
-    let firstName = '';
-    let lastName = '';
+    let username = '';
+    let fname = '';
+    let lname = '';
     let email = '';
     let password = '';
+    let validUser = false;
 
     async function addUser() {
 
-        if(firstName.trim() === '' || lastName.trim() === '') {
+        if(fname.trim() === '' || lname.trim() === '' || username.trim() === '') {
             return;
         }
-        console.log(firstName,lastName,email,password)
+        console.log(username,fname,lname,email,password)
 
         await fetch('/api/users', {
             method: 'POST',
@@ -19,8 +21,9 @@
                 'Content-Type' : 'application/json'
             },
             body : JSON.stringify({
-                firstName,
-                lastName,
+                username,
+                fname,
+                lname,
                 email,
                 password
             })
@@ -44,26 +47,39 @@
         <b><img src={Logo} alt="Logo" /></b>
         <div id="info">Sign up quick and easy!</div>
         <div class="input-wrapper">
-            <input 
-            bind:value={firstName}
-            type='name' 
-            placeholder="First Name" 
+            <input
+            bind:value={username}
+            type="name"
+            placeholder='Username'
             required/>
             <span class="invalid-feedback">
-                <i class="fa-solid fa-exclamation"></i>
+                <i  class="fa-solid fa-exclamation"></i>
             </span>
-            <span class="feedbackText">Cannot be empty.</span>
+            <span class="feedbackText">Cannot be empty</span>
         </div>
-        <div class="input-wrapper">
-            <input 
-            type='name' 
-            bind:value={lastName}
-            placeholder="Last Name" 
-            required/>
-            <span class="invalid-feedback">
-                <i class="fa-solid fa-exclamation"></i>
-            </span>
-            <span class="feedbackText">Cannot be empty.</span>
+        <div class="names">
+            <div class="input-wrapper">
+                <input 
+                bind:value={fname}
+                type='name' 
+                placeholder="First Name" 
+                required/>
+                <span class="invalid-feedback">
+                    <i class="fa-solid fa-exclamation"></i>
+                </span>
+                <span class="feedbackText">Cannot be empty.</span>
+            </div>
+            <div class="input-wrapper">
+                <input 
+                type='name' 
+                bind:value={lname}
+                placeholder="Last Name" 
+                required/>
+                <span class="invalid-feedback">
+                    <i class="fa-solid fa-exclamation"></i>
+                </span>
+                <span class="feedbackText">Cannot be empty.</span>
+            </div>
         </div>
         <div class="input-wrapper">
             <input 
@@ -109,6 +125,14 @@
         background-color: rgb(255, 255, 255);
     }
 
+    .names {
+        display:flex;
+        align-self: center;
+        flex-direction: row;
+        width:89%;
+        height:36px;
+        padding:.5rem 0;
+    }
     .signIn {
         display: flex;
         align-items: start; 
@@ -192,6 +216,11 @@
         border: 2px solid black;
         box-sizing: border-box; 
         position: relative; 
+        background-color: rgba(0, 0, 0, 0.082);
+    }
+
+    .input-wrapper input:hover {
+        box-shadow: 0px 0px 2px rgba(155, 17, 113, 1.452);
     }
 
     .input-wrapper {
@@ -226,6 +255,7 @@
     }
 
     .invalid-feedback:hover ~ .feedbackText {
+        transition-duration: 0.2s;
         cursor: pointer;
         visibility: visible;
     }

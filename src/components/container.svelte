@@ -8,13 +8,12 @@
 </div>
 
 <style>
-    @media (min-width: 1200px){
         .container {
             max-width: 1200px;
-            margin:0 auto;
-            background-color:rgb(225,225,225);
+            margin:auto;
+            /* padding:1em; */
+            background-color:rgba(255, 239, 239, 0.75);
         }
-    }
     @media (max-width:1199px) {
 
     }

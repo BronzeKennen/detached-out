@@ -1,7 +1,118 @@
 <script>
     import Logo from '../assets/logo.svg';
+
+    let username = '';
+    let fname = '';
+    let lname = '';
+    let email = '';
+    let password = '';
+    let validUser = false;
+
+    async function addUser() {
+
+        if(fname.trim() === '' || lname.trim() === '' || username.trim() === '') {
+            return;
+        }
+        console.log(username,fname,lname,email,password)
+
+        await fetch('/api/users', {
+            method: 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                username,
+                fname,
+                lname,
+                email,
+                password
+            })
+        }).then(response => {
+            if(response.ok) {
+                console.log("Success");
+            } else {
+                console.error("Error adding user.");
+            }
+        });
+        const resp = await fetch('/api/users');
+        const data = await resp.json();
+        
+    }
 </script>
 
+
+
+<div class="container">
+    <div class='signIn'>
+        <b><img src={Logo} alt="Logo" /></b>
+        <div id="info">Sign up quick and easy!</div>
+        <div class="input-wrapper">
+            <input
+            bind:value={username}
+            type="name"
+            placeholder='Username'
+            required/>
+            <span class="invalid-feedback">
+                <i  class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Cannot be empty</span>
+        </div>
+        <div class="names">
+            <div class="input-wrapper">
+                <input 
+                bind:value={fname}
+                type='name' 
+                placeholder="First Name" 
+                required/>
+                <span class="invalid-feedback">
+                    <i class="fa-solid fa-exclamation"></i>
+                </span>
+                <span class="feedbackText">Cannot be empty.</span>
+            </div>
+            <div class="input-wrapper">
+                <input 
+                type='name' 
+                bind:value={lname}
+                placeholder="Last Name" 
+                required/>
+                <span class="invalid-feedback">
+                    <i class="fa-solid fa-exclamation"></i>
+                </span>
+                <span class="feedbackText">Cannot be empty.</span>
+            </div>
+        </div>
+        <div class="input-wrapper">
+            <input 
+            bind:value={email}
+            type='email'
+            placeholder="Email" 
+            required/>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Must be a valid e-mail address.</span>
+        </div>
+        <div class="input-wrapper">
+            <input 
+            bind:value={password}
+            type='password' 
+            placeholder="Password" 
+            required
+            minlength="8"
+            maxlength="32"/>
+            <span class="invalid-feedback">
+                <i class="fa-solid fa-exclamation"></i>
+            </span>
+            <span class="feedbackText">Must be between 8 and 32 characters.</span>
+        </div>
+        <div class="button-container">
+            <a href='/pages/home' id="signup" on:click={addUser}>Join now!</a>
+        </div>
+        <div class="button-container">
+            <a id="login" href='../'>Already have an account? Log in!</a> 
+        </div>
+    </div>
+</div>
 
 <style>
     .container {
@@ -14,6 +125,14 @@
         background-color: rgb(255, 255, 255);
     }
 
+    .names {
+        display:flex;
+        align-self: center;
+        flex-direction: row;
+        width:89%;
+        height:36px;
+        padding:.5rem 0;
+    }
     .signIn {
         display: flex;
         align-items: start; 
@@ -97,6 +216,11 @@
         border: 2px solid black;
         box-sizing: border-box; 
         position: relative; 
+        background-color: rgba(0, 0, 0, 0.082);
+    }
+
+    .input-wrapper input:hover {
+        box-shadow: 0px 0px 2px rgba(155, 17, 113, 1.452);
     }
 
     .input-wrapper {
@@ -131,6 +255,7 @@
     }
 
     .invalid-feedback:hover ~ .feedbackText {
+        transition-duration: 0.2s;
         cursor: pointer;
         visibility: visible;
     }
@@ -177,58 +302,3 @@
         }
     }
 </style>
-
-<div class="container">
-    <div class='signIn'>
-        <b><img src={Logo} alt="Logo" /></b>
-        <div id="info">Sign up quick and easy!</div>
-        <div class="input-wrapper">
-            <input 
-            type='name' 
-            placeholder="First Name" 
-            required/>
-            <span class="invalid-feedback">
-                <i class="fa-solid fa-exclamation"></i>
-            </span>
-            <span class="feedbackText">Cannot be empty.</span>
-        </div>
-        <div class="input-wrapper">
-            <input 
-            type='name' 
-            placeholder="Last Name" 
-            required/>
-            <span class="invalid-feedback">
-                <i class="fa-solid fa-exclamation"></i>
-            </span>
-            <span class="feedbackText">Cannot be empty.</span>
-        </div>
-        <div class="input-wrapper">
-            <input 
-            type='email'
-            placeholder="Email" 
-            required/>
-            <span class="invalid-feedback">
-                <i class="fa-solid fa-exclamation"></i>
-            </span>
-            <span class="feedbackText">Must be a valid e-mail address.</span>
-        </div>
-        <div class="input-wrapper">
-            <input 
-            type='password' 
-            placeholder="Password" 
-            required
-            minlength="8"
-            maxlength="32"/>
-            <span class="invalid-feedback">
-                <i class="fa-solid fa-exclamation"></i>
-            </span>
-            <span class="feedbackText">Must be between 8 and 32 characters.</span>
-        </div>
-        <div class="button-container">
-            <a href='/home' id="signup">Join now!</a>
-        </div>
-        <div class="button-container">
-            <a id="login" href='../'>Already have an account? Log in!</a> 
-        </div>
-    </div>
-</div>

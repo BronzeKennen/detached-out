@@ -50,6 +50,7 @@
         border-radius:40px;
     }
     #follow-button:hover {
+        background-color: rgba(0, 0, 0, 0.171);
         box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
         transition-duration: .3s;
     }

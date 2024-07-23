@@ -207,7 +207,6 @@
         margin-right: .5rem;
         min-width:50px;
         min-height:50px;
-        /* bagkround-image:; */
         background-color:cyan;
         border-radius:50%;
     }

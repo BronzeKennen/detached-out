@@ -1,5 +1,6 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
+    let users = ['user1','user2','user3']
 </script>
 <style>
     .connection-profile{
@@ -17,8 +18,9 @@
     }
 </style>
 <div class="connection-profile">
-    <ProfileIcon user='Kenny'/>
-    <ProfileIcon user='Baker'/>
-    <ProfileIcon user='Hydra'/>
+    {#each users as user}
+    <ProfileIcon user={user}/>
+
+    {/each}
 
 </div>

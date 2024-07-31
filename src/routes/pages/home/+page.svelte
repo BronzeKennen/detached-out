@@ -3,6 +3,7 @@
     import SideProfile from "../../../components/sideProfile.svelte";
     import Connections from "../../../components/connections.svelte";
     import { onMount } from "svelte";
+    import ProfileIcon from "../../../components/profileIcon.svelte";
     let users = [];
     let newuser = '';
 
@@ -29,6 +30,15 @@
             flex-direction: column;
         }
     }
+    .user {
+        background-color: rgba(163, 127, 216, 0.363);
+        border-radius: 10px;
+        margin:1rem;
+        width:20%;
+        padding:.3rem;
+        font-size:15px;
+
+    }
 </style>
 <div class="feed">
     <SideProfile />
@@ -36,10 +46,11 @@
     <Connections />
 </div>
     {#if users}
-    USERS
-    {#each users as user}
-        <p> {user.username} </p>
-        <p> {user.fname} </p>
-        <p> {user.lname} </p>
-    {/each}
+        {#each users as user}
+            <div class="user">
+                <ProfileIcon user={user.username}/>
+                <p>{user.password}</p>
+                <p>{user.email}</p>
+            </div>
+        {/each}
     {/if}

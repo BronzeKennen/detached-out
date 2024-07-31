@@ -1,17 +1,14 @@
 
 <script>
+    import ProfileIcon from "./profileIcon.svelte";
+
     export let user = '';
     export let comment = ''
 
 </script>
 
 <div class="comment">
-    <div class="profileIcon">
-        <span id="pfp"> </span>
-        <span class="stats">
-            <h3 class="username">{user}</h3>
-        </span>
-    </div>
+    <ProfileIcon user={user}/>
     <p>{comment}</p>
 </div>
 <style>
@@ -19,35 +16,17 @@
         min-height:25px;
         position:relative;
         background-color: rgb(250, 240, 255);
-        padding:1rem;
+        padding:.2rem;
         margin:1rem 0;
         border-radius: 10px;
     }
     .comment p {
-        margin:.9rem 1.5rem 0 2.7rem;
+        margin:-.3rem 4.1rem;
+        padding:0 0 1rem 0;
     }
-    .username {
-        margin:.2rem 0;
-    }
-    .profileIcon {
-        position:absolute;
-        border-radius:5px;
-        margin:.5rem;
-        background-color: aliceblue;
-        min-height:100px;
-    }
-    #pfp {
-        top:-15px;
-        left:-15px;
-        position:absolute;
-        width:40px;
-        height:40px;
-        background-color:cyan;
-        border-radius:50%;
-    }
-    .stats {
-        position:absolute;
-        left:35px;
-        top:-20px;
+    .comment:hover {
+        animation-duration: 0.2s;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+
     }
 </style>

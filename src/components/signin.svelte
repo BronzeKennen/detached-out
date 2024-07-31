@@ -2,6 +2,34 @@
     import Logo from '../assets/logo.svg';
     let innerWidth = 0;
     let innerHeight = 0;
+    let email = ''
+    let password = ''
+
+    async function login() {
+
+        if(email.trim() === '' || password.trim() === '') return;
+
+        console.log(email.password)
+
+        await fetch('/api/users/login', {
+            method: 'POST',
+            headers : { 
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                email,
+                password
+            })
+        }).then(response => {
+                console.log(response);
+            if(response.status === 201) {
+                console.log('YIPPIE');
+            } else {
+                console.error("Email or password is incorrect")
+            }
+        });
+    }
+
     $: condition = innerWidth > 450;
 </script>
 
@@ -141,10 +169,10 @@
     <div class='signIn'>
         <b><img src={Logo} alt="Logo" /></b>
         <div id="info">Welcome Back!</div>
-        <input type='email' placeholder="Email"/>
-        <input type='password' placeholder="Password"/>
+        <input bind:value={email} type='email' placeholder="Email"/>
+        <input bind:value={password} type='password' placeholder="Password"/>
         <div class="button-container">
-            <a href='/pages/home' id="login">Log In</a>
+            <a on:click={login} href='/pages/home' id="login">Log In</a>
             <a href='/pages/home' id="forgot">Forgot Password?</a>
         </div>
         <div class="button-container">

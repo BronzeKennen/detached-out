@@ -1,5 +1,6 @@
 <script>
     import Comment from "./comment.svelte";
+    import ProfileIcon from "./profileIcon.svelte";
     let likes = 0;
     let comments = 0;
     let reposts = 0;
@@ -50,11 +51,7 @@
 
     <div class="feed-post">
         <div class="stats">
-                <span id="postpfp"> </span>
-                <span>
-                    <h3 class="username">Hamburger</h3>
-                    <p class="subtitle">National Kapodistrian University of Athens</p>
-                </span>
+            <ProfileIcon user="Hamburger"/>
         </div>
         <div class="post">
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
@@ -83,7 +80,7 @@
                 </span>
             </div>
             {#if commenter}
-                <Comment user='Mr.Ham' comment='Θα σε αγγιξω'/>
+                <Comment user='Mr.Ham' comment='Θα σε αγγιξω'/> 
                 <Comment user='AlexK' comment='🥵🥵'/>
             <div class="comment-box">
                 <span id="pfp"></span>
@@ -113,32 +110,27 @@
         margin:.5rem;
     }
 
-    .stats {
-        display:flex;
-    }
-
-    #postpfp {
-        height:50px;
-        width:50px;
-        border-radius: 50%;
-        background-color:blue;
-        margin-right:.5rem;
-    }
 
     .reactions {
+        opacity:40%;
         display:flex;
         width:100%;
         justify-content: space-between;
 
     }
+    .stats {
+        margin:-.5rem;
+        font-size:18px;
+    }
     .post {
-        margin:2.5rem 0rem;
+        margin:1rem 0rem .5rem 0;
     }
     .buttons {
         justify-content: space-between;
         display:flex;
-        margin:1rem 0;
-        border-top:2px rgba(u,0,0,.3) solid;
+        margin:.5rem 0;
+        padding:.6rem;
+        border-top:2px rgba(0,0,0,.3) solid;
     }
     .buttons b {
         font-size:20px;

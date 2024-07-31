@@ -21,3 +21,8 @@ export function addUser(username,fname,lname,email,password) {
     const stmt = db.prepare('INSERT INTO users (username,fname,lname,email,password) VALUES (?,?,?,?,?)');
     return stmt.run(username,fname,lname,email,password);
 }
+
+export function findUserByEmail(email) {
+    const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
+    return stmt.get(email);
+}

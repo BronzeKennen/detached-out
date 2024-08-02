@@ -1,6 +1,7 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
     let someone = 'Kyrios Xoirinos';
+    let notiftype = 'friend_request';
 </script>
 
 <style>
@@ -17,35 +18,104 @@
     }
 
     .notifBlock .pfp {
+        display: flex;
         margin-top: auto;
-        margin-right: 2.5%;
+        margin-bottom: auto;
+        margin-right: 1rem;
         aspect-ratio: 1;
         background-color:cyan;
         width: 10%;
-        border-radius:50%;
+        border-radius: 50%;
+    }
+
+    .notifIcon {
+        color: black;
+        width: 35%;
+        height: 35%;
+        margin-top: 65%;
+        margin-left: 60%;
+    }
+
+    .notifBlock .rest {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
     }
 
     .notifBlock .message {
-        flex: 1; 
         background-color: white;
+        color: black;
+        padding: 1%;
+    }
+
+    .notifBlock .requestResponce {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 1%;
+        height: 1.5rem;
+    }
+
+    .requestResponce button {
+        width: 25%;
+        background-color: rgb(155, 134, 175);
+        margin-left: 1%;
+        margin-right: 1%;
+        border-radius: 5px;
+        color: white;
+    }
+
+    #accept {
+        background-color: rgb(0, 200, 0);
+        border-color: rgb(0,200,0);
+    }
+    
+    #decline {
+        background-color: gray;
+        border-color: gray;
+    }
+
+    a {
+        font-weight: bolder;
         color: black;
     }
 
-    .userName {
-        font-weight: bolder;
-    }
-
-    .userName:hover {
+    a:hover {
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+        .notifBlock .pfp {
+            width: 15%;
+        }
+        
+        .notifBlock .rest {
+            width: 85%;
+        }
+
+        .requestResponce button {
+            width: 30%;
+        }
     }
 </style>
 
 <div class="notifBlock"> 
-    <div class="pfp"></div>
-    <div class="message">You have received a new friend request from <span class="userName">{someone}</span>.</div>
+    <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
+    <div class="rest">
+        <div class="message">You have received a new friend request from <a href='/pages/home'>{someone}</a>.</div>
+        {#if notiftype === 'friend_request'}
+        <div class="requestResponce">
+            <button id="accept">Accept</button>
+            <button id="decline">Decline</button>
+        </div>
+        {/if}
+    </div>
 </div>
 <div class="notifBlock"> 
-    <div class="pfp"></div>
-    <div class="message"><span class="userName">{someone}</span> has commented on your post.</div>
+    <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-comments"></i></span></div>
+    <div class="rest">
+        <div class="message"><a href='/pages/home'>{someone}</a> has commented on your <a href='/pages/home'>post</a>.</div>
+    </div>
+    
 </div>

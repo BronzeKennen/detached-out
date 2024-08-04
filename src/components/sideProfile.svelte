@@ -25,11 +25,22 @@
         transform: translate(-50%, -50%);
     }
     .details {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: start;
         border-bottom-left-radius:10px;
         border-bottom-right-radius:10px;
         background-color:rgb(90, 61, 89);
         min-height:100px;
     }
+
+    .details .info {
+        margin-left: 5%;
+        color: gray;
+        font-size: large;
+        font-weight: bolder;
+    }
+
     @media (max-width: 800px) {
         .side-profile {
             width:50%;
@@ -50,6 +61,7 @@
 
     </div>
     <div class="details">
-        rest of info
+        <div class='info'>Cleaning Crew</div>
+        <div class='info'>Apple Computers</div>
     </div>
 </div>

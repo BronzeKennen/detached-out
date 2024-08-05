@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken'
 export async function POST({request}) {
     const data = await request.json();
     const user = findUserByEmail(data.email);
-    console.log('hello?')
 
 
     if (!user) {

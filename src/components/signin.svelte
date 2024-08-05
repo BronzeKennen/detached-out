@@ -1,33 +1,45 @@
 <script>
     import Logo from '../assets/logo.svg';
+    import { onMount } from 'svelte';
+
+    onMount(async () => {
+        await fetch('/api/users/clear-cookie');
+    })
+
     let innerWidth = 0;
     let innerHeight = 0;
     let email = ''
     let password = ''
 
+
+
     async function login() {
 
         if(email.trim() === '' || password.trim() === '') return;
 
-        console.log(email.password)
 
-        await fetch('/api/users/login', {
-            method: 'POST',
-            headers : { 
-                'Content-Type' : 'application/json'
-            },
-            body : JSON.stringify({
-                email,
-                password
+        try {
+            const response = await fetch('/api/users/login', {
+                method: 'POST',
+                headers : { 
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    email,
+                    password
+                })
             })
-        }).then(response => {
-                console.log(response);
-            if(response.status === 201) {
-                console.log('YIPPIE');
+            if(response.ok) {
+                window.location.href = '/pages/home'
             } else {
+                console.log(response)
                 console.error("Email or password is incorrect")
+                window.location.href = '#'
             }
-        });
+        } catch (err) {
+            console.error('Error during login:',err);
+            window.location.href = '#'
+        }
     }
 
     $: condition = innerWidth > 450;
@@ -172,7 +184,7 @@
         <input bind:value={email} type='email' placeholder="Email"/>
         <input bind:value={password} type='password' placeholder="Password"/>
         <div class="button-container">
-            <a on:click={login} href='/pages/home' id="login">Log In</a>
+            <a on:click|preventDefault={login} href='#' id="login">Log In</a>
             <a href='/pages/home' id="forgot">Forgot Password?</a>
         </div>
         <div class="button-container">

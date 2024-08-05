@@ -1,6 +1,7 @@
 
 import { getUsers, addUser } from '/database.js' 
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 export async function POST({ request }) {
     const data = await request.json();

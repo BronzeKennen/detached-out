@@ -45,12 +45,12 @@
     <FeedPost />
     <Connections />
 </div>
-    {#if users}
-        {#each users as user}
-            <div class="user">
-                <ProfileIcon user={user.username}/>
-                <p>{user.password}</p>
-                <p>{user.email}</p>
-            </div>
-        {/each}
-    {/if}
+    <!-- {#if users} -->
+        <!-- {#each users as user} -->
+            <!-- <div class="user"> -->
+                <!-- <ProfileIcon user={user.username}/> -->
+                <!-- <p>{user.password}</p> -->
+                <!-- <p>{user.email}</p> -->
+            <!-- </div> -->
+        <!-- {/each} -->
+    <!-- {/if} -->

@@ -103,7 +103,7 @@
 <div class="notifBlock"> 
     <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
     <div class="rest">
-        <div class="message">You have received a new friend request from <a href='/pages/home'>{someone}</a>.</div>
+        <div class="message"><a href='/pages/home'>{someone}</a> wants to connect with you.</div>
         {#if notiftype === 'friend_request'}
         <div class="requestResponce">
             <button id="accept">Accept</button>

@@ -24,7 +24,6 @@
         font-size:85%;
     }
     #pfp {
-
         margin:.5rem;
         min-width:50px;
         min-height:50px;

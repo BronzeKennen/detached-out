@@ -1,5 +1,5 @@
 <style>
-    .main-profile {
+    .top-profile {
         margin:.5rem;
         border-radius:10%;
         position:relative;
@@ -47,29 +47,35 @@
         font-size: larger;
     }
 
-    @media (max-width: 900px) {
-        .main-profile {
+    @media (max-width: 950px) {
+        .top-profile {
         }
-  
+
         .background {
-            height: 30vh;
+            height: 35vh;
         }
 
         .pfp {
-            left: 20%;
-            height: 25vh;
-            width: 25vh;
+            left: 50%;
+            height: 30vh;
+            width: 30vh;
         }
 
         .nameJob {
-            padding-left: 5vh;
+            position: inherit;
+            width: 100%;
+            top: -15vh;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 0;
             height: 7.5vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
 
         .name {
-            font-size: larger;
+            font-size: large;
         }
 
         .companyAndTitle {
@@ -78,7 +84,7 @@
     }
 
     @media (max-width: 600px) {
-        .main-profile {
+        .top-profile {
         }
 
         .background {
@@ -93,6 +99,7 @@
 
         .nameJob {
             position: inherit;
+            width: 100%;
             top: -10vh;
             margin-left: auto;
             margin-right: auto;
@@ -112,7 +119,7 @@
         }
     }
 </style>
-<div class="main-profile">
+<div class="top-profile">
     <div class="background"></div>
     <div class="pfp"></div>
     <div class="nameJob">
@@ -120,3 +127,4 @@
         <div class='companyAndTitle'>Liverpool F.C, Sport Science Intern</div>
     </div>
 </div>
+<button>WHERE</button>

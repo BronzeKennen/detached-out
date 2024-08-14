@@ -71,16 +71,17 @@
     }
 
     .pfpText {
-        height: 50px;
+        min-height: 50px;
+        height: auto;
         width: 100%;
         display: flex;
         flex-direction: row;
-        ;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
     }
 
     #postBody {
+        min-height: 50px;
         height: 100%;
         border: none;
         border-radius: 10px;
@@ -91,6 +92,7 @@
         position: relative;
         resize: none;
         padding: .5rem;
+        padding-left: 0.5;
         margin-left: 0.5rem;
     }
 
@@ -124,11 +126,10 @@
     }
 
     #pfp {
-        min-width:50px;
-        min-height:50px;
+        width:50px;
+        height:50px;
         background-color:cyan;
         border-radius:50%;
-        width: 10%;
         aspect-ratio: 1/1;
         }
 

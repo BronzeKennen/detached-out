@@ -121,8 +121,8 @@
 
     #postButton:hover {
         cursor: pointer;
-        background-color: #45A049; /* Slightly darker green on hover */
-        box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.8); /* Matching green shadow */
+        background-color: #45A049; 
+        box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.8); 
     }
 
     #pfp {

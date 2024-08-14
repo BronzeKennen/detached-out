@@ -1,3 +1,12 @@
+<script>
+    /* FETCH USER */
+    let firstName = "Dimitris";
+    let lastName = "Papaioannou Theodoropoulos";
+    let currJobTitle = "Sport Science Intern";
+    let currCompany = "Liverpool F.C.";
+</script>
+
+
 <style>
     .top-profile {
         margin:.5rem;
@@ -25,8 +34,7 @@
         border: 3px white solid;
         background-color: aqua;
         position: relative; 
-        left: 20%;
-        transform: translate(-50%, -50%);
+        transform: translate(+25%, -50%);
     }
 
     .nameJob {
@@ -47,9 +55,59 @@
         font-size: larger;
     }
 
+    .details {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        position: relative;
+        top: -15vh;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    .fieldTitle {
+        font-weight: bolder;
+        font-size: xx-large;
+        margin-bottom: 1rem;
+    }
+
+    .fields {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    #field {
+        height: 2rem;
+        border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: white;
+        width: auto;
+        flex: 1;
+        display: flex;
+        position: relative;
+        resize: none;
+        padding: .5rem;
+        padding-left: 0.5;
+        text-align: start;
+    }
+
+    #field:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+    }
+
+    #field:hover {
+        animation-duration: 0.5s;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+    }
+
+
     @media (max-width: 950px) {
-        .top-profile {
-        }
 
         .background {
             height: 35vh;
@@ -81,11 +139,13 @@
         .companyAndTitle {
             font-size: medium;
         }
+
+        .details {
+            top: -5vh;
+        }
     }
 
     @media (max-width: 600px) {
-        .top-profile {
-        }
 
         .background {
             height: 20vh;
@@ -117,14 +177,84 @@
         .companyAndTitle {
             font-size: medium;
         }
+
+        .details {
+            top: -5vh;
+        }
     }
 </style>
+
+
+
 <div class="top-profile">
     <div class="background"></div>
     <div class="pfp"></div>
     <div class="nameJob">
-        <div class='name'>Dimitris Papaioannou Theodoropoulos</div>
-        <div class='companyAndTitle'>Liverpool F.C, Sport Science Intern</div>
+        <div class='name'>{firstName} {lastName}</div>
+        <div class='companyAndTitle'>{currCompany}, {currJobTitle}</div>
     </div>
 </div>
-<button>WHERE</button>
+<div class="details">
+    <div class="fieldTitle">First and Last Name</div>
+    <div class="fields">
+        <textarea
+            id="field"
+            type="text" 
+            placeholder="{firstName}"
+            maxlength="16"
+            minlength="3"
+            on:blur={(e) => {
+                if (e.target.value.length > 3) {
+                    firstName = e.target.value;
+                } else {
+                    e.target.value = ''; 
+                }
+            }}    
+        />
+        <textarea
+            id="field"
+            type="text" 
+            placeholder="{lastName}"
+            maxlength="30"
+            minlength="3"
+            on:blur={(e) => {
+                if (e.target.value.length > 3) {
+                    lastName = e.target.value;
+                } else {
+                    e.target.value = ''; 
+                }
+            }}  
+        />
+    </div>
+    <div class="fieldTitle">Current Employer and Job Title</div>
+    <div class="fields">
+        <textarea
+            id="field"
+            type="text" 
+            placeholder="{currCompany}"
+            maxlength="16"
+            minlength="3"
+            on:blur={(e) => {
+                if (e.target.value.length > 3) {
+                    currCompany = e.target.value;
+                } else {
+                    e.target.value = ''; 
+                }
+            }}    
+        />
+        <textarea
+            id="field"
+            type="text" 
+            placeholder="{currJobTitle}"
+            maxlength="30"
+            minlength="3"
+            on:blur={(e) => {
+                if (e.target.value.length > 3) {
+                    currJobTitle = e.target.value;
+                } else {
+                    e.target.value = ''; 
+                }
+            }}  
+        />
+    </div>
+</div>

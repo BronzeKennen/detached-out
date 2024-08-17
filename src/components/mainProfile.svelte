@@ -1,4 +1,5 @@
 <script>
+    import PrevJob from "./prevJob.svelte";
     /* FETCH USER */
     let firstName = "Dimitris";
     let lastName = "Papaioannou Theodoropoulos";
@@ -71,7 +72,7 @@
         margin-bottom: 1rem;
     }
 
-    .fields {
+    .mandFields {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -80,7 +81,7 @@
         margin-bottom: 2rem;
     }
 
-    #field {
+    #textField {
         height: 2rem;
         border: none;
         border-radius: 10px;
@@ -96,16 +97,15 @@
         text-align: start;
     }
 
-    #field:focus {
+    #textField:focus {
         outline: none;
         box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 
-    #field:hover {
+    #textField:hover {
         animation-duration: 0.5s;
         box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
-
 
     @media (max-width: 950px) {
 
@@ -196,9 +196,9 @@
 </div>
 <div class="details">
     <div class="fieldTitle">First and Last Name</div>
-    <div class="fields">
+    <div class="mandFields">
         <textarea
-            id="field"
+            id="textField"
             type="text" 
             placeholder="{firstName}"
             maxlength="16"
@@ -212,7 +212,7 @@
             }}    
         />
         <textarea
-            id="field"
+            id="textField"
             type="text" 
             placeholder="{lastName}"
             maxlength="30"
@@ -227,9 +227,9 @@
         />
     </div>
     <div class="fieldTitle">Current Employer and Job Title</div>
-    <div class="fields">
+    <div class="mandFields">
         <textarea
-            id="field"
+            id="textField"
             type="text" 
             placeholder="{currCompany}"
             maxlength="16"
@@ -243,7 +243,7 @@
             }}    
         />
         <textarea
-            id="field"
+            id="textField"
             type="text" 
             placeholder="{currJobTitle}"
             maxlength="30"
@@ -257,4 +257,8 @@
             }}  
         />
     </div>
+
+    <div class="fieldTitle">Work Experience</div>
+    <PrevJob />
+    <PrevJob />
 </div>

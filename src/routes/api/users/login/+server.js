@@ -16,7 +16,7 @@ export async function POST({request}) {
     try {
         if(await bcrypt.compare(data.password,user.password)) {
             //User authenticated, now authenticate with jwt
-            const accessToken = jwt.sign({email: user.email}, ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
+            const accessToken = jwt.sign({id: user.UserId}, ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
             return new Response(JSON.stringify({ accessToken}), {
                 status: 200,
                 headers: { 

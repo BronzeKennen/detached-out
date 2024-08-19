@@ -13,6 +13,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     biography TEXT,
     education TEXT,
+    country_of_residence TEXT,
+    state TEXT,
     current_company TEXT,
     proffession TEXT
 )`);
@@ -53,6 +55,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
 export function getUsers() {
     const stmt = db.prepare('SELECT * FROM users');
     return stmt.all();
+}
+
+export function getUserById(id) {
+    const stmt = db.prepare('SELECT * FROM users WHERE UserId = ?');
+    return stmt.get(id);
 }
 
 export function addUser(username,fname,lname,email,password) {

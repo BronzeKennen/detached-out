@@ -19,12 +19,12 @@
             condition = 0;
         }
     }
-    //should make conditions for multiple resolutions
-
     
     const handleClick = (() => {
         clicked = !clicked;
     });
+
+    export let data;
 </script>
 
 
@@ -228,7 +228,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/profile'>
+            <a href='/pages/profile/{data.user.id}'>
                 <i class="fa-solid fa-user"></i>
                 {#if condition < 3}
                 <span>Profile</span>

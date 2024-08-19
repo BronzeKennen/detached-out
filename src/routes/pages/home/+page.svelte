@@ -8,12 +8,12 @@
     let users = [];
     let newuser = '';
 
-    onMount(async () => {
-        const resp = await fetch('/api/users');
-        const data = await resp.json();
-        users = data.body;
-    })
-
+    // onMount(async () => {
+        // const resp = await fetch('/api/users');
+        // const data = await resp.json();
+        // users = data.body;
+    // })
+// 
 </script>
 
 <style>

@@ -6,7 +6,7 @@ export const handle = async ({ event, resolve }) => {
     const url = new URL(event.request.url);
 
     // Skip authorization checks for login page
-    if (url.pathname === '/' || url.pathname === '/api/users/login' || url.pathname === '/api/users' || url.pathname === '/api/users/register') {
+    if (url.pathname === '/' || url.pathname === '/api/users/login' || url.pathname === '/api/users/register') {
         return resolve(event);
     }
 

@@ -1,10 +1,18 @@
 <script>
     import PrevJob from "./prevJob.svelte";
     /* FETCH USER */
-    let firstName = "Dimitris";
-    let lastName = "Papaioannou Theodoropoulos";
-    let currJobTitle = "Sport Science Intern";
-    let currCompany = "Liverpool F.C.";
+    export let profile;
+
+    let originalProfile = profile;
+
+
+    let firstName = profile.fname;
+    let lastName = profile.lname;
+    let currJobTitle = null;
+    let currCompany = profile.current_company;
+
+
+
 </script>
 
 
@@ -191,7 +199,7 @@
     <div class="pfp"></div>
     <div class="nameJob">
         <div class='name'>{firstName} {lastName}</div>
-        <div class='companyAndTitle'>{currCompany}, {currJobTitle}</div>
+       {#if currCompany} <div class='companyAndTitle'>{currCompany}, {#if currJobTitle} {currJobTitle} {/if}</div> {/if}
     </div>
 </div>
 <div class="details">
@@ -200,7 +208,7 @@
         <textarea
             id="textField"
             type="text" 
-            placeholder="{firstName}"
+            bind:value={firstName}
             maxlength="16"
             minlength="3"
             on:blur={(e) => {
@@ -214,9 +222,9 @@
         <textarea
             id="textField"
             type="text" 
-            placeholder="{lastName}"
             maxlength="30"
             minlength="3"
+            bind:value={lastName}
             on:blur={(e) => {
                 if (e.target.value.length > 3) {
                     lastName = e.target.value;
@@ -231,7 +239,7 @@
         <textarea
             id="textField"
             type="text" 
-            placeholder="{currCompany}"
+            bind:value={currCompany}
             maxlength="16"
             minlength="3"
             on:blur={(e) => {
@@ -245,9 +253,9 @@
         <textarea
             id="textField"
             type="text" 
-            placeholder="{currJobTitle}"
             maxlength="30"
             minlength="3"
+            bind:value={currJobTitle}
             on:blur={(e) => {
                 if (e.target.value.length > 3) {
                     currJobTitle = e.target.value;

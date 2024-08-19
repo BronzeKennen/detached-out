@@ -15,7 +15,7 @@
         }
         console.log(username,fname,lname,email,password)
 
-        await fetch('/api/users', {
+        await fetch('/api/users/register', {
             method: 'POST',
             headers : {
                 'Content-Type' : 'application/json'

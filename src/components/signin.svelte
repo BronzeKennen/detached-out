@@ -32,7 +32,6 @@
             if(response.ok) {
                 window.location.href = '/pages/home'
             } else {
-                console.log(response)
                 console.error("Email or password is incorrect")
                 window.location.href = '#'
             }

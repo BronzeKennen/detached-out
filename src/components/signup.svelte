@@ -1,5 +1,6 @@
 <script>
     import Logo from '../assets/logo.svg';
+    import login from '../components/signin.svelte'
 
     let username = '';
     let fname = '';
@@ -15,7 +16,7 @@
         }
         console.log(username,fname,lname,email,password)
 
-        await fetch('/api/users/register', {
+        const response = await fetch('/api/users/register', {
             method: 'POST',
             headers : {
                 'Content-Type' : 'application/json'
@@ -27,15 +28,14 @@
                 email,
                 password
             })
-        }).then(response => {
-            if(response.ok) {
-                console.log("Success");
-            } else {
-                console.error("Error adding user.");
-            }
-        });
-        const resp = await fetch('/api/users');
-        const data = await resp.json();
+        })
+        if(response.ok) {
+            window.location.href = '/pages/home'
+        } else {
+            console.error("Error adding user.");
+            window.location.href = '#'
+            return;
+        }
         
     }
 </script>
@@ -106,7 +106,7 @@
             <span class="feedbackText">Must be between 8 and 32 characters.</span>
         </div>
         <div class="button-container">
-            <a href='/pages/home' id="signup" on:click={addUser}>Join now!</a>
+            <a href='#' id="signup" on:click|preventDefault={addUser}>Join now!</a>
         </div>
         <div class="button-container">
             <a id="login" href='../'>Already have an account? Log in!</a> 

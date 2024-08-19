@@ -13,7 +13,7 @@
 
 
 
-    async function login() {
+    export async function login() {
 
         if(email.trim() === '' || password.trim() === '') return;
 

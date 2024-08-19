@@ -2,6 +2,8 @@ import { findUserByEmail } from '../../../../../database.js';
 import bcrypt from 'bcryptjs'
 import { ACCESS_TOKEN_SECRET } from '$env/static/private';
 import jwt from 'jsonwebtoken'
+
+
 export async function POST({request}) {
     const data = await request.json();
     const user = findUserByEmail(data.email);

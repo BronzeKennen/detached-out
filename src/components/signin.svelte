@@ -156,6 +156,7 @@
         :global(body) {
             margin: 0;
         }
+        
         .container {
             flex-direction: column;
             justify-content: space-around; /* Or use 'space-between' if you prefer */

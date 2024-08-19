@@ -4,6 +4,7 @@
     import Connections from "../../../components/connections.svelte";
     import { onMount } from "svelte";
     import ProfileIcon from "../../../components/profileIcon.svelte";
+    import NewPost from "../../../components/newPost.svelte";
     let users = [];
     let newuser = '';
 
@@ -30,6 +31,12 @@
             flex-direction: column;
         }
     }
+
+    .MiddleCol {
+        flex-direction: column;
+        flex: 2;
+    }
+
     .user {
         background-color: rgba(163, 127, 216, 0.363);
         border-radius: 10px;
@@ -42,7 +49,10 @@
 </style>
 <div class="feed">
     <SideProfile />
-    <FeedPost />
+    <div class='MiddleCol'>
+        <NewPost />
+        <FeedPost />
+    </div>  
     <Connections />
 </div>
     <!-- {#if users} -->

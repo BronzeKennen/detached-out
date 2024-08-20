@@ -1,18 +1,23 @@
 <script>
     import PrevJob from "./prevJob.svelte";
+    import { invalidateAll } from '$app/navigation';
+
     /* FETCH USER */
     export let profile;
+    if(profile.current_company === null) profile.current_company = {CompanyId: null, company_name: ''}
+    if(profile.job_title === null) profile.job_title= {JobTitleId: null, JobTitle: ''};
 
     let originalProfile = profile;
 
 
     let firstName = profile.fname;
     let lastName = profile.lname;
-    let currJobTitle = null;
-    let currCompany = profile.current_company;
+    let currJobTitle = profile.job_title.JobTitle;
+    let currCompany = profile.current_company.company_name;
     let id = profile.UserId;
     $: changedMand = false;
     $: changedEmp = false;
+    console.log(currJobTitle)
     
     $: {
         if(firstName !== originalProfile.fname) {
@@ -25,10 +30,13 @@
             changedMand = false;
         }
 
-        if(currCompany !== originalProfile.current_company) {
+        if(currCompany !== originalProfile.current_company.company_name) {
             changedEmp = true;
         }
-        if(currCompany === originalProfile.current_company) {
+        if(currJobTitle !== originalProfile.job_title.JobTitle) {
+            changedEmp = true;
+        }
+        if(currCompany === originalProfile.current_company.company_name && currJobTitle === originalProfile.job_title.JobTitle) {
             changedEmp = false;
         }
 
@@ -40,8 +48,8 @@
     })
 
     const resetEmp = (() => {
-        currJobTitle = null;
-        currCompany = profile.current_company;
+        currJobTitle = profile.job_title.JobTitle;
+        currCompany = profile.current_company.company_name;
     })
 
     const saveChanges = (async () => {
@@ -59,6 +67,8 @@
         })
         if(response.ok) {
             console.log('success!')
+            invalidateAll();
+            changedMand = false;
         } else {
             console.log('An error has occured');
         }
@@ -71,6 +81,9 @@
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify( {
+                UserId : id,
+                current_company: currCompany,
+                job_title : currJobTitle
 
             })
         })

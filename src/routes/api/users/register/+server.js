@@ -3,9 +3,9 @@ import { addUser ,findUserByEmail} from '/database.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { ACCESS_TOKEN_SECRET } from '$env/static/private';
+
 export async function POST({ request }) {
     const data = await request.json();
-    console.log(data);
     try {
         const hashedPassword = await bcrypt.hash(data.password,10);
         addUser(

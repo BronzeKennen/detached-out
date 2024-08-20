@@ -1,3 +1,4 @@
+import { getCompanyById,getJobTitleById } from '/database.js' 
 export async function load({ params, request }) {
     const { id } = params;
 
@@ -13,7 +14,7 @@ export async function load({ params, request }) {
         });
 
         if (!res.ok) {
-            console.log(res)
+            console.log("an error has occured");
         }
 
         const profile = await res.json();
@@ -24,8 +25,8 @@ export async function load({ params, request }) {
             lname: profile.lname,
             biography: profile.biography,
             education: profile.education,
-            current_company: profile.current_company,
-            proffession: profile.proffession,
+            current_company: getCompanyById(profile.current_company) ? getCompanyById(profile.current_company) : null,
+            job_title: getJobTitleById(profile.job_title) ?  getJobTitleById(profile.job_title) : null,
             profile_pic_url: profile.profile_pic_url
         };
         return {userProfile}

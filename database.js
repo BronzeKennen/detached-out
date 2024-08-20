@@ -12,6 +12,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL,
     profile_pic_url TEXT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    date_of_birth DATETIME,
     biography TEXT,
     education TEXT,
     country_of_residence TEXT,
@@ -85,7 +86,33 @@ export function getUsers() {
 
 export function getUserById(id) {
     const stmt = db.prepare('SELECT * FROM users WHERE UserId = ?');
+    console.log(stmt)
     return stmt.get(id);
+}
+
+export function getCompanies() {
+    const stmt = db.prepare('SELECT * FROM Companies');
+    return stmt.all();
+}
+
+export function getCompanyById(id) {
+    const stmt = db.prepare('SELECT * FROM Companies WHERE CompanyId = ?');
+    return stmt.get(id)
+}
+ 
+export function getJobTitleById(id) {
+    const stmt = db.prepare('SELECT * FROM JobTitles WHERE JobTitleId = ?');
+    return stmt.get(id)
+}
+
+export function getJobTitleByName(name) {
+    const stmt = db.prepare('SELECT * FROM JobTitles WHERE JobTitle = ?');
+    return stmt.get(name);
+}
+
+export function getCompanyByName(name) {
+    const stmt = db.prepare('SELECT * FROM Companies WHERE company_name = ?');
+    return stmt.get(name);
 }
 
 export function addUser(username,fname,lname,email,password) {
@@ -98,17 +125,72 @@ export function findUserByEmail(email) {
     return stmt.get(email);
 }
 
+
 export function updateUserById(id, updateData, partial = false) {
     if (partial) {
-        const filteredUpdateData = { ...updateData };
+        let filteredUpdateData = { ...updateData };
         delete filteredUpdateData.UserId;
-        const columns = Object.keys(filteredUpdateData).map(key => `${key} = ?`).join(', ')
-        const values = Object.values(updateData);
-        id = values.shift();
-        const query = `UPDATE users SET ${columns} WHERE UserId = ?`;
-        const stmt = db.prepare(query);
-        const result = stmt.run([...values, id]);
-        return result.changes > 0;
+        
+        let diffFields = ['UserId','current_company','job_title']
+
+        let filteredData = Object.fromEntries(
+            Object.entries(filteredUpdateData).filter(
+                ([key,value]) => diffFields.includes(key) && value !== null && value !== ''
+            )
+        );
+
+        filteredUpdateData = Object.fromEntries(
+            Object.entries(filteredUpdateData).filter(
+                ([key,value]) => !diffFields.includes(key)
+            )
+        );
+
+        if(Object.keys(filteredUpdateData).length > 0) {
+            const columns = Object.keys(filteredUpdateData).map(key => `${key} = ?`).join(', ')
+            const values = Object.values(updateData);
+            id = values.shift();
+            const query = `UPDATE users SET ${columns} WHERE UserId = ?`;
+            const stmt = db.prepare(query);
+            const result = stmt.run([...values, id]);
+            return result.changes > 0;
+        } else {
+            const columns = Object.keys(filteredData).map(key => `${key} = ?`).join(', ')
+            const values = Object.values(filteredData);
+            id = updateData.UserId
+            
+            console.log(filteredData);
+            let company;
+            if('current_company' in filteredData) {
+                company  = getCompanyByName(values[0]);
+                if(company === undefined) {
+                    const companyQuery = db.prepare('INSERT OR IGNORE INTO Companies (company_name) VALUES (?)');
+                    let res = companyQuery.run(values[0])
+                    values[0] = res.lastInsertRowid;
+                    console.log(res.changes)
+                } else {
+                    values[0] = company.CompanyId;
+                }
+            }
+
+            let job_title;
+            if('job_title' in filteredData) {
+                let index = 0;
+                if('current_company' in filteredData) index = 1;
+                job_title = getJobTitleByName(values[index]);
+                if(job_title === undefined) {
+                    const titleQuery = db.prepare('INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES (?)')
+                    let res; 
+                    res = titleQuery.run(values[index])
+                    values[index] = res.lastInsertRowid;
+                } else {
+                    values[index] = job_title.JobTitleId;
+                }
+            }
+            const query = `UPDATE users SET ${columns} WHERE UserId = ?`
+            const stmt = db.prepare(query);
+            const result = stmt.run([...values,id])
+            return result.changes > 0;
+        }
     } else { //not yet
         // const { username, fname, lname, email, password, profile_pic_url, biography, education, country_of_residence, state, current_company, job_title } = updateData;
         // const query = `UPDATE users SET username = ?, fname = ?, lname = ?, email = ?, password = ?, profile_pic_url = ?, biography = ?, education = ?, country_of_residence = ?, state = ?, current_company = ?, job_title = ? WHERE UserId = ?`;

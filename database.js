@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import bcrypt from 'bcryptjs'
 
 const db = new Database('./database.db');
 
@@ -56,7 +57,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
 
 )`);
 
-db.exec( `INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
+db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
 ('Software Engineer'),
 ('Product Manager'),
 ('Data Scientist'),
@@ -86,7 +87,6 @@ export function getUsers() {
 
 export function getUserById(id) {
     const stmt = db.prepare('SELECT * FROM users WHERE UserId = ?');
-    console.log(stmt)
     return stmt.get(id);
 }
 
@@ -99,7 +99,7 @@ export function getCompanyById(id) {
     const stmt = db.prepare('SELECT * FROM Companies WHERE CompanyId = ?');
     return stmt.get(id)
 }
- 
+
 export function getJobTitleById(id) {
     const stmt = db.prepare('SELECT * FROM JobTitles WHERE JobTitleId = ?');
     return stmt.get(id)
@@ -115,9 +115,9 @@ export function getCompanyByName(name) {
     return stmt.get(name);
 }
 
-export function addUser(username,fname,lname,email,password) {
+export function addUser(username, fname, lname, email, password) {
     const stmt = db.prepare('INSERT INTO users (username,fname,lname,email,password) VALUES (?,?,?,?,?)');
-    return stmt.run(username,fname,lname,email,password);
+    return stmt.run(username, fname, lname, email, password);
 }
 
 export function findUserByEmail(email) {
@@ -125,27 +125,54 @@ export function findUserByEmail(email) {
     return stmt.get(email);
 }
 
+export function updateUserCredentials(updatedata) {
+
+    console.log('user');
+    console.log(updatedata);
+
+}
+
+export async function updatePassword(updatedata) {
+    const oldPass = updatedata.oldPass;
+    const confirmPass = updatedata.confirmPass;
+    const toChange = updatedata.newPass;
+    if (toChange.localeCompare(confirmPass) !== 0) {
+        return false;
+    } else {
+        const user = getUserById(updatedata.UserId);
+        const users = getUsers();
+        console.log(user.password,oldPass)
+        const test = await bcrypt.compare(oldPass,user.password)
+        if(!test) return false;
+        const hashedPassword = await bcrypt.hash(toChange, 10);
+        const query = `UPDATE users SET password = ? WHERE UserId = ?`
+        const stmt = db.prepare(query);
+        const result = stmt.run(hashedPassword, updatedata.UserId);
+        return result.changes > 0;
+    }
+}
+
 
 export function updateUserById(id, updateData, partial = false) {
     if (partial) {
         let filteredUpdateData = { ...updateData };
         delete filteredUpdateData.UserId;
-        
-        let diffFields = ['UserId','current_company','job_title']
+
+        let diffFields = ['UserId', 'current_company', 'job_title']
 
         let filteredData = Object.fromEntries(
             Object.entries(filteredUpdateData).filter(
-                ([key,value]) => diffFields.includes(key) && value !== null && value !== ''
+                ([key, value]) => diffFields.includes(key) && value !== null && value !== ''
             )
         );
 
         filteredUpdateData = Object.fromEntries(
             Object.entries(filteredUpdateData).filter(
-                ([key,value]) => !diffFields.includes(key)
+                ([key, value]) => !diffFields.includes(key)
             )
         );
 
-        if(Object.keys(filteredUpdateData).length > 0) {
+        if (Object.keys(filteredUpdateData).length > 0) {
             const columns = Object.keys(filteredUpdateData).map(key => `${key} = ?`).join(', ')
             const values = Object.values(updateData);
             id = values.shift();
@@ -157,12 +184,11 @@ export function updateUserById(id, updateData, partial = false) {
             const columns = Object.keys(filteredData).map(key => `${key} = ?`).join(', ')
             const values = Object.values(filteredData);
             id = updateData.UserId
-            
-            console.log(filteredData);
+
             let company;
-            if('current_company' in filteredData) {
-                company  = getCompanyByName(values[0]);
-                if(company === undefined) {
+            if ('current_company' in filteredData) {
+                company = getCompanyByName(values[0]);
+                if (company === undefined) {
                     const companyQuery = db.prepare('INSERT OR IGNORE INTO Companies (company_name) VALUES (?)');
                     let res = companyQuery.run(values[0])
                     values[0] = res.lastInsertRowid;
@@ -173,13 +199,13 @@ export function updateUserById(id, updateData, partial = false) {
             }
 
             let job_title;
-            if('job_title' in filteredData) {
+            if ('job_title' in filteredData) {
                 let index = 0;
-                if('current_company' in filteredData) index = 1;
+                if ('current_company' in filteredData) index = 1;
                 job_title = getJobTitleByName(values[index]);
-                if(job_title === undefined) {
+                if (job_title === undefined) {
                     const titleQuery = db.prepare('INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES (?)')
-                    let res; 
+                    let res;
                     res = titleQuery.run(values[index])
                     values[index] = res.lastInsertRowid;
                 } else {
@@ -188,7 +214,7 @@ export function updateUserById(id, updateData, partial = false) {
             }
             const query = `UPDATE users SET ${columns} WHERE UserId = ?`
             const stmt = db.prepare(query);
-            const result = stmt.run([...values,id])
+            const result = stmt.run([...values, id])
             return result.changes > 0;
         }
     } else { //not yet

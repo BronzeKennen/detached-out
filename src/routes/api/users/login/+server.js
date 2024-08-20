@@ -34,7 +34,7 @@ export async function POST({request}) {
             });
         }
 
-    } catch (err){
+    } catch (err) {
         return new Response(JSON.stringify({ message: 'Forbidden' }), {
             status: 401,
             headers: { 'Content-Type': 'application/json' }

@@ -176,13 +176,13 @@
             </a>
         </li>
         <li>
-            <a href='/pages/profile'>
+            <a href='/pages/profile/{data.user.id}'>
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
             </a>
         </li>
         <li>
-            <a href='/pages/settings'>
+            <a href='/pages/settings/{data.user.id}'>
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
@@ -255,7 +255,7 @@
         {/if}
         {#if condition <= 2}
         <li>
-            <a href='/pages/settings'>
+            <a href='/pages/settings/{data.user.id}'>
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>

@@ -67,8 +67,8 @@
         })
         if(response.ok) {
             console.log('success!')
-            invalidateAll();
-            changedMand = false;
+            originalProfile.fname = firstName;
+            originalProfile.lname = lastName;
         } else {
             console.log('An error has occured');
         }
@@ -89,6 +89,8 @@
         })
         if(response.ok) {
             console.log('success')
+            originalProfile.current_company.company_name = currCompany;
+            originalProfile.job_title.JobTitle = currJobTitle;
         } else {
             console.log('An error has occured')
         }

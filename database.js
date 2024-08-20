@@ -126,9 +126,15 @@ export function findUserByEmail(email) {
 }
 
 export function updateUserCredentials(updatedata) {
-
-    console.log('user');
-    console.log(updatedata);
+    let query = `UPDATE users SET email = ? WHERE UserId = ?`
+    let stmt = db.prepare(query);
+    let res = stmt.run(updatedata.email,updatedata.UserId);
+    if (res.changes === 0) return 2;
+    query = `UPDATE users SET username = ? WHERE UserId = ?`
+    stmt = db.prepare(query);
+    res = stmt.run(updatedata.username,updatedata.UserId);
+    console.log(updatedata.email,updatedata.username,updatedata.UserId);
+    return res.changes > 0;
 
 }
 

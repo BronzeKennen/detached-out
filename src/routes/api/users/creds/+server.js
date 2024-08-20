@@ -23,13 +23,14 @@ export const PATCH = async ({request}) => {
             }
         }else {
             const res = updateUserCredentials(updateData);
+            
+            if(!res) {
+                return new Response(JSON.stringify({message: 'Password doesn\'t match confirm password'}), {status: 401})
+            } else {
+                return new Response(JSON.stringify({ message: 'User updated successfully' }), { status: 200 });
+            }
         }
 
-        if (res) {
-            return new Response(JSON.stringify({ message: 'User updated successfully' }), { status: 200 });
-        } else {
-            return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
-        }
     } catch (error) {
         return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400 });
     }

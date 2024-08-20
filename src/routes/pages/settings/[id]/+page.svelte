@@ -13,10 +13,12 @@
     $: changed = (email === orgUser.email) && (username === orgUser.username)
     let password = '';
     let curPassword = '';
+    $: alreadyInUse = false;
 
 
     const saveChanges = (async () => {
-         const response = await fetch('/api/users/creds', {
+        alreadyInUse = false;
+        const response = await fetch('/api/users/creds', {
             method: 'PATCH',
             headers: {
                 'Content-Type' : 'application/json'
@@ -32,7 +34,8 @@
             orgUser.email = email;
             orgUser.username = username;
         } else {
-            console.log('An error has occured');
+            console.log(response)
+            alreadyInUse =true;
         }
     })
 
@@ -51,10 +54,8 @@
         })
         if(response.ok) {
             console.log('success!')
-            orgUser.email = email;
-            orgUser.username = username;
         } else {
-            console.log('An error has occured');
+            console.log('an error has occured')
         }
 
     })
@@ -62,6 +63,7 @@
     const resetUser = (async () => {
         email = orgUser.email;
         username = orgUser.username
+        alreadyInUse = false;
 
     })
 </script>
@@ -70,7 +72,7 @@
     <div class="details">
         <div class="fieldTitle">User Settings</div>
         <div class="mandFields">
-            <h3>Change username</h3>
+            <h3>Change username {#if alreadyInUse} Email or usename already in use {/if}</h3>
             <input
                 id="textField"
                 type="text" 

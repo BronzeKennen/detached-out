@@ -42,8 +42,9 @@
 
     //Both fields are required
     $: changedUni = 
-        uni !== originalProfile.university.university_name
-        && major !== originalProfile.university.major;
+        (uni !== originalProfile.university.university_name
+        || major !== originalProfile.university.major) 
+        && (uni && major);
 
     $: changedExperience = false;
     let previousJobs = ['1', '2', '3', '4'];

@@ -1,3 +1,4 @@
+import { getUniversityById } from '../../../../../database.js';
 import { getCompanyById,getJobTitleById } from '/database.js' 
 export async function load({ params, request }) {
     const { id } = params;
@@ -27,7 +28,12 @@ export async function load({ params, request }) {
             education: profile.education,
             current_company: getCompanyById(profile.current_company) ? getCompanyById(profile.current_company) : null,
             job_title: getJobTitleById(profile.job_title) ?  getJobTitleById(profile.job_title) : null,
-            profile_pic_url: profile.profile_pic_url
+            country_of_residence: profile.country_of_residence ? profile.country_of_residence : null,
+            state: profile.state ? profile.state : null,
+            profile_pic_url: profile.profile_pic_url,
+            date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
+            university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
+            biography : profile.biography ? profile.biography : null
         };
         return {userProfile}
     } catch (error) {

@@ -1,5 +1,6 @@
 
-import { getUsers, updateUserById } from '/database.js' 
+import { updateEducationById, updateEmploymentById, updateMandInfobyId } from '../../../../database.js';
+import { getUsers} from '/database.js' 
 export const GET = () => {
 
     const users = getUsers();
@@ -12,9 +13,21 @@ export const GET = () => {
 export const PATCH = async ({request}) => {
 
         const updateData = await request.json();
+
     try {
 
-        const res = updateUserById(updateData.id,updateData,true);
+        let res;
+        if('fname' in updateData) {
+            res = updateMandInfobyId(updateData.UserId,updateData,true);
+        } else if('current_company' in updateData) {
+            res = updateEmploymentById(updateData.UserId,updateData);
+        } else if ('university_name' in updateData) {
+            console.log('lmaooo');
+            res = updateEducationById(updateData.UserId,updateData);
+
+        } else {
+            res = null;
+        }
 
         if (res) {
             return new Response(JSON.stringify({ message: 'User updated successfully' }), { status: 200 });

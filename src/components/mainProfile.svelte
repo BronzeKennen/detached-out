@@ -1,25 +1,51 @@
 <script>
+    import Page from "../routes/pages/settings/[id]/+page.svelte";
     import PrevJob from "./prevJob.svelte";
-    import { invalidateAll } from '$app/navigation';
 
-    /* FETCH USER */
     export let profile;
-    if(profile.current_company === null) profile.current_company = {CompanyId: null, company_name: ''}
+    //if someone hasn't set these, set a dummy object!
+    if(profile.current_company === null) profile.current_company = {CompanyId: null, company_name: ''};
     if(profile.job_title === null) profile.job_title= {JobTitleId: null, JobTitle: ''};
+    if(profile.university === null) profile.university = {UniversityId: null, university_name: '', major: ''};
 
+    //copy of the profile to refer to any changes made
     let originalProfile = profile;
 
 
+    // ... 
     let firstName = profile.fname;
     let lastName = profile.lname;
     let currJobTitle = profile.job_title.JobTitle;
     let currCompany = profile.current_company.company_name;
+    let country = profile.country_of_residence;
+    let state = profile.state;
+    let bio = profile.biography;
     let id = profile.UserId;
-    let bio = '';
-    $: changedMand = false;
-    $: changedEmp = false;
+    // format mm-dd-yyyy
+    let birthday = profile.date_of_birth;
+    //for future reference
+    let uni = profile.university.university_name;
+    let major = profile.university.major;
+
+    //reactive variables to spawn save/reset buttons
+    $: changedMand = 
+        lastName !== originalProfile.lname 
+        || firstName !== originalProfile.fname 
+        || country !== originalProfile.country_of_residence 
+        || state !== originalProfile.state
+        || birthday !== originalProfile.date_of_birth
+        || bio !== originalProfile.biography;
+
+    $: changedEmp =
+        currCompany !== originalProfile.current_company.company_name
+        || currJobTitle !== originalProfile.job_title.JobTitle;
+
+    //Both fields are required
+    $: changedUni = 
+        uni !== originalProfile.university.university_name
+        && major !== originalProfile.university.major;
+
     $: changedExperience = false;
-    console.log(currJobTitle)
     let previousJobs = ['1', '2', '3', '4'];
     
     function autoResize(event) {
@@ -39,81 +65,95 @@
         changedExperience = true;
     }
 
-    $: {
-        if(firstName !== originalProfile.fname) {
-            changedMand = true;
-        }
-        if(lastName !== originalProfile.lname) {
-            changedMand = true;
-        }
-        if(lastName === originalProfile.lname && firstName === originalProfile.fname) {
-            changedMand = false;
-        }
 
-        if(currCompany !== originalProfile.current_company.company_name) {
-            changedEmp = true;
+    const resetFields = ((type) => {
+        switch (type) {
+            case 'mand':
+                firstName = profile.fname;
+                lastName = profile.lname;
+                country = profile.country_of_residence;
+                state = profile.state;
+                birthday = profile.date_of_birth;
+                bio = profile.biography;
+                console.log('asd')
+                break;
+            case 'uni':
+                uni = profile.university.university_name;
+                major = profile.university.major;
+                break;
+            case 'work': //work
+                currJobTitle = profile.job_title.JobTitle;
+                currCompany = profile.current_company.company_name;
+                break;
         }
-        if(currJobTitle !== originalProfile.job_title.JobTitle) {
-            changedEmp = true;
-        }
-        if(currCompany === originalProfile.current_company.company_name && currJobTitle === originalProfile.job_title.JobTitle) {
-            changedEmp = false;
-        }
-
-    }
-
-    const resetMand = (() => {    
-        firstName = profile.fname;
-        lastName = profile.lname;
     })
 
-    const resetEmp = (() => {
-        currJobTitle = profile.job_title.JobTitle;
-        currCompany = profile.current_company.company_name;
-    })
 
-    const saveChanges = (async () => {
 
+    const saveChanges = (async (type) => {
+
+        let body;
+        if(type === 'mand') {
+            body = {
+                UserId :id,
+                fname: firstName,
+                lname: lastName,
+                country_of_residence: country,
+                state: state,
+                date_of_birth: birthday,
+                biography:bio
+            }
+        } else if (type === 'uni') {
+            body = {
+                UserId: id,
+                university_name: uni,
+                major: major
+            }
+
+        } else { //work
+            body = {
+                UserId : id,
+                current_company: currCompany,
+                job_title : currJobTitle
+            }
+        }
         const response = await fetch('/api/users', {
             method: 'PATCH',
             headers: {
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify( {
-                UserId :id,
-                fname: firstName,
-                lname: lastName
-            })
+            body: JSON.stringify(body)
         })
         if(response.ok) {
-            console.log('success!')
-            originalProfile.fname = firstName;
-            originalProfile.lname = lastName;
+            switch(type) {
+                case 'mand' :
+                    originalProfile.fname = firstName;
+                    originalProfile.lname = lastName;
+                    originalProfile.country_of_residence = country;
+                    originalProfile.state = state;
+                    originalProfile.date_of_birth = birthday;
+                    originalProfile.biography = bio;
+                    break;
+                case 'uni':
+                    originalProfile.university.university_name = uni;
+                    originalProfile.university.major = major
+                    break;
+                case 'work':
+                    originalProfile.current_company.company_name = currCompany;
+                    originalProfile.job_title.JobTitle = currJobTitle;
+                    break;
+            }
+            console.log('success')
         } else {
             console.log('An error has occured');
         }
     })
+    const saveUniChanges = (async () => {
 
-    const saveWorkChanges = (async () => {
-        const response = await fetch('/api/users', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify( {
-                UserId : id,
-                current_company: currCompany,
-                job_title : currJobTitle
+    })
 
-            })
-        })
-        if(response.ok) {
-            console.log('success')
-            originalProfile.current_company.company_name = currCompany;
-            originalProfile.job_title.JobTitle = currJobTitle;
-        } else {
-            console.log('An error has occured')
-        }
+    const resetUni = (() => {
+
     })
 
 </script>
@@ -472,12 +512,12 @@
             <textarea
                 id="textField"
                 type="text" 
-                bind:value={firstName}
+                bind:value={country}
                 maxlength="16"
                 minlength="3"
                 on:blur={(e) => {
                     if (e.target.value.length > 3) {
-                        firstName = e.target.value;
+                        country = e.target.value;
                     } else {
                         e.target.value = ''; 
                     }
@@ -491,10 +531,10 @@
                 type="text" 
                 maxlength="30"
                 minlength="3"
-                bind:value={lastName}
+                bind:value={state}
                 on:blur={(e) => {
                     if (e.target.value.length > 3) {
-                        lastName = e.target.value;
+                        state = e.target.value;
                     } else {
                         e.target.value = ''; 
                     }
@@ -505,7 +545,7 @@
     <div class="dateOfBirth">
         <div class=fieldContainer>
             <div id="labelField">Date of Birth</div>
-            <input type="date" id="birthday" value="2018-07-22" min="1950-01-01" max="2007-01-01" />
+            <input type="date" id="birthday" bind:value={birthday} min="1950-01-01" max="2007-01-01" />
         </div>
     </div>
     <div class="mandFields">
@@ -523,8 +563,8 @@
     </div>
     {#if changedMand}
         <div class="change-buttons">
-            <button class="save-button" on:click={saveChanges}>Save Changes</button>
-            <button class="save-button" on:click={resetMand}>Reset</button>
+            <button class="save-button" on:click={() => saveChanges('mand')}>Save Changes</button>
+            <button class="save-button" on:click={() => resetFields('mand')}>Reset</button>
         </div>    
     {/if}
     <div class="separator"></div>
@@ -535,12 +575,12 @@
             <textarea
                 id="textField"
                 type="text" 
-                bind:value={currCompany}
+                bind:value={uni}
                 maxlength="16"
                 minlength="3"
                 on:blur={(e) => {
                     if (e.target.value.length > 3) {
-                        currCompany = e.target.value;
+                        uni = e.target.value;
                     } else {
                         e.target.value = ''; 
                     }
@@ -554,10 +594,10 @@
                 type="text" 
                 maxlength="30"
                 minlength="3"
-                bind:value={currJobTitle}
+                bind:value={major}
                 on:blur={(e) => {
                     if (e.target.value.length > 3) {
-                        currJobTitle = e.target.value;
+                        major = e.target.value;
                     } else {
                         e.target.value = ''; 
                     }
@@ -565,10 +605,10 @@
             />
         </div>
     </div>
-    {#if changedEmp}
+    {#if changedUni}
         <div class="change-buttons">
-            <button class="save-button" on:click={saveWorkChanges}>Save Changes</button>
-            <button class="save-button" on:click={resetEmp}>Reset</button>
+            <button class="save-button" on:click={() => saveChanges('uni')}>Save Changes</button>
+            <button class="save-button" on:click={() => resetFields('uni')}>Reset</button>
         </div>    
     {/if}
     <div class="separator"></div>
@@ -611,8 +651,8 @@
     </div>
     {#if changedEmp}
         <div class="change-buttons">
-            <button class="save-button" on:click={saveWorkChanges}>Save Changes</button>
-            <button class="save-button" on:click={resetEmp}>Reset</button>
+            <button class="save-button" on:click={() => saveChanges('work')}>Save Changes</button>
+            <button class="save-button" on:click={() => resetFields('work')}>Reset</button>
         </div>    
     {/if}
     <div class="separator"></div>

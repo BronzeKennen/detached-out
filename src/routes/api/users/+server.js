@@ -1,5 +1,5 @@
 
-import { updateEducationById, updateEmploymentById, updateMandInfobyId } from '../../../../database.js';
+import { updateEducationById, updateEmploymentById, updateMandInfobyId, updateWorkExperience } from '../../../../database.js';
 import { getUsers} from '/database.js' 
 export const GET = () => {
 
@@ -22,9 +22,9 @@ export const PATCH = async ({request}) => {
         } else if('current_company' in updateData) {
             res = updateEmploymentById(updateData.UserId,updateData);
         } else if ('university_name' in updateData) {
-            console.log('lmaooo');
             res = updateEducationById(updateData.UserId,updateData);
-
+        }else if('employer' in updateData) {
+            res = updateWorkExperience(updateData.UserId,updateData);
         } else {
             res = null;
         }

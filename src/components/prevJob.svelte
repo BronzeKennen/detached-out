@@ -1,9 +1,83 @@
 <script>
+    import Page from "../routes/pages/settings/[id]/+page.svelte";
+
     let isPrivate = false;
+    export let employer;
+    export let JobTitle;
+    export let from;
+    export let to;
+    export let UserId;
+    export let privacyOn;
+    export let expId;
+
+    let ogEmployer = employer;
+    let ogJobTitle = JobTitle;
+    let ogfrom = from;
+    let ogto = to;
+    let ogPrivacyOn = privacyOn;
+    let id = UserId;
+
+    let newExp = false;
+    if (employer === '' && JobTitle === '' && from === '' && to === '') {
+        newExp = true;
+
+    }
+
+
+    $: changed = 
+        (ogEmployer !== employer
+        || ogJobTitle !== JobTitle
+        || ogfrom !== from
+        || ogto !== to
+        || ogPrivacyOn !== privacyOn) &&
+        (employer !==  ''
+        && JobTitle !== ''
+        && from !== ''
+        && to !== ''
+        );
 
     function toggleLock() {
-        isPrivate = !isPrivate;
+        privacyOn = !privacyOn;
     }
+
+    const reset = (() => {
+        employer = ogEmployer;
+        JobTitle = ogJobTitle;
+        from = ogfrom;
+        to = ogto;
+        privacyOn = ogPrivacyOn;
+    });
+
+    const saveChanges = (async () => {
+        const body = {
+            UserId : id,
+            employer : employer,
+            JobTitle : JobTitle,
+            from: from,
+            to: to,
+            newExp: newExp,
+            private : privacyOn,
+            expId: expId
+        }
+        const response = await fetch('/api/users', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        if(response.ok) {
+            ogEmployer = employer;
+            ogJobTitle = JobTitle;
+            ogfrom = from;
+            ogto = to;
+            ogPrivacyOn = privacyOn
+            console.log('success')
+        } else {
+            console.log('An error has occured');
+        }
+
+    })
 </script>
 
 <style>
@@ -41,6 +115,28 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+
+    .smallSeparator {
+        border:none;
+        border-top:1px solid #ccc;
+        margin:1% 0;
+        min-width:100%;
+    }
+    .change-buttons {
+        display:flex;
+        justify-content: flex-end;
+        width:100%;
+    }
+    .change-buttons button {
+        margin:.2rem;
+        margin-top:-1.3rem;
+        width:15%;
+        border-radius:5px;
+        border:none;
+        box-shadow: 0px 0px 6px rgb(127, 111, 219);
+        background-color: rgb(193, 176, 221) 
     }
 
     #textField {
@@ -143,6 +239,7 @@
             id="textField"
             type="text" 
             placeholder="Employer"
+            bind:value={employer}
             maxlength="30"
             minlength="3"
             on:blur={(e) => {
@@ -156,6 +253,7 @@
             id="textField"
             type="text" 
             placeholder="Job title"
+            bind:value={JobTitle}
             maxlength="30"
             minlength="3"
             on:blur={(e) => {
@@ -170,17 +268,17 @@
     <div class="dateContainer">
         <div class="dateAndLabel">
             <label for="date">From:</label>
-            <input type="date" id="start" value="2018-07-22" min="1970-01-01" max="2024-12-31" />
+            <input type="date" id="start" bind:value={from} min="1970-01-01" max="2024-12-31" />
         </div>
         <div class="dateAndLabel">
             <label for="date">To:</label>
-            <input type="date" id="end" value="2018-07-22" min="1970-01-01" max="2024-12-31" />
+            <input type="date" id="end" bind:value={to} min="1970-01-01" max="2024-12-31" />
         </div>
     </div>
     <div class="buttonsContainer">
         <div class="icon">
             <button  class="private" on:click={toggleLock}>
-                <i id="locket" class={`fa-solid ${isPrivate ? 'fa-lock' : 'fa-lock-open'}`}></i>
+                <i id="locket" class={`fa-solid ${privacyOn ? 'fa-lock' : 'fa-lock-open'}`}></i>
             </button>   
         </div>
         <div class="icon">
@@ -188,3 +286,10 @@
         </div>
     </div>
 </div>
+<div class="smallSeparator"></div>
+{#if changed}
+    <div class="change-buttons">
+        <button class="save-button" on:click={saveChanges}>Save Changes</button>
+        <button class="save-button" on:click={reset}>Reset</button>
+    </div>    
+{/if}

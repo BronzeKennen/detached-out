@@ -49,6 +49,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
     CompanyId INTEGER NOT NULL,
     StartDate TEXT NOT NULL,
     EndDate TEXT,
+    Private BOOLEAN,
     FOREIGN KEY (UserId) REFERENCES users(UserId),
     FOREIGN KEY (JobTitleId) REFERENCES JobTitles(JobTitleId),
     FOREIGN KEY (CompanyId) REFERENCES Companies(CompanyId)   
@@ -143,6 +144,16 @@ export function findUserByEmail(email) {
     return stmt.get(email);
 }
 
+export function getWorkExperienceById(id) {
+    const stmt = db.prepare('SELECT * FROM work_experience WHERE UserId = ?');
+    return stmt.all(id);
+}
+
+export function getWorkExperience() {
+    const stmt = db.prepare('SELECT * FROM work_experience');
+    return stmt.get();
+}
+
 export function updateUserCredentials(updatedata) {
     let query = `UPDATE users SET email = ? WHERE UserId = ?`
     let stmt = db.prepare(query);
@@ -153,6 +164,45 @@ export function updateUserCredentials(updatedata) {
     res = stmt.run(updatedata.username,updatedata.UserId);
     return res.changes > 0;
 
+}
+
+export function updateWorkExperience(id,updatedata) {
+    // console.log('===>',updatedata);
+
+    let company = updatedata.employer
+    let compId = getCompanyByName(company);
+    if (compId === undefined) {
+        const companyQuery = db.prepare('INSERT OR IGNORE INTO Companies (company_name) VALUES (?)');
+        let res = companyQuery.run(company)
+        compId = res.lastInsertRowid;
+    } else {
+        compId = compId.CompanyId;
+    }
+
+    let jobTitle = updatedata.JobTitle;
+    let titleId = getJobTitleByName(jobTitle);
+    if(titleId === undefined) {
+        const titleQuery = db.prepare('INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES (?)');
+        let res = titleQuery.run(jobTitle);
+        titleId = res.lastInsertRowid;
+    } else {
+        titleId = titleId.JobTitleId;
+    }
+    let query,result;
+    if(updatedata.private) updatedata.private = 1;
+    else  updatedata.private = 0;
+    if(updatedata.newExp) {
+        query = `INSERT INTO work_experience (UserId,CompanyId,JobTitleId,StartDate,EndDate,Private) VALUES (?,?,?,?,?,?)`
+        const stmt = db.prepare(query);
+        result = stmt.run(id,compId,titleId,updatedata.from,updatedata.to,updatedata.private)
+        console.log(result)
+    } else {
+        const query = 'UPDATE work_experience SET CompanyId = ?, JobTitleId = ?, StartDate = ?, EndDate = ?, Private = ? WHERE UserId = ? AND ExperienceId = ?';
+        const stmt = db.prepare(query);
+        result = stmt.run(compId,titleId,updatedata.from,updatedata.to,updatedata.private,id,updatedata.expId)
+    }
+    //put logic to update instead of insert if needed
+    return result.changes > 0;
 }
 
 export async function updatePassword(updatedata) {
@@ -209,7 +259,6 @@ export function updateEducationById(id,updateData) {
     let education = getUniversityByName(updateData.university_name);
     console.log(filteredUpdateData);
     if(education === undefined) {
-        console.log("AND SHES SPINING THE WHEEEEL")
         const uniQuery = db.prepare('INSERT OR IGNORE INTO Universities (university_name,major) VALUES(?,?)')
         let res = uniQuery.run(filteredUpdateData.university_name,filteredUpdateData.major);
         uniId = res.lastInsertRowid;

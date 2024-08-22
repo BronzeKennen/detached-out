@@ -1,6 +1,7 @@
 <script>
     import Page from "../routes/pages/settings/[id]/+page.svelte";
     import PrevJob from "./prevJob.svelte";
+    import { onMount } from 'svelte'
 
     export let profile;
     //if someone hasn't set these, set a dummy object!
@@ -47,7 +48,29 @@
         && (uni && major);
 
     $: changedExperience = false;
-    let previousJobs = ['1', '2', '3', '4'];
+    let exampleJob = {
+        employer: 'Intrasoft',
+        JobTitle: 'Software Developer',
+        from: '2022-09-01',
+        to: '2024-05-14'
+    }
+    let workExperience;
+    onMount(async () => {
+        const response = await fetch(`/api/workexp?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+        if(response.ok) {
+            workExperience = await response.json();
+            console.log('success')
+            
+        } else {
+            console.log('ITS A BOMB');
+        }
+    })
+    let previousJobs = [exampleJob, exampleJob, exampleJob];
     
     function autoResize(event) {
         const textarea = event.target;
@@ -62,7 +85,14 @@
     
     
     function newJob() {
-        previousJobs = [...previousJobs, ''];
+        let newJob = {
+            CompanyId : '',
+            JobTitleId: '',
+            StartDate :'',
+            EndDate: '',
+            Private: false
+        }
+        workExperience.body = [...workExperience.body, newJob];
         changedExperience = true;
     }
 
@@ -149,14 +179,6 @@
             console.log('An error has occured');
         }
     })
-    const saveUniChanges = (async () => {
-
-    })
-
-    const resetUni = (() => {
-
-    })
-
 </script>
 
 
@@ -320,12 +342,6 @@
         min-width:100%;
     }
 
-    .smallSeparator {
-        border:none;
-        border-top:1px solid #ccc;
-        margin:1% 0;
-        min-width:100%;
-    }
 
     .addPrevJob {
         border: none;
@@ -575,6 +591,7 @@
             <div id="labelField">Univeristy/College</div>
             <textarea
                 id="textField"
+                placeholder="University Name"
                 type="text" 
                 bind:value={uni}
                 maxlength="16"
@@ -592,6 +609,7 @@
             <div id="labelField">Major</div>
             <textarea
                 id="textField"
+                placeholder="Major Name"
                 type="text" 
                 maxlength="30"
                 minlength="3"
@@ -620,6 +638,7 @@
             <textarea
                 id="textField"
                 type="text" 
+                placeholder="Company you currently work in"
                 bind:value={currCompany}
                 maxlength="16"
                 minlength="3"
@@ -637,6 +656,7 @@
             <textarea
                 id="textField"
                 type="text" 
+                placeholder="Job title of company you currently work in"
                 maxlength="30"
                 minlength="3"
                 bind:value={currJobTitle}
@@ -659,15 +679,18 @@
     <div class="separator"></div>
     <div class="fieldTitle">Work Experience</div>
     <button class="addPrevJob" on:click={newJob}><i class="fa-solid fa-plus" id="new"></i></button>
-    {#each previousJobs as exJob}
-        <PrevJob />
-        <div class="smallSeparator"></div>
+    {#if workExperience}
+    {#each workExperience.body as exJob}
+        <PrevJob 
+            employer={exJob.CompanyId} 
+            JobTitle={exJob.JobTitleId} 
+            from={exJob.StartDate} 
+            to={exJob.EndDate}
+            UserId={id}
+            privacyOn={exJob.Private}
+            expId={exJob.ExperienceId}
+        />
     {/each}
-    {#if changedExperience}
-        <div class="change-buttons">
-            <button class="save-button">Save Changes</button>
-            <button class="save-button">Reset</button>
-        </div>    
     {/if}
 
 </div>

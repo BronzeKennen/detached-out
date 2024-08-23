@@ -21,7 +21,8 @@
         display:flex;
         flex-direction: row;
     }
-    /* will be removed */
+
+    
     @media (max-width : 1000px) {
     }
 

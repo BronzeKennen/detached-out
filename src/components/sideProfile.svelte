@@ -1,5 +1,9 @@
 <script>
+
 </script>
+
+
+
 <style>
     .side-profile {
         margin:.5rem;
@@ -55,8 +59,9 @@
     }
     @media (max-width: 600px) {
         .side-profile {
-            margin:.5rem 0;
-            width:100%;
+            margin-left: auto;
+            margin-right: auto;
+            width:80%;
         }
     }
 </style>

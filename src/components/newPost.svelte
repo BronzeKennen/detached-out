@@ -87,7 +87,7 @@
         border-radius: 10px;
         box-sizing: border-box;
         background-color: rgb(250, 240, 255);
-        width: 100%;
+        width: 90%;
         display: flex;
         position: relative;
         resize: none;
@@ -128,9 +128,10 @@
     #pfp {
         width:50px;
         height:50px;
+        min-width: 50px;
+        min-height: 50px;
         background-color:cyan;
         border-radius:50%;
-        aspect-ratio: 1/1;
         }
 
     @media(max-width: 500px) {

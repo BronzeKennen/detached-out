@@ -21,7 +21,8 @@ export async function POST({ request }) {
             status: 200,
             headers: { 
                 'Content-Type': 'application/json', 
-                'Set-Cookie': `accessToken=${accessToken}; Path=/; HttpOnly; Secure=false; Max-Age=${60*60}`
+                'Set-Cookie': `accessToken=${accessToken}; Path=/; HttpOnly; Secure=false; Max-Age=${60*60}`,
+                'User-Id': user.UserId
             }
         });
     } catch {

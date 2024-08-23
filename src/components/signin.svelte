@@ -30,7 +30,8 @@
                 })
             })
             if(response.ok) {
-                window.location.href = '/pages/home'
+                const userId = response.headers.get('User-Id');
+                window.location.href = `/pages/home/${userId}`
             } else {
                 console.error("Email or password is incorrect")
                 window.location.href = '#'

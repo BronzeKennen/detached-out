@@ -126,8 +126,8 @@
     }
 
     #pfp {
-        width:50px;
-        height:50px;
+        max-width:50px;
+        max-height:50px;
         background-color:cyan;
         border-radius:50%;
         aspect-ratio: 1/1;

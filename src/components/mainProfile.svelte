@@ -4,6 +4,7 @@
     import { onMount } from 'svelte'
 
     export let profile;
+
     //if someone hasn't set these, set a dummy object!
     if(profile.current_company === null) profile.current_company = {CompanyId: null, company_name: ''};
     if(profile.job_title === null) profile.job_title= {JobTitleId: null, JobTitle: ''};
@@ -48,12 +49,6 @@
         && (uni && major);
 
     $: changedExperience = false;
-    let exampleJob = {
-        employer: 'Intrasoft',
-        JobTitle: 'Software Developer',
-        from: '2022-09-01',
-        to: '2024-05-14'
-    }
     let workExperience;
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
@@ -64,13 +59,12 @@
         })
         if(response.ok) {
             workExperience = await response.json();
-            console.log('success')
+            console.log('Successfully fetched work experience')
             
         } else {
             console.log('ITS A BOMB');
         }
     })
-    let previousJobs = [exampleJob, exampleJob, exampleJob];
     
     function autoResize(event) {
         const textarea = event.target;

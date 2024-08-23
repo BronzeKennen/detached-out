@@ -25,6 +25,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (university) REFERENCES Universities(UniversityId)
 )`);
 
+db.exec(`CREATE TABLE IF NOT EXISTS notifications (
+    NotificationId INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserFrom INTEGER NOT NULL,
+    UserTo INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    FOREIGN KEY (UserFrom) REFERENCES users(UserId),
+    FOREIGN KEY (UserTo) REFERENCES users(UserId)
+)`);
+
 db.exec(`CREATE TABLE IF NOT EXISTS Companies (
     CompanyId INTEGER PRIMARY KEY AUTOINCREMENT,
     company_name TEXT NOT NULL UNIQUE
@@ -43,7 +52,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS JobTitles (
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
-    ExperienceId INTEGER PRIMARY KEY,
+    ExperienceId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,
     JobTitleId INTEGER NOT NULL,
     CompanyId INTEGER NOT NULL,
@@ -56,7 +65,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS posts (
-    PostId INTEGER PRIMARY KEY,
+    PostId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,
     LikeCount INTEGER DEFAULT 0,
     RepostCount INTEGER DEFAULT 0,
@@ -64,6 +73,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(UserId) REFERENCES users(UserId)
 
+)`);
+
+db.exec(`CREATE TABLE IF NOT EXISTS comments (
+    CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    PostId INTEGER NOT NULL,
+    UserFrom INTEGER NOT NULL,
+    Content TEXT NOT NULL,
+    FOREIGN KEY(PostId) REFERENCES posts(PostId),
+    FOREIGN KEY(UserFrom) REFERENCES users(UserId)
 )`);
 
 db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES

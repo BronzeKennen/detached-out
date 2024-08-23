@@ -1,12 +1,18 @@
 <script>
-    import FeedPost from "../../../components/feedPost.svelte";
-    import SideProfile from "../../../components/sideProfile.svelte";
-    import Connections from "../../../components/connections.svelte";
-    import { onMount } from "svelte";
-    import ProfileIcon from "../../../components/profileIcon.svelte";
-    import NewPost from "../../../components/newPost.svelte";
+    import FeedPost from "../../../../components/feedPost.svelte";
+    import SideProfile from "../../../../components/sideProfile.svelte";
+    import Connections from "../../../../components/connections.svelte";
+    import ProfileIcon from "../../../../components/profileIcon.svelte";
+    import NewPost from "../../../../components/newPost.svelte";
     let users = [];
     let newuser = '';
+    export let data;
+    import {selectedProfile} from '$lib/stores.js'
+
+
+    $: if (data && data.userProfile) {
+        selectedProfile.set(data.userProfile);
+    }
 
     // onMount(async () => {
         // const resp = await fetch('/api/users');
@@ -48,7 +54,7 @@
     }
 </style>
 <div class="feed">
-    <SideProfile />
+    <SideProfile profile={$selectedProfile}/>
     <div class='MiddleCol'>
         <NewPost />
         <FeedPost />

@@ -1,4 +1,6 @@
 <script>
+
+
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     let likes = 0;
@@ -212,6 +214,8 @@
         margin-right: .5rem;
         min-width:50px;
         min-height:50px;
+        max-width:50px;
+        max-height:50px;
         background-color:cyan;
         border-radius:50%;
     }

@@ -1,4 +1,4 @@
-import { Handle } from "@sveltejs/kit"
+import { Handle, redirect } from "@sveltejs/kit"
 import { ACCESS_TOKEN_SECRET } from '$env/static/private';
 import jwt from 'jsonwebtoken'
 
@@ -29,9 +29,7 @@ export const handle = async ({ event, resolve }) => {
             console.error('JWT failed:',err);
             return new Response('Unauthorized', {status:401});
         }
-    } else {
-        console.log('No auth header found.');
-    }
+    } 
 
-    return new Response('Unauthorized', {status:401});
+    return redirect(303, '/');
 }

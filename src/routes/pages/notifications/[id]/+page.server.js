@@ -1,5 +1,12 @@
-import { getFriendRequests, getUniversityById } from '../../../../../database.js';
-import { getCompanyById,getJobTitleById } from '/database.js' 
+import { 
+    getNotifications,
+    getJobTitleById,
+    getFriends,
+    getCompanyById,
+    getFriendRequests,
+    getUniversityById,
+    getAll,
+    getUserById } from '../../../../../database.js';
 
 
 export async function load({ params, request }) {
@@ -21,6 +28,28 @@ export async function load({ params, request }) {
         }
 
         const profile = await res.json();
+        const friends = getFriends(profile.UserId);
+        const notifs = getNotifications(profile.UserId);
+
+        for(const friend of friends) {
+            let senderName = getUserById(friend.Sender);
+            friend.Sender =  {
+                UserId: senderName.UserId,            
+                username: senderName.username
+            }
+
+            //didnt add whole objet to hide password, if in need to add more fields
+            //create a new object
+        }
+
+        for(const notif of notifs) {
+            let senderName = getUserById(notif.UserFrom);
+            notif.UserFrom = senderName.username;
+            //didnt add whole objet to hide password, if in need to add more fields
+            //create a new object
+        }
+
+
         let userProfile = { //remove email password 
             UserId: profile.UserId,
             username: profile.username,
@@ -31,14 +60,13 @@ export async function load({ params, request }) {
             job_title: getJobTitleById(profile.job_title) ?  getJobTitleById(profile.job_title) : null,
             profile_pic_url: profile.profile_pic_url,
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-            // friends: getFriends(profile.UserId),
-            // friendRequests: getFriendRequests(profile.UserId),
-            // notifications: getNotifications(profile.UserId)
+            friends: friends,
+            notifications: notifs
 
         };
         return {userProfile}
     } catch (error) {
         console.error(error);
-        return { status: 404, error: 'Profile not found' };
+        return { status: 500, error: 'Internal Server Error' };
     }
 }

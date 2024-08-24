@@ -10,9 +10,12 @@
     export let data;
 
     
+    let friends;
     $: if (data && data.userProfile) {
         selectedProfile.set(data.userProfile);
+        friends = $selectedProfile.friends;
     }
+
 
 </script>
 
@@ -45,7 +48,9 @@
 <div class="feed">
     <SideProfile/>
     <div class='MiddleCol'>
-        <NotifBlock />
+        {#each $selectedProfile.friends as friend}
+            <NotifBlock sender={friend.Sender} notiftype='friend_request'/>
+        {/each}
     </div>
     <Connections />
 </div>

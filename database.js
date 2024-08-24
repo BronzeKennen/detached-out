@@ -121,6 +121,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
 
 export function sendFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\');');
+    console.log(getAll());
     return stmt.run(idSender,idRecipient);
 }
 
@@ -134,18 +135,20 @@ export function rejectFriendRequest(idSender,idRecipient) {
     return stmt.run(idSender,idRecipient);
 }
 
+export function getAll() {
+    const stmt = db.prepare('SELECT * FROM friends ;');
+    return stmt.all();
+
+}
+
 export function getFriends(id) {
-    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? AND Status = \'accepted\')');
+    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ?;');
     return stmt.all(id);
 }
 
-export function getFriendRequests(id) {
-    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? AND Status = \'pending\')');
-    return stmt.all(id);
-}
 
 export function getNotifications(id) {
-    const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ?');
+    const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ?;');
     return stmt.all(id);
 }
 

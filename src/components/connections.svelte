@@ -1,10 +1,24 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
+    import {onMount} from 'svelte'
+    $: recommended = [];
     let users = ['user1','user2','user3']
     let follow = false;
     const followRequest = (() => {
         console.log('test');
         follow = !follow;
+    })
+    let resp;
+    onMount(async () => {
+        resp = await fetch('/api/users', { method:'GET'});
+        let e = await resp.json();
+        if(resp.ok) {
+            recommended = await e.slice(0,3);
+    
+        }  
+        else {
+            console.log('what du heeeelll no way a ay ay ay ')
+        }
     })
 </script>
 <style>
@@ -53,9 +67,13 @@
     }
 </style>
 <div class="connection-profile">
-    {#each users as user}
+    {#each recommended as user}
         <div class="profileIcon">
-        <ProfileIcon user={user}/>
+        {#if user.university}
+        <ProfileIcon user={user.username} edu={user.university}/>
+        {:else}
+        <ProfileIcon user={user.username} edu=''/>
+        {/if}
         <button class:follow-button-clicked={follow} on:click={followRequest} id="follow-button">{#if follow}Following {:else}+ Follow{/if}</button>
         </div>
 

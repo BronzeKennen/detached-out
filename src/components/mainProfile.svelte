@@ -1,6 +1,7 @@
 <script>
     import Page from "../routes/pages/settings/[id]/+page.svelte";
     import PrevJob from "./prevJob.svelte";
+    import Friend from "./friend.svelte"
     import { onMount } from 'svelte'
 
     export let profile;
@@ -112,6 +113,8 @@
                 break;
         }
     })
+
+    let friends = [1,2,3,4,5,6,7,8]
 
 
 
@@ -358,6 +361,15 @@
     #new {
         color: rgb(127, 111, 219);
         margin: auto;
+    }
+
+    .friends-tab {
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 170px;
+        gap:20px;
+        min-width:100%;
+        text-align: center;
     }
     @media (max-width: 950px) {
 
@@ -686,5 +698,13 @@
         />
     {/each}
     {/if}
+    <br>
+    <h1>Friends</h1>
+    <div class="separator"></div>
+    <div class="friends-tab">
+        {#each friends as friend}
+            <Friend/>
+        {/each}
+    </div>
 
 </div>

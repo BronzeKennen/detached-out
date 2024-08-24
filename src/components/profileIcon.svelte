@@ -1,13 +1,21 @@
 
 <script>
+    import { onMount } from "svelte";
     export let user;
+    export let edu;
+    if(!edu) {
+        edu = {university_name: '', major: ''}
+    }
+
+
+    let resp;
 
 </script>
     <span class="stats">
         <span id="pfp"></span>
         <div class="substats">
             <h3 class="username">{user}</h3>
-            <p class="subtitle">National Kapodistrian University of Athens</p>
+            <p class="subtitle">{edu.university_name} * {edu.major}</p>
         </div>
     </span>
 <style>

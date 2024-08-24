@@ -4,6 +4,7 @@
     import Connections from "../../../../components/connections.svelte";
     import ProfileIcon from "../../../../components/profileIcon.svelte";
     import NewPost from "../../../../components/newPost.svelte";
+    import { onMount } from "svelte";
     let users = [];
     let newuser = '';
     export let data;
@@ -14,11 +15,8 @@
         selectedProfile.set(data.userProfile);
     }
 
-    // onMount(async () => {
-        // const resp = await fetch('/api/users');
-        // const data = await resp.json();
-        // users = data.body;
-    // })
+    let resp;
+  
 // 
 </script>
 
@@ -43,15 +41,6 @@
         flex: 2;
     }
 
-    .user {
-        background-color: rgba(163, 127, 216, 0.363);
-        border-radius: 10px;
-        margin:1rem;
-        width:20%;
-        padding:.3rem;
-        font-size:15px;
-
-    }
 </style>
 <div class="feed">
     <SideProfile profile={$selectedProfile}/>

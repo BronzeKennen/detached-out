@@ -107,6 +107,33 @@ db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
 ('Mobile App Developer');
 `);
 
+db.exec(`CREATE TABLE IF NOT EXISTS friends (
+    FriendId INTEGER PRIMARY KEY AUTOINCREMENT,
+    Sender INTEGER NOT NULL,
+    Recipient INTEGER NOT NULL,
+    Status TEXT DEFAULT 'pending',
+    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Sender) REFERENCES users(UserId),
+    FOREIGN KEY (Recipient) REFERENCES users(UserId),
+    UNIQUE (UserId1, UserId2)
+)`);
+
+
+export function sendFriendRequest(idSender,idRecipient) {
+    const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\'');
+    return stmt.run(idSender,idRecipient);
+}
+
+export function acceptFriendRequest(idSender,idRecipient) {
+    const stmt = db.prepare('UPDATE friends SET Status = \'accepted\' WHERE Sender = ? AND Recipient = ?');
+    return stmt.run(idSender,idRecipient);
+}
+
+export function rejectFriendRequest(idSender,idRecipient) {
+    const stmt = db.prepare('UPDATE friends SET Status = \'rejected\' WHERE Sender = ? AND Recipient = ?');
+    return stmt.run(idSender,idRecipient);
+}
+
 export function getUsers() {
     const stmt = db.prepare('SELECT * FROM users');
     return stmt.all();
@@ -275,7 +302,6 @@ export function updateEducationById(id,updateData) {
     let uniId;
 
     let education = getUniversityByName(updateData.university_name);
-    console.log(filteredUpdateData);
     if(education === undefined) {
         const uniQuery = db.prepare('INSERT OR IGNORE INTO Universities (university_name,major) VALUES(?,?)')
         let res = uniQuery.run(filteredUpdateData.university_name,filteredUpdateData.major);

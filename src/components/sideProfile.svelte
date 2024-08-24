@@ -4,6 +4,18 @@
     $: $selectedProfile;
     console.log($selectedProfile)
 
+    let profile = $selectedProfile;
+    
+    if(!profile.university) {
+        profile.university = {university_name : '', major:''}
+    }
+    if(!profile.current_company) {
+        profile.current_company = {company_name : ''}
+    }
+    if(!profile.job_title) {
+        profile.job_title = {JobTitle : ''}
+    }
+
     let connectionNum = 0;
 
 </script>
@@ -88,8 +100,8 @@
         <div class="connections">
             <div class=""> Connections {connectionNum} * <a href="/pages/network">Grow your network</a></div>
         </div>
-        <div class='info'>{$selectedProfile.university.university_name} * {$selectedProfile.university.major} </div>
-        <div class='info'>{$selectedProfile.current_company.company_name} * {$selectedProfile.job_title.JobTitle}</div>
+        <div class='info'>{profile.university.university_name} * {profile.university.major} </div>
+        <div class='info'>{profile.current_company.company_name} * {profile.job_title.JobTitle}</div>
         <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
     </div>
 </div>

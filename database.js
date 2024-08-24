@@ -142,8 +142,8 @@ export function getAll() {
 }
 
 export function getFriends(id) {
-    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ?;');
-    return stmt.all(id);
+    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? OR Sender = ?;');
+    return stmt.all(id,id);
 }
 
 

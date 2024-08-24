@@ -24,6 +24,7 @@
     let state = profile.state;
     let bio = profile.biography;
     let id = profile.UserId;
+    let friends = profile.friends;
     // format mm-dd-yyyy
     let birthday = profile.date_of_birth;
     //for future reference
@@ -101,7 +102,6 @@
                 state = profile.state;
                 birthday = profile.date_of_birth;
                 bio = profile.biography;
-                console.log('asd')
                 break;
             case 'uni':
                 uni = profile.university.university_name;
@@ -113,9 +113,6 @@
                 break;
         }
     })
-
-    let friends = [1,2,3,4,5,6,7,8]
-
 
 
     const saveChanges = (async (type) => {
@@ -703,7 +700,7 @@
     <div class="separator"></div>
     <div class="friends-tab">
         {#each friends as friend}
-            <Friend/>
+            <Friend profile={friend} id={profile.UserId}/>
         {/each}
     </div>
 

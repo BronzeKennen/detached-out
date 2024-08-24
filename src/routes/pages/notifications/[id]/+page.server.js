@@ -37,7 +37,6 @@ export async function load({ params, request }) {
                 UserId: senderName.UserId,            
                 username: senderName.username
             }
-
             //didnt add whole objet to hide password, if in need to add more fields
             //create a new object
         }

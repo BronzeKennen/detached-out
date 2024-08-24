@@ -1,6 +1,14 @@
 <script>
+
     export let profile;
-    profile= 'negros615'
+    export let id;
+    let user;
+    user = profile.Sender;
+    if(profile.Sender.UserId === id) {
+        user = profile.Recipient
+    }
+
+    console.log(profile)
 
 </script>
 <div class="friend-profile">
@@ -10,14 +18,18 @@
 
     </div>
     <div class="details">
-        <p>National Swagodistrian University of Swagthens</p>
-        <p>Swagger at Swag Industries</p>
-        <h4>{profile}</h4>
+        <p>{user.JobTitle}</p>
+        <p>{user.current_company.company_name}</p>
+        <h4>{user.username}</h4>
+        {#if profile.Status === 'pending'}
+        <h6 style="color: orange;">{profile.Status}</h6>
+        {/if}
+
     </div>
 </div>
 <style>
-      
 .friend-profile {
+
     color:white;
     margin:.5rem;
     border-radius:10%;

@@ -1,6 +1,18 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
     import {onMount,onDestroy} from 'svelte'
+    import { selectedProfile } from '$lib/stores'
+
+    export let user;
+
+    $: $selectedProfile;
+    let profile = $selectedProfile;
+    console.log('hello?>!')
+    console.log(profile)
+
+    if(!$selectedProfile) profile = user;
+
+    // console.log(user)
     function shuffle(array) {
         let currentIndex = array.length;
         
@@ -40,12 +52,20 @@
     })
     
     onDestroy(async () => {
-        console.log('cringe')
+        console.log('a')
         recommended.forEach(async (user) =>  {
             if(user.follow) {
-                resp = await fetch('/api/notifications/sendFriendRequest');
-                console.log(user)
-            }
+                resp = await fetch('/api/notifications/sendFriendRequest', { 
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    method:'POST',
+                    body: JSON.stringify({sender: profile.UserId,recipient: user.UserId})
+                });
+                if(resp.ok) {
+                    console.log(resp)
+                }
+            } 
         })
     })
 

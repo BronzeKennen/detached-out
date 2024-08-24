@@ -188,7 +188,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/notifications'>
+            <a href='/pages/notifications/{data.user.id}'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>
@@ -261,7 +261,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/notifications'>
+            <a href='/pages/notifications/{data.user.id}'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>

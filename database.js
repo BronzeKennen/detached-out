@@ -115,12 +115,12 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
     DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (Sender) REFERENCES users(UserId),
     FOREIGN KEY (Recipient) REFERENCES users(UserId),
-    UNIQUE (UserId1, UserId2)
+    UNIQUE (Sender, Recipient)
 )`);
 
 
 export function sendFriendRequest(idSender,idRecipient) {
-    const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\'');
+    const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\');');
     return stmt.run(idSender,idRecipient);
 }
 
@@ -132,6 +132,21 @@ export function acceptFriendRequest(idSender,idRecipient) {
 export function rejectFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('UPDATE friends SET Status = \'rejected\' WHERE Sender = ? AND Recipient = ?');
     return stmt.run(idSender,idRecipient);
+}
+
+export function getFriends(id) {
+    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? AND Status = \'accepted\')');
+    return stmt.all(id);
+}
+
+export function getFriendRequests(id) {
+    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? AND Status = \'pending\')');
+    return stmt.all(id);
+}
+
+export function getNotifications(id) {
+    const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ?');
+    return stmt.all(id);
 }
 
 export function getUsers() {

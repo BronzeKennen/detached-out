@@ -1,9 +1,13 @@
 <script>
     import { selectedProfile } from '$lib/stores'
-
+    export let user;
+    let profile;
     $: $selectedProfile;
+    if(!$selectedProfile) {
+        selectedProfile.set(user)
+        profile = $selectedProfile
+    }
 
-    let profile = $selectedProfile;
     let connectionNum = 0;
 
 </script>
@@ -86,11 +90,11 @@
 
     </div>
     <div class="details">
-        {#if profile.university}
-        <div class='info'>{profile.university.university_name} * {profile.university.major} </div>
+        {#if $selectedProfile.university}
+        <div class='info'>{$selectedProfile.university.university_name} * {$selectedProfile.university.major} </div>
         {/if}
-        {#if profile.current_company && profile.job_title}
-        <div class='info'>{profile.current_company.company_name} * {profile.job_title.JobTitle}</div>
+        {#if $selectedProfile.current_company && $selectedProfile.job_title}
+        <div class='info'>{$selectedProfile.current_company.company_name} * {$selectedProfile.job_title.JobTitle}</div>
         {/if}
         <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
         <div class="connections">

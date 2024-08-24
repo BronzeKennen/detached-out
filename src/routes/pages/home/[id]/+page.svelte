@@ -43,19 +43,10 @@
 
 </style>
 <div class="feed">
-    <SideProfile profile={$selectedProfile}/>
+    <SideProfile />
     <div class='MiddleCol'>
         <NewPost />
         <FeedPost />
     </div>  
-    <Connections />
+    <Connections/>
 </div>
-    <!-- {#if users} -->
-        <!-- {#each users as user} -->
-            <!-- <div class="user"> -->
-                <!-- <ProfileIcon user={user.username}/> -->
-                <!-- <p>{user.password}</p> -->
-                <!-- <p>{user.email}</p> -->
-            <!-- </div> -->
-        <!-- {/each} -->
-    <!-- {/if} -->

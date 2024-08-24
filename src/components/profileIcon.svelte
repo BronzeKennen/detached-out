@@ -1,16 +1,11 @@
 
 <script>
-    import { onDestroy } from "svelte";
     export let user;
     export let edu;
 
 
     let resp;
     
-    onDestroy(() => {
-
-    })
-
 </script>
     <span class="stats">
         <span id="pfp"></span>

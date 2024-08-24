@@ -4,7 +4,7 @@
 <style>
     #col {
         width: 25%;
-        height: 90vh;
+        height: 92vh;
         background-color: rgb(250, 240, 255);
         display: flex;
         flex-direction: column;

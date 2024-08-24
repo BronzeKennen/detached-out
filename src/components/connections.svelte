@@ -1,25 +1,55 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
-    import {onMount} from 'svelte'
+    import {onMount,onDestroy} from 'svelte'
+    function shuffle(array) {
+        let currentIndex = array.length;
+        
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+        
+            // Pick a remaining element...
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+        
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+    }
+
     $: recommended = [];
-    let users = ['user1','user2','user3']
-    let follow = false;
-    const followRequest = (() => {
-        console.log('test');
-        follow = !follow;
+    const followRequest = ((user) => {
+        user.follow = !user.follow
+        recommended = recommended;
     })
     let resp;
     onMount(async () => {
         resp = await fetch('/api/users', { method:'GET'});
         let e = await resp.json();
+        shuffle(e);
         if(resp.ok) {
             recommended = await e.slice(0,3);
-    
+            //need to check not to add myself as a user
+            recommended.forEach(item => {
+                item.follow = false;
+            }) 
         }  
         else {
             console.log('what du heeeelll no way a ay ay ay ')
         }
     })
+    
+    onDestroy(async () => {
+        console.log('cringe')
+        recommended.forEach(async (user) =>  {
+            if(user.follow) {
+                resp = await fetch('/api/notifications/sendFriendRequest');
+                console.log(user)
+            }
+        })
+    })
+
+
 </script>
 <style>
     .connection-profile{
@@ -74,7 +104,7 @@
         {:else}
         <ProfileIcon user={user.username} edu=''/>
         {/if}
-        <button class:follow-button-clicked={follow} on:click={followRequest} id="follow-button">{#if follow}Following {:else}+ Follow{/if}</button>
+        <button class:follow-button-clicked={user.follow} on:click={() => followRequest(user)} id="follow-button">{#if user.follow}Following {:else}+ Follow{/if}</button>
         </div>
 
     {/each}

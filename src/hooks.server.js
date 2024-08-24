@@ -30,6 +30,7 @@ export const handle = async ({ event, resolve }) => {
             return new Response('Unauthorized', {status:401});
         }
     } 
+    console.log(window.location)
 
     return redirect(303, '/');
 }

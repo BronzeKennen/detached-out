@@ -1,21 +1,24 @@
 
 <script>
-    import { onMount } from "svelte";
+    import { onDestroy } from "svelte";
     export let user;
     export let edu;
-    if(!edu) {
-        edu = {university_name: '', major: ''}
-    }
 
 
     let resp;
+    
+    onDestroy(() => {
+
+    })
 
 </script>
     <span class="stats">
         <span id="pfp"></span>
         <div class="substats">
             <h3 class="username">{user}</h3>
-            <p class="subtitle">{edu.university_name} * {edu.major}</p>
+            {#if edu}
+                <p class="subtitle">{edu.university_name} * {edu.major}</p>
+            {/if}
         </div>
     </span>
 <style>

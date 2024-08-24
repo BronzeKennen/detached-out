@@ -2,20 +2,8 @@
     import { selectedProfile } from '$lib/stores'
 
     $: $selectedProfile;
-    console.log($selectedProfile)
 
     let profile = $selectedProfile;
-    
-    if(!profile.university) {
-        profile.university = {university_name : '', major:''}
-    }
-    if(!profile.current_company) {
-        profile.current_company = {company_name : ''}
-    }
-    if(!profile.job_title) {
-        profile.job_title = {JobTitle : ''}
-    }
-
     let connectionNum = 0;
 
 </script>
@@ -50,7 +38,7 @@
         border-bottom-left-radius:10px;
         border-bottom-right-radius:10px;
         background-color:rgb(0, 0, 0);
-        min-height:180px;
+        min-height:110px;
         padding-bottom: 2px;
     }
 
@@ -67,6 +55,7 @@
         color: white;
     }
     .connections {
+        margin-top:2rem;
         min-width:90%;
         padding: 1.5rem 0;
         margin-left:5%;
@@ -97,11 +86,15 @@
 
     </div>
     <div class="details">
+        {#if profile.university}
+        <div class='info'>{profile.university.university_name} * {profile.university.major} </div>
+        {/if}
+        {#if profile.current_company && profile.job_title}
+        <div class='info'>{profile.current_company.company_name} * {profile.job_title.JobTitle}</div>
+        {/if}
+        <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
         <div class="connections">
             <div class=""> Connections {connectionNum} * <a href="/pages/network">Grow your network</a></div>
         </div>
-        <div class='info'>{profile.university.university_name} * {profile.university.major} </div>
-        <div class='info'>{profile.current_company.company_name} * {profile.job_title.JobTitle}</div>
-        <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
     </div>
 </div>

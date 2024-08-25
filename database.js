@@ -25,6 +25,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (university) REFERENCES Universities(UniversityId)
 )`);
 
+db.exec(`CREATE TABLE IF NOT EXISTS notifications (
+    NotificationId INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserFrom INTEGER NOT NULL,
+    UserTo INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    FOREIGN KEY (UserFrom) REFERENCES users(UserId),
+    FOREIGN KEY (UserTo) REFERENCES users(UserId)
+)`);
+
 db.exec(`CREATE TABLE IF NOT EXISTS Companies (
     CompanyId INTEGER PRIMARY KEY AUTOINCREMENT,
     company_name TEXT NOT NULL UNIQUE
@@ -43,7 +52,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS JobTitles (
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
-    ExperienceId INTEGER PRIMARY KEY,
+    ExperienceId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,
     JobTitleId INTEGER NOT NULL,
     CompanyId INTEGER NOT NULL,
@@ -56,7 +65,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS posts (
-    PostId INTEGER PRIMARY KEY,
+    PostId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,
     LikeCount INTEGER DEFAULT 0,
     RepostCount INTEGER DEFAULT 0,
@@ -64,6 +73,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(UserId) REFERENCES users(UserId)
 
+)`);
+
+db.exec(`CREATE TABLE IF NOT EXISTS comments (
+    CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    PostId INTEGER NOT NULL,
+    UserFrom INTEGER NOT NULL,
+    Content TEXT NOT NULL,
+    FOREIGN KEY(PostId) REFERENCES posts(PostId),
+    FOREIGN KEY(UserFrom) REFERENCES users(UserId)
 )`);
 
 db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
@@ -88,6 +106,51 @@ db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
 ('Research Scientist'),
 ('Mobile App Developer');
 `);
+
+db.exec(`CREATE TABLE IF NOT EXISTS friends (
+    FriendId INTEGER PRIMARY KEY AUTOINCREMENT,
+    Sender INTEGER NOT NULL,
+    Recipient INTEGER NOT NULL,
+    Status TEXT DEFAULT 'pending',
+    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Sender) REFERENCES users(UserId),
+    FOREIGN KEY (Recipient) REFERENCES users(UserId),
+    UNIQUE (Sender, Recipient)
+)`);
+
+
+export function sendFriendRequest(idSender,idRecipient) {
+    const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\');');
+    console.log(getAll());
+    return stmt.run(idSender,idRecipient);
+}
+
+export function acceptFriendRequest(idSender,idRecipient) {
+    const stmt = db.prepare('UPDATE friends SET Status = \'accepted\' WHERE Sender = ? AND Recipient = ?');
+    return stmt.run(idSender,idRecipient);
+}
+
+export function rejectFriendRequest(idSender,idRecipient) {
+    const stmt = db.prepare('UPDATE friends SET Status = \'rejected\' WHERE Sender = ? AND Recipient = ?');
+    return stmt.run(idSender,idRecipient);
+}
+
+export function getAll() {
+    const stmt = db.prepare('SELECT * FROM friends ;');
+    return stmt.all();
+
+}
+
+export function getFriends(id) {
+    const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? OR Sender = ?;');
+    return stmt.all(id,id);
+}
+
+
+export function getNotifications(id) {
+    const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ?;');
+    return stmt.all(id);
+}
 
 export function getUsers() {
     const stmt = db.prepare('SELECT * FROM users');
@@ -257,7 +320,6 @@ export function updateEducationById(id,updateData) {
     let uniId;
 
     let education = getUniversityByName(updateData.university_name);
-    console.log(filteredUpdateData);
     if(education === undefined) {
         const uniQuery = db.prepare('INSERT OR IGNORE INTO Universities (university_name,major) VALUES(?,?)')
         let res = uniQuery.run(filteredUpdateData.university_name,filteredUpdateData.major);

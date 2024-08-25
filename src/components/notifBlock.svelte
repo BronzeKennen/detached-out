@@ -1,7 +1,7 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
-    let someone = 'Kyrios Xoirinos';
-    let notiftype = 'friend_request';
+    export let sender;
+    export let notiftype;
 </script>
 
 <style>
@@ -103,7 +103,7 @@
 <div class="notifBlock"> 
     <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
     <div class="rest">
-        <div class="message"><a href='/pages/home'>{someone}</a> wants to connect with you.</div>
+        <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
         {#if notiftype === 'friend_request'}
         <div class="requestResponce">
             <button id="accept">Accept</button>
@@ -112,10 +112,12 @@
         {/if}
     </div>
 </div>
-<div class="notifBlock"> 
-    <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-comments"></i></span></div>
-    <div class="rest">
-        <div class="message"><a href='/pages/home'>{someone}</a> has commented on your <a href='/pages/home'>post</a>.</div>
-    </div>
-    
-</div>
+<!-- These should be the same code block or separate files -->
+<!-- <div class="notifBlock">  -->
+    <!-- <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-comments"></i></span></div> -->
+    <!-- <div class="rest"> -->
+        <!-- <div class="message"><a href='/pages/home'>{sender}</a> has commented on your <a href='/pages/home'>post</a>.</div> -->
+    <!-- </div> -->
+<!--      -->
+<!-- </div> -->
+<!--  -->

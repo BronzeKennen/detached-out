@@ -188,7 +188,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/notifications'>
+            <a href='/pages/notifications/{data.user.id}'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>
@@ -220,7 +220,7 @@
     <b><img src={Logo} alt="Logo" /></b>
     <ul>
         <li>
-            <a href='/pages/home'>
+            <a href='/pages/home/{data.user.id}'>
                 <i class="fa-solid fa-house"></i>
                 {#if condition < 3}
                 <span>Home</span>
@@ -261,7 +261,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/notifications'>
+            <a href='/pages/notifications/{data.user.id}'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>

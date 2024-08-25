@@ -1,13 +1,19 @@
 
 <script>
     export let user;
+    export let edu;
 
+
+    let resp;
+    
 </script>
     <span class="stats">
         <span id="pfp"></span>
         <div class="substats">
             <h3 class="username">{user}</h3>
-            <p class="subtitle">National Kapodistrian University of Athens</p>
+            {#if edu}
+                <p class="subtitle">{edu.university_name} * {edu.major}</p>
+            {/if}
         </div>
     </span>
 <style>

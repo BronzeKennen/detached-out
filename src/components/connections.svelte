@@ -1,11 +1,72 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
-    let users = ['user1','user2','user3']
-    let follow = false;
-    const followRequest = (() => {
-        console.log('test');
-        follow = !follow;
+    import {onMount,onDestroy} from 'svelte'
+    import { selectedProfile } from '$lib/stores'
+
+    export let user;
+
+    $: $selectedProfile;
+    let profile = $selectedProfile;
+
+    if(!$selectedProfile) profile = user;
+
+    // console.log(user)
+    function shuffle(array) {
+        let currentIndex = array.length;
+        
+        while (currentIndex != 0) {
+        
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+        
+            [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+    }
+
+    $: recommended = [];
+    const followRequest = ((user) => {
+        user.follow = !user.follow
+        recommended = recommended;
     })
+    let resp;
+    onMount(async () => {
+        //this algorithm should change. You should get users that you are not friends
+        //with or have sent a request, if you send request to someone you already
+        //requested an error will occur
+        resp = await fetch('/api/users', { method:'GET'});
+        let e = await resp.json();
+        shuffle(e);
+        if(resp.ok) {
+            recommended = await e.slice(0,3);
+            //need to check not to add myself as a user
+            recommended.forEach(item => {
+                item.follow = false;
+            }) 
+        }  
+        else {
+            console.log('what du heeeelll no way a ay ay ay ')
+        }
+    })
+    
+    onDestroy(async () => {
+        recommended.forEach(async (user) =>  {
+            if(user.follow) {
+                resp = await fetch('/api/notifications/sendFriendRequest', { 
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    method:'POST',
+                    body: JSON.stringify({sender: profile.UserId,recipient: user.UserId})
+                });
+                if(resp.ok) {
+                    console.log(resp)
+                }
+            } 
+        })
+    })
+
+
 </script>
 <style>
     .connection-profile{
@@ -53,10 +114,14 @@
     }
 </style>
 <div class="connection-profile">
-    {#each users as user}
+    {#each recommended as user}
         <div class="profileIcon">
-        <ProfileIcon user={user}/>
-        <button class:follow-button-clicked={follow} on:click={followRequest} id="follow-button">{#if follow}Following {:else}+ Follow{/if}</button>
+        {#if user.university}
+        <ProfileIcon user={user.username} edu={user.university}/>
+        {:else}
+        <ProfileIcon user={user.username} edu=''/>
+        {/if}
+        <button class:follow-button-clicked={user.follow} on:click={() => followRequest(user)} id="follow-button">{#if user.follow}Following {:else}+ Follow{/if}</button>
         </div>
 
     {/each}

@@ -1,12 +1,28 @@
 
-import { updateEducationById, updateEmploymentById, updateMandInfobyId, updateWorkExperience } from '../../../../database.js';
-import { getUsers} from '/database.js' 
+import { getCompanyById, getJobTitleById, getUniversityById, getUsers, updateEducationById, updateEmploymentById, updateMandInfobyId, updateWorkExperience } from '../../../../database.js';
 export const GET = () => {
 
     const users = getUsers();
-    return new Response(JSON.stringify({
-        body: users
-    }, {status:200}));
+    if(!users) {
+        return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
+    }
+    const enrichedResp = users.map(user => ({
+        UserId: user.UserId,
+        username: user.username,
+        fname: user.fname,
+        lname: user.lname,
+        email: user.email,
+        profile_pic_url: user.profile_pic_url,
+        date_created: user.date_created,
+        date_of_birth: user.date_of_birth,
+        biography: user.biography,
+        country_of_residence: user.country_of_residence,
+        state: user.state,
+        current_company: getCompanyById(user.current_company)? getCompanyById(user.current_company): null,
+        job_title: getJobTitleById(user.job_title) ? getJobTitleById(user.job_title): null,
+        university: getUniversityById(user.university) ?getUniversityById(user.university)  :null  
+    }))
+    return new Response(JSON.stringify(enrichedResp), {status:200});
 
 }
 
@@ -35,6 +51,7 @@ export const PATCH = async ({request}) => {
             return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
         }
     } catch (error) {
+        console.error(error)
         return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400 });
     }
 

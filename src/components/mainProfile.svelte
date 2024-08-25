@@ -1,9 +1,11 @@
 <script>
     import Page from "../routes/pages/settings/[id]/+page.svelte";
     import PrevJob from "./prevJob.svelte";
+    import Friend from "./friend.svelte"
     import { onMount } from 'svelte'
 
     export let profile;
+
     //if someone hasn't set these, set a dummy object!
     if(profile.current_company === null) profile.current_company = {CompanyId: null, company_name: ''};
     if(profile.job_title === null) profile.job_title= {JobTitleId: null, JobTitle: ''};
@@ -22,6 +24,7 @@
     let state = profile.state;
     let bio = profile.biography;
     let id = profile.UserId;
+    let friends = profile.friends;
     // format mm-dd-yyyy
     let birthday = profile.date_of_birth;
     //for future reference
@@ -48,12 +51,6 @@
         && (uni && major);
 
     $: changedExperience = false;
-    let exampleJob = {
-        employer: 'Intrasoft',
-        JobTitle: 'Software Developer',
-        from: '2022-09-01',
-        to: '2024-05-14'
-    }
     let workExperience;
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
@@ -64,13 +61,12 @@
         })
         if(response.ok) {
             workExperience = await response.json();
-            console.log('success')
+            console.log('Successfully fetched work experience')
             
         } else {
             console.log('ITS A BOMB');
         }
     })
-    let previousJobs = [exampleJob, exampleJob, exampleJob];
     
     function autoResize(event) {
         const textarea = event.target;
@@ -106,7 +102,6 @@
                 state = profile.state;
                 birthday = profile.date_of_birth;
                 bio = profile.biography;
-                console.log('asd')
                 break;
             case 'uni':
                 uni = profile.university.university_name;
@@ -118,7 +113,6 @@
                 break;
         }
     })
-
 
 
     const saveChanges = (async (type) => {
@@ -364,6 +358,15 @@
     #new {
         color: rgb(127, 111, 219);
         margin: auto;
+    }
+
+    .friends-tab {
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 170px;
+        gap:20px;
+        min-width:100%;
+        text-align: center;
     }
     @media (max-width: 950px) {
 
@@ -692,5 +695,13 @@
         />
     {/each}
     {/if}
+    <br>
+    <h1>Friends</h1>
+    <div class="separator"></div>
+    <div class="friends-tab">
+        {#each friends as friend}
+            <Friend profile={friend} id={profile.UserId}/>
+        {/each}
+    </div>
 
 </div>

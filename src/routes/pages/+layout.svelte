@@ -35,7 +35,7 @@
         height:40px;
         display:flex;
         overflow: hidden;
-        background-color: rgba(225, 225, 225,.4);
+        background-color: #E3CAC3;
         margin-bottom: 1em;
         justify-content: space-between;
         align-items: center;
@@ -63,8 +63,8 @@
 
     .navBar a {
         height:100%;
-        color: rgb(0, 0, 0);
-        background-color: rgb(225, 225, 225);
+        color: #393231;
+        background-color: #E3CAC3;
         font-size: 18px;
         transition-duration: 0.2s;
         display:flex;
@@ -81,7 +81,7 @@
         padding:0 .4rem !important;
     }
     .navBar a:hover {
-        box-shadow:inset 0px -2px 0px rgb(0,0,0);
+        box-shadow:inset 0px -2px 0px #393231;
     }
 
     .navBar b img {
@@ -89,7 +89,7 @@
         padding: 5px; 
     }
     .sideBar {
-        background-color: rgb(245, 244, 244);
+        background-color: #F3E9E9;
         position:fixed;
         top:0;
         right:0;
@@ -112,7 +112,7 @@
     .sideBar a {
         height:100%;
         width:100%;
-        color: black;
+        color: #393231;
         font-size: 20px;
         transition-duration: 0.2s;
         display:flex;
@@ -125,8 +125,8 @@
         padding: 0 .5rem;
     }
     .sideBar li:hover {
-        color: rgb(150, 50, 150);
-        background-color: rgb(225, 225, 225);
+        color: #8D000E;
+        background-color: #E3CAC3;
         font-size: 20px;
         transition-duration: 0.2s;
         display:flex;

@@ -12,7 +12,7 @@
             max-width: 1200px;
             margin:auto;
             /* padding:1em; */
-            background-color:rgba(255, 239, 239, 0.75);
+            background-color: none;
         }
     @media (max-width:1199px) {
 

@@ -82,14 +82,16 @@
                 </span>
             </div>
             {#if commenter}
-                <Comment user='Mr.Ham' comment='Θα σε αγγιξω'/> 
-                <Comment user='AlexK' comment='🥵🥵'/>
+                <div class="commentsBackground">
+                    <Comment user='Mr.Ham' comment='Θα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξω'/> 
+                    <Comment user='AlexK' comment='🥵🥵'/>
+                </div>
             <div class="comment-box">
                 <span id="pfp"></span>
                 <textarea
                     id="commentbox"
                     type="text" 
-                    placeholder="Add a comment"
+                    placeholder="Add a comment..."
                     bind:value={comment}
                     on:input={autoResize}
                 />
@@ -104,7 +106,7 @@
 <style>
     .feed-post {
         align-self: flex-start;
-        background-color:white;
+        background-color: #FFFFFF;
         align-items: center;
         flex: 2;
         border-radius:10px;
@@ -130,6 +132,7 @@
     .buttons {
         justify-content: space-between;
         display:flex;
+        color: #393231;
         margin:.5rem 0;
         padding:.6rem;
         border-top:2px rgba(0,0,0,.3) solid;
@@ -137,6 +140,7 @@
     .buttons b {
         font-size:20px;
     }
+
     @media(max-width: 500px) {
         .buttons b {
             display:none;
@@ -144,35 +148,36 @@
     }
     #likebutton:hover {
         cursor:pointer;
-        color:rgb(88, 88, 182);
+        color:#8D000E;
         transition-duration: 0.3s;
     }
     .liked {
         cursor:pointer;
-        color:rgb(88, 88, 182);
+        color:#8D000E;
         transition-duration: 0.3s;
     }
     .reposted {
         cursor:pointer;
-        color:rgb(209, 201, 153);
+        color:#8D000E;
         transition-duration: 0.3s;
     }
     #repostbutton:hover {
         cursor:pointer;
-        color:rgb(209, 201, 153);
+        color:#8D000E;
         transition-duration: 0.3s;
     }
     .commenter {
         cursor:pointer;
-        color:rgb(96, 60, 153);
+        color:#8D000E;
         transition-duration: 0.3s;
     }
     #commentbutton:hover {
         cursor:pointer;
-        color:rgb(96, 60, 153);
+        color:#8D000E;
         transition-duration: 0.3s;
     }
     .comment-box {
+        margin-top: 0.5rem;
         display:flex;
         flex-direction: row;
         position:relative;
@@ -189,14 +194,14 @@
         padding-right:10%;
         box-sizing: border-box;
         transition-duration: 0.5s;
-        box-shadow: 0px 0px 2px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 2px #8D000E;
     }
     .comment-box textarea:hover {
-        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 5px #8D000E;
     }
     .comment-box textarea:focus {
         outline: none;
-        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 5px #8D000E;
     }
     .comment-box button {
         font-size:23px;
@@ -212,6 +217,7 @@
     #pfp {
         margin-top:-.1rem;
         margin-right: .5rem;
+        margin-left: 0.7rem;
         min-width:50px;
         min-height:50px;
         max-width:50px;
@@ -219,4 +225,12 @@
         background-color:cyan;
         border-radius:50%;
     }
+
+
+    .commentsBackground {
+        background-color: #E3CAC3;
+        border-radius: 10px;
+        padding-bottom: 0.1rem;
+    }
+
 </style>

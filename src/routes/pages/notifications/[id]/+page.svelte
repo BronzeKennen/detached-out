@@ -15,8 +15,11 @@
     $: if (data && data.userProfile) {
         selectedProfile.set(data.userProfile);
         friends = $selectedProfile.friends;
-        pending = friends.length
-        console.log(friends.length)
+        friends.forEach(friend => {
+            if (friend.Status === 'pending' && friend.Recipient === $selectedProfile.UserId )
+                pending++;
+        })
+        console.log(pending)
     }
 
 

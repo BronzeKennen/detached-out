@@ -127,12 +127,14 @@ export function sendFriendRequest(idSender,idRecipient) {
 
 export function acceptFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('UPDATE friends SET Status = \'accepted\' WHERE Sender = ? AND Recipient = ?');
-    return stmt.run(idSender,idRecipient);
+    const resp =  stmt.run(idSender,idRecipient);
+    return resp.changes > 0;
 }
 
 export function rejectFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('UPDATE friends SET Status = \'rejected\' WHERE Sender = ? AND Recipient = ?');
-    return stmt.run(idSender,idRecipient);
+    const resp =  stmt.run(idSender,idRecipient);
+    return resp.changes > 0;
 }
 
 export function getAll() {
@@ -160,6 +162,10 @@ export function getUsers() {
 export function getUserById(id) {
     const stmt = db.prepare('SELECT * FROM users WHERE UserId = ?');
     return stmt.get(id);
+}
+export function getUserByName(name) {
+    const stmt = db.prepare('SELECT * FROM users WHERE username = ?');
+    return stmt.get(name);
 }
 
 export function getCompanies() {

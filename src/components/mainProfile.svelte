@@ -14,6 +14,7 @@
     //copy of the profile to refer to any changes made
     let originalProfile = profile;
 
+    console.log(profile.friends)
 
     // ... 
     let firstName = profile.fname;

@@ -21,6 +21,8 @@
         display:flex;
         flex-direction: row;
         align-items: center;
+        min-width:100%;
+        justify-content: flex-start;
     }
     .substats {
         display:flex;

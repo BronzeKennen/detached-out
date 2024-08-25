@@ -2,6 +2,25 @@
     import ProfileIcon from "./profileIcon.svelte";
     export let sender;
     export let notiftype;
+    export let recipient;
+
+    const acceptFriendRequest = async () => {
+        const resp = await fetch('/api/notifications/acceptFriendRequest',{
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                sender: sender,
+                recipient: recipient
+            })
+        })
+        if(resp.ok) {
+            console.log('success')
+        } else {
+            console.log('uuuu what du heeeellll')
+        }
+    }
 </script>
 
 <style>
@@ -106,7 +125,7 @@
         <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
         {#if notiftype === 'friend_request'}
         <div class="requestResponce">
-            <button id="accept">Accept</button>
+            <button id="accept" on:click={acceptFriendRequest}>Accept</button>
             <button id="decline">Decline</button>
         </div>
         {/if}

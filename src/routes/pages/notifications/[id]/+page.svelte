@@ -49,7 +49,9 @@
     <SideProfile/>
     <div class='MiddleCol'>
         {#each $selectedProfile.friends as friend}
-            <NotifBlock sender={friend.Sender} notiftype='friend_request'/>
+            {#if friend.Recipient === $selectedProfile.UserId && friend.Status === 'pending'}
+            <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request'/>
+            {/if}
         {/each}
     </div>
     <Connections />

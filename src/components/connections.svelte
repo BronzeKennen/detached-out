@@ -57,10 +57,13 @@
                         'Content-Type' : 'application/json'
                     },
                     method:'POST',
-                    body: JSON.stringify({sender: profile.UserId,recipient: user.UserId})
+                    body: JSON.stringify({
+                        sender: profile.UserId,
+                        recipient: user.UserId
+                    })
                 });
                 if(resp.ok) {
-                    console.log(resp)
+                    console.log('success')
                 }
             } 
         })
@@ -114,6 +117,9 @@
     }
 </style>
 <div class="connection-profile">
+    {#if recommended.length === 0} 
+    <p>No people to recommend</p>
+    {/if}
     {#each recommended as user}
         <div class="profileIcon">
         {#if user.university}

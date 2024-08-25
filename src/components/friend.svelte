@@ -7,8 +7,8 @@
     if(profile.Sender.UserId === id) {
         user = profile.Recipient
     }
+    // console.log(user)
 
-    console.log(profile)
 
 </script>
 <div class="friend-profile">
@@ -18,11 +18,18 @@
 
     </div>
     <div class="details">
-        <p>{user.JobTitle}</p>
+        {#if user.job_title}
+        <p>{user.job_title.JobTitle}</p>
+        {/if}
+        {#if user.current_company}
         <p>{user.current_company.company_name}</p>
+        {/if}
         <h4>{user.username}</h4>
         {#if profile.Status === 'pending'}
         <h6 style="color: orange;">{profile.Status}</h6>
+        {/if}
+        {#if profile.Status === 'accepted'}
+        <h6 style="color: lime;">{profile.Status}</h6>
         {/if}
 
     </div>

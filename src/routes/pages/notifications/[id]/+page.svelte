@@ -10,16 +10,27 @@
     export let data;
 
     
+    $: pending = 0;
     let friends;
     $: if (data && data.userProfile) {
         selectedProfile.set(data.userProfile);
         friends = $selectedProfile.friends;
+        pending = friends.length
+        console.log(friends.length)
     }
 
 
 </script>
 
 <style>
+    .no-notif {
+        margin:1rem;
+        background: white;
+        display:flex;
+        justify-content: center;
+        padding:2rem;
+        border-radius:10px;
+    }
     .feed {
         display:flex;
         flex-direction: row;
@@ -35,24 +46,19 @@
             flex-direction: column;
         }
     }
-    .user {
-        background-color: rgba(163, 127, 216, 0.363);
-        border-radius: 10px;
-        margin:1rem;
-        width:20%;
-        padding:.3rem;
-        font-size:15px;
 
-    }
 </style>
 <div class="feed">
     <SideProfile/>
     <div class='MiddleCol'>
         {#each $selectedProfile.friends as friend}
             {#if friend.Recipient === $selectedProfile.UserId && friend.Status === 'pending'}
-            <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request'/>
+                <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request'/>
             {/if}
         {/each}
+        {#if !pending}
+        <div class='no-notif'><h3>No notifications to show </h3></div>
+        {/if}
     </div>
     <Connections />
 </div>

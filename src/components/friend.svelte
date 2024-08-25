@@ -28,8 +28,12 @@
         {#if profile.Status === 'pending'}
         <h6 style="color: orange;">{profile.Status}</h6>
         {/if}
+         <!-- those are for testing purposes they will be removed -->
         {#if profile.Status === 'accepted'}
         <h6 style="color: lime;">{profile.Status}</h6>
+        {/if}
+        {#if profile.Status === 'rejected'}
+        <h6 style="color: red;">{profile.Status}</h6>
         {/if}
 
     </div>

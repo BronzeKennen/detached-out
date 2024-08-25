@@ -17,9 +17,30 @@
         })
         if(resp.ok) {
             console.log('success')
+            notiftype = 'dead'
         } else {
             console.log('uuuu what du heeeellll')
         }
+    }
+
+    const rejectFriendRequest = async () => {
+        const resp = await fetch('/api/notifications/rejectFriendRequest',{
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                sender: sender,
+                recipient: recipient
+            })
+        })
+        if(resp.ok) {
+            console.log('success')
+            notiftype = 'dead'
+        } else {
+            console.log('uuuu what du heeeellll')
+        }
+
     }
 </script>
 
@@ -122,12 +143,16 @@
 <div class="notifBlock"> 
     <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
     <div class="rest">
-        <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
         {#if notiftype === 'friend_request'}
         <div class="requestResponce">
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
             <button id="accept" on:click={acceptFriendRequest}>Accept</button>
-            <button id="decline">Decline</button>
+            <button id="decline" on:click={rejectFriendRequest}>Decline</button>
         </div>
+        {:else if notiftype === 'dead'}
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>Friend Request {sender.Status}</div>
+        {:else}
+        <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
         {/if}
     </div>
 </div>

@@ -7,8 +7,8 @@
         selectedProfile.set(user)
         profile = $selectedProfile
     }
+    console.log($selectedProfile)
 
-    let connectionNum = 0;
 
 </script>
 
@@ -102,7 +102,7 @@
         {/if}
         <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
         <div class="connections">
-            <div class=""> Connections {connectionNum} * <a href="/pages/network">Grow your network</a></div>
+            <div class=""> Connections {$selectedProfile.connections} * <a href="/pages/network">Grow your network</a></div>
         </div>
     </div>
 </div>

@@ -19,7 +19,6 @@
             if (friend.Status === 'pending' && friend.Recipient === $selectedProfile.UserId )
                 pending++;
         })
-        console.log(pending)
     }
 
 

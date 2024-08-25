@@ -1,5 +1,5 @@
-import { getUniversityById } from '../../../../../database.js';
-import { getCompanyById,getJobTitleById } from '/database.js' 
+import { getFriends, getUniversityById } from '../../../../../database.js';
+import { getCompanyById,getUserById,getJobTitleById } from '/database.js' 
 
 
 export async function load({ params, request }) {
@@ -21,6 +21,14 @@ export async function load({ params, request }) {
         }
 
         const profile = await res.json();
+        let friends = getFriends(profile.UserId)
+        let connections = 0;
+        for(const friend of friends) {
+            if (friend.Status === 'accepted')
+                connections++;
+            //modify a new object
+        }
+
         let userProfile = { //remove email password 
             UserId: profile.UserId,
             username: profile.username,
@@ -35,7 +43,8 @@ export async function load({ params, request }) {
             profile_pic_url: profile.profile_pic_url,
             date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-            biography : profile.biography ? profile.biography : null
+            biography : profile.biography ? profile.biography : null,
+            connections: connections
         };
         return {userProfile}
     } catch (error) {

@@ -31,11 +31,9 @@
     })
     let resp;
     onMount(async () => {
-        //this algorithm should change. You should get users that you are not friends
-        //with or have sent a request, if you send request to someone you already
-        //requested an error will occur
         resp = await fetch('/api/users', { 
             method:'GET', 
+            //basically fetching people for the recommended tab. Cannot fetch friends or yourself
             headers: {
                 'Content-Type': 'application/json',
                 'userQueryType': 'recommended-connections',

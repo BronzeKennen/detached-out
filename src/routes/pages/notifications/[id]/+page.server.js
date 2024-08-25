@@ -31,21 +31,22 @@ export async function load({ params, request }) {
         const friends = getFriends(profile.UserId);
         const notifs = getNotifications(profile.UserId);
 
+        let connections = 0;
         for(const friend of friends) {
+            if (friend.Status === 'accepted') connections++;
             let senderName = getUserById(friend.Sender);
             friend.Sender =  {
                 UserId: senderName.UserId,            
                 username: senderName.username
             }
-            //didnt add whole objet to hide password, if in need to add more fields
-            //create a new object
+            //didnt add whole object to hide password, if in need to add more fields
+            //modify a new object
         }
 
         for(const notif of notifs) {
             let senderName = getUserById(notif.UserFrom);
             notif.UserFrom = senderName.username;
-            //didnt add whole objet to hide password, if in need to add more fields
-            //create a new object
+            //same logic as above
         }
 
 
@@ -60,7 +61,8 @@ export async function load({ params, request }) {
             profile_pic_url: profile.profile_pic_url,
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
             friends: friends,
-            notifications: notifs
+            notifications: notifs,
+            connections: connections
 
         };
         return {userProfile}

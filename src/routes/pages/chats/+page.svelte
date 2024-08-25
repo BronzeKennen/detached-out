@@ -1,5 +1,8 @@
 <script>
     import PeopleCol from "../../../components/peopleCol.svelte";
+    import Message from "../../../components/message.svelte";
+
+    let users = ['Aris B.', 'JJ', 'Ham']; /* fetch people that have messaged */
 
     function autoResize(event) {
         const textarea = event.target;
@@ -82,6 +85,7 @@
         flex-direction: column-reverse;
         height: 55vh;
         padding: 1rem;
+        gap: 1rem;
     }
 
     .newMessage {
@@ -123,9 +127,9 @@
         font-size: larger;
     }
 
-    #plane:hover {
-        color: rgba(100, 17, 113, 1.452);
-        animation-duration: 0.2s;
+    #send:hover {
+        animation-duration: 0.5s;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 
     textarea::-webkit-scrollbar-track {
@@ -133,13 +137,16 @@
     }
 
     #send {
+        margin-top: auto;
+        margin-bottom: auto;
         background: none;
-        padding: 0.5rem;
         text-align: center;
-        font-size: larger;
-        font-weight: bold;
+        justify-content: center;
+        height: 70%;
+        aspect-ratio: 1/1;
+        font-size: large;
         cursor: pointer;
-        border-radius: 15px;
+        border-radius: 50%;
         border: none;
         color: rgba(155, 17, 113, 1.452);
     }
@@ -147,7 +154,7 @@
 </style>
 
 <div class="feed">
-    <PeopleCol />
+    <PeopleCol {users}/>
     <div class="selectedChat">
         <div class="userInfo">
             <div id="pfp"></div>
@@ -157,7 +164,12 @@
             </div>
         </div>
         <div class="seperator"></div>
-        <div class="messages"></div>
+        <div class="messages">
+            <Message type = 'received' message ='Nice'/>
+            <Message type = 'sent' message ='All gud'/>
+            <Message type = 'received' message ='THIS IS A LONG MESSAGE SO I CAN SEE WHAT WILL HAPPEN. NEED TO GO LONGER.'/>
+            <Message type = 'received' message ='Hey!'/>
+        </div>
         <div class="seperator"></div>
         <div class="newMessage">
             <textarea

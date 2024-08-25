@@ -49,6 +49,7 @@
             recommended.forEach(item => {
                 item.follow = false;
             }) 
+            console.log(recommended)
         }  
         else {
             console.log('what du heeeelll no way a ay ay ay ')

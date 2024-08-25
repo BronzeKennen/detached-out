@@ -44,6 +44,7 @@ export const GET = ({request}) => {
                 state: user.state,
                 current_company: getCompanyById(user.current_company)? getCompanyById(user.current_company): null,
                 job_title: getJobTitleById(user.job_title) ? getJobTitleById(user.job_title): null, 
+                university: getUniversityById(user.university) ?getUniversityById(user.university)  :null  
             }]
         })
         return new Response(JSON.stringify(diff,{status:200}))

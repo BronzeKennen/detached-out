@@ -34,7 +34,15 @@
         //this algorithm should change. You should get users that you are not friends
         //with or have sent a request, if you send request to someone you already
         //requested an error will occur
-        resp = await fetch('/api/users', { method:'GET'});
+        resp = await fetch('/api/users', { 
+            method:'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+                'userQueryType': 'recommended-connections',
+                'UserId': $selectedProfile.UserId
+            }
+        })
+        
         let e = await resp.json();
         shuffle(e);
         if(resp.ok) {

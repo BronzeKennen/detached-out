@@ -121,7 +121,6 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
 
 export function sendFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\');');
-    console.log(getAll());
     return stmt.run(idSender,idRecipient);
 }
 
@@ -137,7 +136,7 @@ export function rejectFriendRequest(idSender,idRecipient) {
     return resp.changes > 0;
 }
 
-export function getAll() {
+export function getAllFriends() {
     const stmt = db.prepare('SELECT * FROM friends ;');
     return stmt.all();
 

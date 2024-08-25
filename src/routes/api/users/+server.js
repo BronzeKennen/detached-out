@@ -1,8 +1,54 @@
 
-import { getCompanyById, getJobTitleById, getUniversityById, getUsers, updateEducationById, updateEmploymentById, updateMandInfobyId, updateWorkExperience } from '../../../../database.js';
-export const GET = () => {
+import { 
+    getFriends,
+    getAllFriends,
+    getCompanyById, 
+    getJobTitleById, 
+    getUniversityById, 
+    getUsers, 
+    updateEducationById, 
+    updateEmploymentById, 
+    updateMandInfobyId, 
+    updateWorkExperience 
+} from '../../../../database.js';
 
+export const GET = ({request}) => {
+    const userQuery = request.headers.get('userquerytype');
+    let id = request.headers.get('UserId');
     const users = getUsers();
+    if(userQuery) {
+        let friendIds = []
+        const friends = getFriends(id);
+        friends.forEach(friend => {
+            if(friend.Sender === parseInt(id)) {
+                friendIds = [...friendIds,friend.Recipient];
+            } else {
+                friendIds = [...friendIds,friend.Sender];
+            }
+        })
+        
+        let diff = []
+        users.forEach(user => {
+            if(!friendIds.includes(user.UserId) && (user.UserId !== parseInt(id)))
+            diff = [...diff,{
+                UserId: user.UserId,
+                username: user.username,
+                fname: user.fname,
+                lname: user.lname,
+                email: user.email,
+                profile_pic_url: user.profile_pic_url,
+                date_created: user.date_created,
+                date_of_birth: user.date_of_birth,
+                biography: user.biography,
+                country_of_residence: user.country_of_residence,
+                state: user.state,
+                current_company: getCompanyById(user.current_company)? getCompanyById(user.current_company): null,
+                job_title: getJobTitleById(user.job_title) ? getJobTitleById(user.job_title): null, 
+            }]
+        })
+        return new Response(JSON.stringify(diff,{status:200}))
+    }
+
     if(!users) {
         return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
     }

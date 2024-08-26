@@ -176,7 +176,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/profile/'>
+            <a href='/pages/profile/edit'>
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
             </a>

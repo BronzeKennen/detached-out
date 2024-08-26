@@ -6,7 +6,6 @@
     let user;
     let classes = 'friend-profile'
     let addButtons = false;
-    console.log(profile)
     user = profile.Sender;
     $: {
         if(profile.Sender.UserId === id) {
@@ -20,6 +19,23 @@
         if(profile.Status === 'pending' && !addButtons) {
             classes+= ' low-opacity'
         }
+    }
+
+    const deleteFriend = async () => {
+        const friendshipId = profile.FriendId;
+        const resp = await fetch(`/api/notifications/deleteFriend?friendshipId=${friendshipId}`, {
+            method: 'DELETE',
+            heeaders: {
+                'Content-Type' : 'application/json'
+            }
+        })
+
+        if(resp.ok) {
+            console.log('success')
+        } else {
+            console.log('what du heeeellll oh my god no wayayayayaay');
+        }
+
     }
 
     const acceptFriendRequest = async () => {
@@ -65,6 +81,9 @@
 </script>
 <div class={classes}>
     <div class="background">
+        {#if !addButtons}
+        <button class="unfriendButton" on:click={deleteFriend}>X</button>
+        {/if}
     </div>
     <div class="pfp">
 
@@ -120,6 +139,7 @@
     position:relative;
 }
 .background {
+    position:relative;
     border-top-left-radius:10px;
     border-top-right-radius:10px;
     height:55px;
@@ -154,4 +174,15 @@
     color:white;
 }
 
+.unfriendButton {
+    position:absolute;
+    top: 9%;
+    right: 5.5%;
+    transform: translateX(50%);
+    border-radius:5px;
+    border:none;
+    background-color: red;
+    width:20px;
+    height:20px;
+}
 </style>

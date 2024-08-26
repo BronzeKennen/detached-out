@@ -126,6 +126,11 @@ export function deleteFriend(friendId) {
     return stmt.run(friendId);
 }
 
+export function deletePreviousJob(expId) {
+    const stmt = db.prepare('DELETE FROM work_experience WHERE ExperienceId = ?')
+    return stmt.run(expId);
+}
+
 export function sendFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\');');
     return stmt.run(idSender,idRecipient);

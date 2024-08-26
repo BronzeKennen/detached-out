@@ -5,9 +5,10 @@
     import { onMount } from "svelte";
     import ProfileIcon from "../../../components/profileIcon.svelte";
     import NewPost from "../../../components/newPost.svelte";
-    let users = [];
     let newuser = '';
 
+    export let data;
+    const user = data.userProfile;
     // onMount(async () => {
         // const resp = await fetch('/api/users');
         // const data = await resp.json();
@@ -49,7 +50,7 @@
     }
 </style>
 <div class="feed">
-    <SideProfile />
+    <SideProfile {user}/>
     <div class='MiddleCol'>
         <NewPost />
         <FeedPost />

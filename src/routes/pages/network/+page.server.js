@@ -4,11 +4,11 @@ import {
     getFriends,
     getCompanyById,
     getJobTitleById
-} from '../../../../../database.js';
+} from './database.js';
 
 
-export async function load({ params, request }) {
-    const { id } = params;
+export async function load({ locals, request }) {
+    const id = locals.user?.id;
 
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';

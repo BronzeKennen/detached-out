@@ -1,9 +1,6 @@
-import { getFriends, getUniversityById } from '../../../../../database.js';
-import { getCompanyById,getUserById,getJobTitleById } from '/database.js' 
-
-
-export async function load({ params, request }) {
-    const { id } = params;
+import { getCompanyById,getJobTitleById } from '/database.js' 
+export async function load({ locals, request }) {
+    const id = locals.user?.id;
 
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';
@@ -21,30 +18,17 @@ export async function load({ params, request }) {
         }
 
         const profile = await res.json();
-        let friends = getFriends(profile.UserId)
-        let connections = 0;
-        for(const friend of friends) {
-            if (friend.Status === 'accepted')
-                connections++;
-            //modify a new object
-        }
-
         let userProfile = { //remove email password 
             UserId: profile.UserId,
             username: profile.username,
+            email: profile.email,
             fname: profile.fname,
             lname: profile.lname,
             biography: profile.biography,
             education: profile.education,
             current_company: getCompanyById(profile.current_company) ? getCompanyById(profile.current_company) : null,
             job_title: getJobTitleById(profile.job_title) ?  getJobTitleById(profile.job_title) : null,
-            country_of_residence: profile.country_of_residence ? profile.country_of_residence : null,
-            state: profile.state ? profile.state : null,
-            profile_pic_url: profile.profile_pic_url,
-            date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
-            university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-            biography : profile.biography ? profile.biography : null,
-            connections: connections
+            profile_pic_url: profile.profile_pic_url
         };
         return {userProfile}
     } catch (error) {

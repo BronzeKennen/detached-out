@@ -176,19 +176,19 @@
             </a>
         </li>
         <li>
-            <a href='/pages/profile/{data.user.id}'>
+            <a href='/pages/profile/'>
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
             </a>
         </li>
         <li>
-            <a href='/pages/settings/{data.user.id}'>
+            <a href='/pages/settings/'>
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
         </li>
         <li>
-            <a href='/pages/notifications/{data.user.id}'>
+            <a href='/pages/notifications/'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>
@@ -220,7 +220,7 @@
     <b><img src={Logo} alt="Logo" /></b>
     <ul>
         <li>
-            <a href='/pages/home/{data.user.id}'>
+            <a href='/pages/home/'>
                 <i class="fa-solid fa-house"></i>
                 {#if condition < 3}
                 <span>Home</span>
@@ -228,7 +228,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/profile/{data.user.id}'>
+            <a href='/pages/profile/edit'>
                 <i class="fa-solid fa-user"></i>
                 {#if condition < 3}
                 <span>Profile</span>
@@ -255,13 +255,13 @@
         {/if}
         {#if condition <= 2}
         <li>
-            <a href='/pages/settings/{data.user.id}'>
+            <a href='/pages/settings/'>
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
         </li>
         <li>
-            <a href='/pages/notifications/{data.user.id}'>
+            <a href='/pages/notifications/'>
                 <i class="fa-solid fa-bell"></i>
                 <span>Notifications</span>
             </a>
@@ -283,7 +283,7 @@
         {/if}
         {#if condition <= 0}
         <li>
-            <a href='/pages/network/{data.user.id}'>
+            <a href='/pages/network/'>
                 <i class="fa-solid fa-person"></i>
                 <span>Network</span>
             </a>

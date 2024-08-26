@@ -1,5 +1,4 @@
 <script>
-    import Page from "../routes/pages/settings/[id]/+page.svelte";
     import PrevJob from "./prevJob.svelte";
     import Friend from "./friend.svelte"
     import { onMount } from 'svelte'

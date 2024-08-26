@@ -1,5 +1,5 @@
 <script>
-    import Friend from '../../../../components/friend.svelte';
+    import Friend from '../../../components/friend.svelte';
     export let data;
     let profile = data.userProfile
     let friends = profile.friends

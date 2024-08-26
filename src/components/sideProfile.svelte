@@ -7,7 +7,6 @@
         selectedProfile.set(user)
         profile = $selectedProfile
     }
-    console.log($selectedProfile)
 
 
 </script>

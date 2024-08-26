@@ -1,5 +1,4 @@
 <script>
-    import Page from "../routes/pages/settings/[id]/+page.svelte";
 
     let isPrivate = false;
     export let employer;

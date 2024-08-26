@@ -1,10 +1,10 @@
 <script>
-    import NotifBlock from "../../../../components/notifBlock.svelte";
-    import SideProfile from "../../../../components/sideProfile.svelte";
-    import Connections from "../../../../components/connections.svelte";
+    import NotifBlock from "../../../components/notifBlock.svelte";
+    import SideProfile from "../../../components/sideProfile.svelte";
+    import Connections from "../../../components/connections.svelte";
     import { onMount } from "svelte";
     import {selectedProfile} from '$lib/stores.js'
-    import ProfileIcon from "../../../../components/profileIcon.svelte";
+    import ProfileIcon from "../../../components/profileIcon.svelte";
     let users = [];
     let newuser = '';
     export let data;

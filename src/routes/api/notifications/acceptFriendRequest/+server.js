@@ -2,8 +2,9 @@ import {getUserById,acceptFriendRequest, getFriends , getNotifications} from "..
 
 export const PATCH = async ({request}) => {
     const data = await request.json();
-    const sender = getUserById(data.sender.UserId)
+    const sender = getUserById(data.sender)
     const recipient = getUserById(data.recipient)
+    console.log(sender,recipient)
 
     const resp = acceptFriendRequest(sender.UserId,recipient.UserId);
     if(resp) {

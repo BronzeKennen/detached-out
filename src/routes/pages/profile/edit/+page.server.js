@@ -27,26 +27,6 @@ export async function load({ locals, request }) {
         }
 
         const profile = await res.json();
-        const friends = getFriends(profile.UserId)
-
-        for (const friend of friends) {
-            let senderName = getUserById(friend.Sender);
-            let recepientName = getUserById(friend.Recipient);
-            friend.Sender = {
-                UserId: senderName.UserId,
-                username: senderName.username,
-                current_company: getCompanyById(senderName.current_company) ? getCompanyById(senderName.current_company) : null,
-                job_title: getJobTitleById(senderName.job_title) ? getJobTitleById(senderName.job_title) : null,
-            };
-            friend.Recipient = {
-                UserId: recepientName.UserId,
-                username: recepientName.username,
-                current_company: getCompanyById(recepientName.current_company) ? getCompanyById(recepientName.current_company) : null,
-                job_title: getJobTitleById(recepientName.job_title) ? getJobTitleById(recepientName.job_title) : null,
-                // didnt add whole objet to hide password, if in need to add more fields
-                // create a new object
-            }
-        }
 
 
             let userProfile = { //remove email password 
@@ -63,8 +43,7 @@ export async function load({ locals, request }) {
                 profile_pic_url: profile.profile_pic_url,
                 date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-                biography: profile.biography ? profile.biography : null,
-                friends: friends
+                biography: profile.biography ? profile.biography : null
             };
             return { userProfile }
         } catch (error) {

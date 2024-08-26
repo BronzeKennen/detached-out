@@ -11,7 +11,7 @@
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
-                sender: sender,
+                sender: sender.UserId,
                 recipient: recipient
             })
         })
@@ -30,7 +30,7 @@
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
-                sender: sender,
+                sender: sender.UserId,
                 recipient: recipient
             })
         })

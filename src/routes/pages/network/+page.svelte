@@ -3,6 +3,13 @@
     export let data;
     let profile = data.userProfile
     let friends = profile.friends
+    let pendingExist = false;
+    let friendsExist = false;
+
+    $: {
+        pendingExist = friends.some(friend => friend.Status === 'pending')
+        friendsExist = friends.some(friend => friend.Status === 'accepted')
+    }
 
 </script>
 
@@ -23,9 +30,6 @@
         margin:3% 0;
         min-width:100%;
     }
-    .pending {
-        opacity:50%;
-    }
     @media (max-width: 600px) {
         .friends-tab {
             grid-template-columns: 1fr 1fr;
@@ -43,6 +47,9 @@
         {/if}
     {/each}
 </div>
+{#if !friendsExist}
+    <p> No friends, no bitches, no money, no nothin</p>
+{/if}
 <div class="separator"></div>
 <h1> Pending Friend Requests</h1>
 <div class="friends-tab pending">
@@ -52,3 +59,7 @@
         {/if}
     {/each}
 </div>
+
+{#if !pendingExist}
+    <p> No pending friend requests </p>
+{/if}

@@ -1,11 +1,60 @@
 <script>
+    import { goto } from '$app/navigation';
 
     export let profile;
     export let id;
     let user;
+    let addButtons = false;
     user = profile.Sender;
-    if(profile.Sender.UserId === id) {
-        user = profile.Recipient
+    $: {
+        if(profile.Sender.UserId === id) {
+            user = profile.Recipient
+        } else {
+            if(profile.Status === 'pending'){
+                addButtons = true;
+            }
+        }
+    }
+
+    const acceptFriendRequest = async () => {
+        const resp = await fetch('/api/notifications/acceptFriendRequest',{
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                sender: profile.Sender.UserId,
+                recipient: profile.Recipient.UserId
+            })
+        })
+        if(resp.ok) {
+            console.log('success')
+            goto(window.location.pathname, { replaceState: true });
+        } else {
+            console.log('uuuu what du heeeellll')
+            console.log(profile.Sender.UserId)
+            console.log(profile.Recipient.UserId)
+        }
+    }
+
+    const rejectFriendRequest = async () => {
+        const resp = await fetch('/api/notifications/rejectFriendRequest',{
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                sender: profile.Sender.UserId,
+                recipient: profile.Recipient.UserId
+            })
+        })
+        if(resp.ok) {
+            console.log('success')
+            goto(window.location.pathname, { replaceState: true });
+        } else {
+            console.log('uuuu what du heeeellll')
+        }
+
     }
 
 
@@ -27,11 +76,35 @@
         {#if profile.Status === 'pending'}
         <h6 style="color: orange;">{profile.Status}</h6>
         {/if}
+        {#if addButtons}
+        <div class="buttons">
+            <button class="accept" on:click={acceptFriendRequest}><h6>ACCEPT</h6></button>
+            <button class="reject" on:click={rejectFriendRequest}><h6>DECLINE</h6></button>
+        </div>
+        {/if}
          <!-- those are for testing purposes they will be removed -->
 
     </div>
 </div>
+
 <style>
+
+    button:hover {
+        cursor:pointer;
+    }
+    .buttons {
+        display:flex;
+        padding:.5rem;
+    }
+    .buttons button {
+        margin:.2rem;
+        padding:.2rem;
+        border-radius:5px;
+        box-shadow: 0px 1px 10px rgb(202, 21, 178);
+    }
+    .accept {
+        background-color: lime;
+    }
 .friend-profile {
 
     color:white;

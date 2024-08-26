@@ -31,7 +31,7 @@
         })
         if(response.ok) {
             const userId = response.headers.get('User-Id');
-            window.location.href = `/pages/home/${userId}`
+            window.location.href = `/pages/home/`
         } else {
             console.error("Error adding user.");
             window.location.href = '#'

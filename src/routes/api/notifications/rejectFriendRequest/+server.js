@@ -3,7 +3,7 @@ import {getUserById,rejectFriendRequest, getFriends , getNotifications} from "..
 
 export const PATCH = async ({request}) => {
     const data = await request.json();
-    const sender = getUserById(data.sender.UserId)
+    const sender = getUserById(data.sender)
     const recipient = getUserById(data.recipient)
 
     const resp = rejectFriendRequest(sender.UserId,recipient.UserId);

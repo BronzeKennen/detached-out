@@ -76,6 +76,7 @@ export const GET = ({request}) => {
 export const PATCH = async ({request}) => {
 
         const updateData = await request.json();
+        console.log(updateData)
 
     try {
 

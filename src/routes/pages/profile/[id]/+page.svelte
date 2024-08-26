@@ -43,6 +43,15 @@
         flex-wrap: wrap;
         align-items: start;
     }
+    .details {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        position: relative;
+        top: -15vh;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
 
     .background {
         border-radius:25px;
@@ -63,7 +72,7 @@
     }
 
     .nameJob {
-        padding-left: 25vh;
+        padding-left: 10%;
         height: 20vh;
         display: flex;
         flex-direction: column;
@@ -71,11 +80,16 @@
     .name {
         margin-top: 5%;
         text-align: center;
-        font-size: x-large;
+        font-size: large;
         font-weight: bold;
     }
     .companyAndTitle {
         font-size: larger;
+    }
+    .fieldTitle {
+        font-weight: bolder;
+        font-size: xx-large;
+        margin-bottom: 1rem;
     }
 
 </style>
@@ -84,17 +98,19 @@
     <div class="background"></div>
     <div class="pfp"></div>
     <div class="nameJob">
-        <div class='name'>{firstName} {lastName}</div>
-       {#if currCompany} <div class='companyAndTitle'>{currCompany}, {#if currJobTitle} {currJobTitle} {/if}</div> {/if}
+        <div class='name'>{firstName} {lastName} 
+            {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}
+        </div>
        <br>
        <p>{bio}</p>
     
     </div>
 </div>
 <div class="details">
-    <div class="fieldTitle">Personal Information</div>
+    <div class="fieldTitle">Education</div>
     <div class="mandFields">
         <div class="fieldContainer">
+            <h4>Studied at<br> {uni} with a major in {major}</h4>
             
         </div>
     </div>

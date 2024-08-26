@@ -29,6 +29,8 @@
     //for future reference
     let uni = profile.university.university_name;
     let major = profile.university.major;
+    let eduFrom =profile.university.StartDate;
+    let eduTo = profile.university.EndDate;
 
     //reactive variables to spawn save/reset buttons
     $: changedMand = 
@@ -46,8 +48,10 @@
     //Both fields are required
     $: changedUni = 
         (uni !== originalProfile.university.university_name
-        || major !== originalProfile.university.major) 
-        && (uni && major);
+        || major !== originalProfile.university.major
+        || eduFrom !== originalProfile.university.StartDate
+        || eduTo !== originalProfile.university.EndDate) 
+        && (uni && major && eduFrom);
 
     $: changedExperience = false;
     let workExperience;
@@ -105,6 +109,8 @@
             case 'uni':
                 uni = profile.university.university_name;
                 major = profile.university.major;
+                eduFrom = profile.university.StartDate;
+                eduTo = profile.university.EndDate;
                 break;
             case 'work': //work
                 currJobTitle = profile.job_title.JobTitle;
@@ -131,7 +137,9 @@
             body = {
                 UserId: id,
                 university_name: uni,
-                major: major
+                major: major,
+                from: eduFrom,
+                to: eduTo
             }
 
         } else { //work
@@ -161,6 +169,8 @@
                 case 'uni':
                     originalProfile.university.university_name = uni;
                     originalProfile.university.major = major
+                    originalProfile.university.StartDate = eduFrom;
+                    originalProfile.university.EndDate = eduTo;
                     break;
                 case 'work':
                     originalProfile.current_company.company_name = currCompany;
@@ -223,15 +233,6 @@
         font-size: larger;
     }
 
-    .details {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        position: relative;
-        top: -15vh;
-        padding-left: 10%;
-        padding-right: 10%;
-    }
 
     .fieldTitle {
         font-weight: bolder;
@@ -599,7 +600,7 @@
                 }}    
             />
         </div>
-        <div class=fieldContainer>
+        <div class="fieldContainer">
             <div id="labelField">Major</div>
             <textarea
                 id="textField"
@@ -618,6 +619,17 @@
             />
         </div>
     </div>
+
+        <div class="mandFields">
+            <div class="fieldContainer">
+                <label for="date" id="labelField">From:</label>
+                <input type="date" id="birthday" bind:value={eduFrom} min="1970-01-01" max="2024-12-31" />
+            </div>
+            <div class="fieldContainer">
+                <label for="date" id="labelField">To:</label>
+                <input type="date" id="birthday" bind:value={eduTo} min="1970-01-01" max="2024-12-31" />
+            </div>
+        </div>
     {#if changedUni}
         <div class="change-buttons">
             <button class="save-button" on:click={() => saveChanges('uni')}>Save Changes</button>

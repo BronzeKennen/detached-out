@@ -43,8 +43,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS Companies (
 db.exec(`CREATE TABLE IF NOT EXISTS Universities (
     UniversityId INTEGER PRIMARY KEY AUTOINCREMENT,
     university_name TEXT NOT NULL UNIQUE,
-    major TEXT NOT NULL
+    major TEXT NOT NULL,
+    StartDate TEXT NOT NULL,
+    EndDate TEXT
 )`);
+
 
 db.exec(`CREATE TABLE IF NOT EXISTS JobTitles (
     JobTitleId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -326,18 +329,16 @@ export function updateEducationById(id,updateData) {
 
     let education = getUniversityByName(updateData.university_name);
     if(education === undefined) {
-        const uniQuery = db.prepare('INSERT OR IGNORE INTO Universities (university_name,major) VALUES(?,?)')
-        let res = uniQuery.run(filteredUpdateData.university_name,filteredUpdateData.major);
+        const uniQuery = db.prepare('INSERT OR IGNORE INTO Universities (university_name,major,StartDate,EndDate) VALUES(?,?,?,?)')
+        let res = uniQuery.run(filteredUpdateData.university_name,filteredUpdateData.major,filteredUpdateData.from,filteredUpdateData.to);
         uniId = res.lastInsertRowid;
     } else {
         uniId = education.UniversityId;
     }
-    console.log(uniId,id);
     const query = `UPDATE users SET university = ? WHERE UserId = ?`
     const stmt = db.prepare(query)
     let res = stmt.run(uniId,id);
-    console.log(getUsers());
-    console.log(res);
+    console.log(res)
     return res.changes > 0;
 
 }

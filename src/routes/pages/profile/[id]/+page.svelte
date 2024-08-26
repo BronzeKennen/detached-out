@@ -21,7 +21,6 @@
             if(workExperience.body.length  === 0) {
                 workExp= false;
             }
-            console.log(workExperience)
             console.log('Successfully fetched work experience')
             
         } else {
@@ -117,6 +116,10 @@
         margin:3% 0;
         min-width:100%;
     }
+    .work-exp {
+        width:100%;
+
+    }
 
 </style>
 
@@ -159,18 +162,25 @@
     </div>
     <div class="separator"></div>
     <div class="fieldTitle">Work Experience</div>
-    <div class="mandFields">
-        {#if !workExp}
-            <p class="blank">This user has no previous work experience</p>
-        {:else}
-            {#if workExperience}
-                {#each workExperience.body as exJob}
-                    {#if exJob.Private === 0}
-                        <PrevJobView
-                        />
-                    {/if}
-                {/each}
+    <div class="work-exp">
+        <div class="mandFields">
+            {#if !workExp}
+                <p class="blank">This user has no previous work experience</p>
+            {:else}
+                {#if workExperience}
+                    {#each workExperience.body as exJob}
+                        {#if exJob.Private === 0}
+                            <PrevJobView
+                                employer={exJob.CompanyId} 
+                                JobTitle={exJob.JobTitleId} 
+                                from={exJob.StartDate} 
+                                to={exJob.EndDate}
+    
+                            />
+                        {/if}
+                    {/each}
+                {/if}
             {/if}
-        {/if}
+        </div>
     </div>
 </div>

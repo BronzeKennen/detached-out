@@ -206,7 +206,7 @@
             </a>
         </li>
         <li>
-            <a href='/pages/network'>
+            <a href='/pages/network/{data.user.id}'>
                 <i class="fa-solid fa-person"></i>
                 <span>Network</span>
             </a>
@@ -283,7 +283,7 @@
         {/if}
         {#if condition <= 0}
         <li>
-            <a href='/pages/network'>
+            <a href='/pages/network/{data.user.id}'>
                 <i class="fa-solid fa-person"></i>
                 <span>Network</span>
             </a>

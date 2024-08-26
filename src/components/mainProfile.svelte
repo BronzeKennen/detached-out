@@ -360,14 +360,6 @@
         margin: auto;
     }
 
-    .friends-tab {
-        display:grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: 170px;
-        gap:20px;
-        min-width:100%;
-        text-align: center;
-    }
     @media (max-width: 950px) {
 
         .background {
@@ -695,13 +687,5 @@
         />
     {/each}
     {/if}
-    <br>
-    <h1>Friends</h1>
-    <div class="separator"></div>
-    <div class="friends-tab">
-        {#each friends as friend}
-            <Friend profile={friend} id={profile.UserId}/>
-        {/each}
-    </div>
 
 </div>

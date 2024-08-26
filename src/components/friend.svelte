@@ -7,7 +7,6 @@
     if(profile.Sender.UserId === id) {
         user = profile.Recipient
     }
-    // console.log(user)
 
 
 </script>
@@ -24,17 +23,11 @@
         {#if user.current_company}
         <p>{user.current_company.company_name}</p>
         {/if}
-        <h4>{user.username}</h4>
+        <h4><a href="/pages/profile/{user.UserId}">{user.username}</a> </h4>
         {#if profile.Status === 'pending'}
         <h6 style="color: orange;">{profile.Status}</h6>
         {/if}
          <!-- those are for testing purposes they will be removed -->
-        {#if profile.Status === 'accepted'}
-        <h6 style="color: lime;">{profile.Status}</h6>
-        {/if}
-        {#if profile.Status === 'rejected'}
-        <h6 style="color: red;">{profile.Status}</h6>
-        {/if}
 
     </div>
 </div>
@@ -70,10 +63,15 @@
     border-bottom-left-radius:10px;
     border-bottom-right-radius:10px;
     background-color:rgb(0, 0, 0);
-    min-height:100px;
+    min-height:130px;
     padding-bottom: 2px;
 }
 .details p {
     font-size:12px;
 }
+
+.details a {
+    color:white;
+}
+
 </style>

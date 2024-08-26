@@ -4,7 +4,9 @@
     export let profile;
     export let id;
     let user;
+    let classes = 'friend-profile'
     let addButtons = false;
+    console.log(profile)
     user = profile.Sender;
     $: {
         if(profile.Sender.UserId === id) {
@@ -12,7 +14,11 @@
         } else {
             if(profile.Status === 'pending'){
                 addButtons = true;
-            }
+            } 
+        }
+
+        if(profile.Status === 'pending' && !addButtons) {
+            classes+= ' low-opacity'
         }
     }
 
@@ -32,8 +38,6 @@
             goto(window.location.pathname, { replaceState: true });
         } else {
             console.log('uuuu what du heeeellll')
-            console.log(profile.Sender.UserId)
-            console.log(profile.Recipient.UserId)
         }
     }
 
@@ -59,7 +63,7 @@
 
 
 </script>
-<div class="friend-profile">
+<div class={classes}>
     <div class="background">
     </div>
     <div class="pfp">
@@ -73,7 +77,7 @@
         <p>{user.current_company.company_name}</p>
         {/if}
         <h4><a href="/pages/profile/{user.UserId}">{user.username}</a> </h4>
-        {#if profile.Status === 'pending'}
+        {#if profile.Status === 'pending' && !addButtons}
         <h6 style="color: orange;">{profile.Status}</h6>
         {/if}
         {#if addButtons}
@@ -88,6 +92,9 @@
 </div>
 
 <style>
+    .low-opacity {
+        opacity:50%;
+    }
 
     button:hover {
         cursor:pointer;

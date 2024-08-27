@@ -210,6 +210,7 @@
 
 <div class="top-profile">
     <div class="background"></div>
+    {#if pfp}
     <div class="pfp" style={`background-image: url('${pfp}');`}>
         <div class="pfphover">
             <input type="file" id="uploadButton" on:change={handleFileUpload} />
@@ -217,6 +218,15 @@
             <h4>Change Profile Picture</h4>
         </div>
     </div>
+    {:else}
+        <div class="pfp" >
+            <div class="pfphover">
+                <input type="file" id="uploadButton" on:change={handleFileUpload} />
+                <label for="uploadButton" id="uploadLabel"></label>
+                <h4>Change Profile Picture</h4>
+            </div>
+        </div>
+    {/if}
     <div class="nameJob">
         <div class="name">{firstName} {lastName}</div>
         {#if currCompany}

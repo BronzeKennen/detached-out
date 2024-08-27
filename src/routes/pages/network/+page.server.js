@@ -36,12 +36,14 @@ export async function load({ locals, request }) {
                 username: senderName.username,
                 current_company: getCompanyById(senderName.current_company) ? getCompanyById(senderName.current_company) : null,
                 job_title: getJobTitleById(senderName.job_title) ? getJobTitleById(senderName.job_title) : null,
+                profile_pic_url: senderName.profile_pic_url
             };
             friend.Recipient = {
                 UserId: recepientName.UserId,
                 username: recepientName.username,
                 current_company: getCompanyById(recepientName.current_company) ? getCompanyById(recepientName.current_company) : null,
                 job_title: getJobTitleById(recepientName.job_title) ? getJobTitleById(recepientName.job_title) : null,
+                profile_pic_url: recepientName.profile_pic_url
                 // didnt add whole object to hide password, if in need to add more fields
                 // create a new object
             }

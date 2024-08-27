@@ -3,12 +3,17 @@
     export let user;
     export let edu;
 
+    export let pfp;
 
     let resp;
     
 </script>
     <span class="stats">
-        <span id="pfp"></span>
+        {#if pfp}
+            <span id="pfp" style={`background-image: url(${pfp})`}></span>
+        {:else}
+            <span id="pfp" ></span>
+        {/if}
         <div class="substats">
             <h3 class="username">{user}</h3>
             {#if edu}
@@ -37,6 +42,9 @@
         min-height:50px;
         background-color:cyan;
         border-radius:50%;
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat;
     }
     @media (max-width:870px) {
     }

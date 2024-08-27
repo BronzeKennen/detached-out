@@ -8,6 +8,7 @@
     let users = [];
     let newuser = '';
     export let data;
+    console.log(data.userProfile.friends)
 
     
     $: pending = 0;
@@ -55,7 +56,7 @@
     <div class='MiddleCol'>
         {#each $selectedProfile.friends as friend}
             {#if friend.Recipient === $selectedProfile.UserId && friend.Status === 'pending'}
-                <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request'/>
+                <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request' pfp={friend.Sender.profile_pic_url}/>
             {/if}
         {/each}
         {#if !pending}

@@ -52,6 +52,7 @@
     let major = profile.university.major;
     let uniFrom = profile.university.StartDate;
     let uniTo = profile.university.EndDate;
+    let pfp = profile.profile_pic_url;
 </script>
 <style>
     .top-profile {
@@ -90,6 +91,9 @@
         background-color: aqua;
         position: relative; 
         transform: translate(+25%, -50%);
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
     }
 
     .nameJob {
@@ -136,7 +140,11 @@
 
 <div class="top-profile">
     <div class="background"></div>
+    {#if pfp}
+    <div class="pfp" style={`background-image:url(${pfp});`}></div>
+    {:else}
     <div class="pfp"></div>
+    {/if}
     <div class="nameJob">
         <div class='name'>{firstName} {lastName} 
             {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}

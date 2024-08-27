@@ -37,7 +37,8 @@ export async function load({ locals, request }) {
             let senderName = getUserById(friend.Sender);
             friend.Sender =  {
                 UserId: senderName.UserId,            
-                username: senderName.username
+                username: senderName.username,
+                profile_pic_url: senderName.profile_pic_url
             }
             //didnt add whole object to hide password, if in need to add more fields
             //modify a new object

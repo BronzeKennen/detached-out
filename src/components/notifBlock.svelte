@@ -3,6 +3,7 @@
     export let sender;
     export let notiftype;
     export let recipient;
+    export let pfp;
 
     const acceptFriendRequest = async () => {
         const resp = await fetch('/api/notifications/acceptFriendRequest',{
@@ -66,6 +67,9 @@
         background-color:cyan;
         width: 10%;
         border-radius: 50%;
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
     }
 
     .notifIcon {
@@ -141,7 +145,11 @@
 </style>
 
 <div class="notifBlock"> 
+    {#if pfp}
+    <div class="pfp" style={`background-image:url(${pfp});`}><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
+    {:else}
     <div class="pfp"><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
+    {/if}
     <div class="rest">
         {#if notiftype === 'friend_request'}
         <div class="requestResponce">

@@ -121,6 +121,12 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
     UNIQUE (Sender, Recipient)
 )`);
 
+export function changeProfilePicture(UserId,url) {
+    const stmt = db.prepare('UPDATE users SET profile_pic_url = ? WHERE UserId = ?');
+    return stmt.run(url,UserId)
+
+}
+
 export function deleteFriend(friendId) {
     const stmt = db.prepare('DELETE FROM friends WHERE FriendId = ?');
     return stmt.run(friendId);

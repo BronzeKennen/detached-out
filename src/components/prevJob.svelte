@@ -47,6 +47,22 @@
         privacyOn = ogPrivacyOn;
     });
 
+    const deletePreviousJob = (async () => {
+        const resp = await fetch(`/api/workexp/deletePreviousJob?expId=${expId}`, {
+            method: 'DELETE',
+            heeaders: {
+                'Content-Type' : 'application/json'
+            }
+        })
+
+        if(resp.ok) {
+            console.log('success')
+        } else {
+            console.log('what du heeeellll oh my god no wayayayayaay');
+        }
+
+    })
+
     const saveChanges = (async () => {
         const body = {
             UserId : id,
@@ -181,6 +197,10 @@
         display: flex;
         width: 50%;
     }
+    .icon button {
+        border:none;
+        background:none;
+    }
 
     #locket, #x {
         cursor: pointer;
@@ -281,7 +301,7 @@
             </button>   
         </div>
         <div class="icon">
-            <i id="x" class="fa-solid fa-xmark"></i>
+            <button on:click={deletePreviousJob}><i id="x" class="fa-solid fa-xmark" ></i></button>
         </div>
     </div>
 </div>

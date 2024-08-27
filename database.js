@@ -121,6 +121,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
     UNIQUE (Sender, Recipient)
 )`);
 
+export function deleteFriend(friendId) {
+    const stmt = db.prepare('DELETE FROM friends WHERE FriendId = ?');
+    return stmt.run(friendId);
+}
+
+export function deletePreviousJob(expId) {
+    const stmt = db.prepare('DELETE FROM work_experience WHERE ExperienceId = ?')
+    return stmt.run(expId);
+}
 
 export function sendFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('INSERT INTO friends (Sender,Recipient,Status) VALUES (?,?,\'pending\');');

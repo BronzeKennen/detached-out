@@ -224,13 +224,14 @@
 
     .name {
         margin-top: 5%;
-        text-align: center;
+        text-align: left;
         font-size: x-large;
         font-weight: bold;
     }
 
     .companyAndTitle {
         font-size: larger;
+        text-align: left;
     }
 
 
@@ -477,7 +478,6 @@
     <div class="nameJob">
         <div class='name'>{firstName} {lastName}</div>
        {#if currCompany} <div class='companyAndTitle'>{currCompany}, {#if currJobTitle} {currJobTitle} {/if}</div> {/if}
-    
     </div>
 </div>
 <div class="details">
@@ -589,7 +589,7 @@
                 placeholder="University Name"
                 type="text" 
                 bind:value={uni}
-                maxlength="16"
+                maxlength="50"
                 minlength="3"
                 on:blur={(e) => {
                     if (e.target.value.length > 3) {
@@ -606,7 +606,7 @@
                 id="textField"
                 placeholder="Major Name"
                 type="text" 
-                maxlength="30"
+                maxlength="35"
                 minlength="3"
                 bind:value={major}
                 on:blur={(e) => {

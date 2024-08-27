@@ -94,14 +94,14 @@
     </div>
     <div class="details">
         {#if $selectedProfile.university}
-        <div class='info'>{$selectedProfile.university.university_name} * {$selectedProfile.university.major} </div>
+        <div class='info'>{$selectedProfile.university.university_name} • {$selectedProfile.university.major} </div>
         {/if}
         {#if $selectedProfile.current_company && $selectedProfile.job_title}
-        <div class='info'>{$selectedProfile.current_company.company_name} * {$selectedProfile.job_title.JobTitle}</div>
+        <div class='info'>{$selectedProfile.current_company.company_name} • {$selectedProfile.job_title.JobTitle}</div>
         {/if}
         <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
         <div class="connections">
-            <div class=""> Connections {$selectedProfile.connections} * <a href="/pages/network">Grow your network</a></div>
+            <div class=""> Connections {$selectedProfile.connections} - <a href="/pages/network">Grow your network</a></div>
         </div>
     </div>
 </div>

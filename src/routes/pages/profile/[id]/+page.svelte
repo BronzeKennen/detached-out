@@ -50,6 +50,8 @@
     //for future reference
     let uni = profile.university.university_name;
     let major = profile.university.major;
+    let uniFrom = profile.university.StartDate;
+    let uniTo = profile.university.EndDate;
 </script>
 <style>
     .top-profile {
@@ -120,7 +122,16 @@
         width:100%;
 
     }
-
+    .university {
+        width:100%;
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .university p {
+        font-size:13px;
+        opacity:60%;
+    }
 </style>
 
 <div class="top-profile">
@@ -141,16 +152,17 @@
 </div>
 <div class="details">
     <div class="fieldTitle">Education</div>
-    <div class="mandFields">
-        <div class="fieldContainer">
             {#if uni}
-            <p>Studied at {uni} with a major in {major}</p>
+            <div class="university">
+                        <h4>Studied at {uni} with a major in {major}</h4>
+                        {#if uniFrom}
+                        <p>{uniFrom} - {#if uniTo} {uniTo} {:else} Present {/if}</p>
+                        {/if}
+            </div>
             {:else}
             <p class="blank">This user has not set their education</p>
             {/if}
             
-        </div>
-    </div>
     <div class="separator"></div>
     <div class="fieldTitle">Current Employment Information</div>
     <div class="mandFields">

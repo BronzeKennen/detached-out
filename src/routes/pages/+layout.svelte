@@ -35,7 +35,7 @@
         height:40px;
         display:flex;
         overflow: hidden;
-        background-color: #E3CAC3;
+        background-color: #ece4f0;
         margin-bottom: 1em;
         justify-content: space-between;
         align-items: center;
@@ -64,7 +64,7 @@
     .navBar a {
         height:100%;
         color: #393231;
-        background-color: #E3CAC3;
+        background-color: #ece4f0;
         font-size: 18px;
         transition-duration: 0.2s;
         display:flex;

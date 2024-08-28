@@ -41,15 +41,23 @@
     }
 
     let imageUrl;
-    function handleFileUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imageUrl = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            console.log(reader)
+    async function handleFileUpload(event) {
+        const files = event.target.files;
+        const formData = new FormData();
+        for(const file of files) {
+            formData.append('files',file);
+        }
+
+        const response = await fetch('/api/posts/upload', {
+            method: 'POST',
+            body: formData
+        });
+        let data = await response.json();
+        console.log(data)
+        if(response.ok) {
+            console.log('yippie')
+        } else {
+            console.log('nah uh')
         }
     }
 
@@ -67,7 +75,7 @@
             />
         </div>
         <span class="buttons">
-            <input type="file" id="uploadButton" on:change={handleFileUpload}> 
+            <input type="file" id="uploadButton" on:change={handleFileUpload} multiple> 
             <label for="uploadButton" id="uploadLabel">Upload Files</label>
             <button id="postButton" class="under-text-button">Post</button>
         </span>
@@ -87,11 +95,18 @@
         flex-direction: column;
         align-self: flex-start;
         background-color:white;
+        box-shadow: 0 1.5px 1px rgb(159, 154, 161);
         align-items: center;
         flex: 2;
         border-radius:10px;
         padding:1rem;
         margin:.5rem;
+    }
+
+    .new-post:hover {
+        box-shadow: 0 1px 5px rgb(147, 47, 214);
+        transition-duration:.3s;
+
     }
 
     .pfpText {
@@ -127,7 +142,7 @@
 
     #postBody:hover {
         animation-duration: 0.5s;
-        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+        box-shadow: 0px 0px 5px rgba(75, 17, 113, 1.452);
     }
 
     .under-text-button {
@@ -150,7 +165,7 @@
         display:flex;
         justify-content: center;
         align-items: center;
-        color:white;
+        color:black;
         font-size:13px;
         font-weight: bold;
         border-radius: 8px;
@@ -159,21 +174,23 @@
         position: relative;
         width:15%;
         margin:0 .2rem;
-        background-color:blue;
+        box-shadow:0 1px 3.5px rgb(185, 50, 238);
+        background-color: rgb(240, 227, 240);
     }
     #postButton {
-        background-color: #4CAF50;
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
     }
 
     #postButton:hover {
         cursor: pointer;
-        background-color: #45A049; 
-        box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.8); 
+        box-shadow:0 2px 10px rgb(185, 50, 238);
+        transition-duration: .25s; 
     }
     #uploadLabel:hover {
         cursor: pointer;
-        background-color: rgb(0, 0, 173); 
-        box-shadow: 0px 0px 5px rgba(76, 144, 175, 0.8); 
+        box-shadow:0 1px 6.5px rgb(185, 50, 238);
+        transition-duration:.1s
     }
 
     #pfp {

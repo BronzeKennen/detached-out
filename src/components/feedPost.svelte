@@ -106,7 +106,8 @@
 <style>
     .feed-post {
         align-self: flex-start;
-        background-color: #FFFFFF;
+        background-color: white;
+        box-shadow: 0 1.5px 1px rgb(159, 154, 161);
         align-items: center;
         flex: 2;
         border-radius:10px;
@@ -132,10 +133,10 @@
     .buttons {
         justify-content: space-between;
         display:flex;
-        color: #393231;
+        color: #000000;
         margin:.5rem 0;
         padding:.6rem;
-        border-top:2px rgba(0,0,0,.3) solid;
+        border-top:2px rgba(109, 23, 158, 0.4) solid;
     }
     .buttons b {
         font-size:20px;
@@ -148,32 +149,32 @@
     }
     #likebutton:hover {
         cursor:pointer;
-        color:#8D000E;
+        color:#70037a;
         transition-duration: 0.3s;
     }
     .liked {
         cursor:pointer;
-        color:#8D000E;
+        color:#70037a;
         transition-duration: 0.3s;
     }
     .reposted {
         cursor:pointer;
-        color:#8D000E;
+        color:#70037a;
         transition-duration: 0.3s;
     }
     #repostbutton:hover {
         cursor:pointer;
-        color:#8D000E;
+        color:#81008d;
         transition-duration: 0.3s;
     }
     .commenter {
         cursor:pointer;
-        color:#8D000E;
+        color:#81008d;
         transition-duration: 0.3s;
     }
     #commentbutton:hover {
         cursor:pointer;
-        color:#8D000E;
+        color:#81008d;
         transition-duration: 0.3s;
     }
     .comment-box {
@@ -194,14 +195,14 @@
         padding-right:10%;
         box-sizing: border-box;
         transition-duration: 0.5s;
-        box-shadow: 0px 0px 2px #8D000E;
+        box-shadow: 0px 0px 2px #76008d;
     }
     .comment-box textarea:hover {
-        box-shadow: 0px 0px 5px #8D000E;
+        box-shadow: 0px 0px 5px #76008d;
     }
     .comment-box textarea:focus {
         outline: none;
-        box-shadow: 0px 0px 5px #8D000E;
+        box-shadow: 0px 0px 5px #76008d;
     }
     .comment-box button {
         font-size:23px;
@@ -228,7 +229,6 @@
 
 
     .commentsBackground {
-        background-color: #E3CAC3;
         border-radius: 10px;
         padding-bottom: 0.1rem;
     }

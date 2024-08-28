@@ -39,15 +39,6 @@
         flex: 2;
     }
 
-    .user {
-        background-color: rgba(163, 127, 216, 0.363);
-        border-radius: 10px;
-        margin:1rem;
-        width:20%;
-        padding:.3rem;
-        font-size:15px;
-
-    }
 </style>
 <div class="feed">
     <SideProfile {user}/>

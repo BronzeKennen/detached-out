@@ -1,7 +1,6 @@
 
 import { 
     getFriends,
-    getAllFriends,
     getCompanyById, 
     getJobTitleById, 
     getUniversityById, 

@@ -567,13 +567,14 @@
 
     .name {
         margin-top: 5%;
-        text-align: center;
+        text-align: left;
         font-size: x-large;
         font-weight: bold;
     }
 
     .companyAndTitle {
         font-size: larger;
+        text-align: left;
     }
 
     .fieldTitle {

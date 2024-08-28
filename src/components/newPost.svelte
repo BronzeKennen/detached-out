@@ -1,33 +1,6 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
     let postBody =''
-    function handleLikes() {
-        if (liked) {
-            likes -= 1;
-        } else {
-            likes +=1;
-        }
-        liked = !liked;
-        
-    }
-    function handleReposts() {
-        if(reposted) {
-            reposts -= 1;
-        } else {
-            reposts += 1;
-        }
-        reposted = !reposted;
-    }
-
-    function toggleCommenter() {
-        commenter = !commenter
-        autoResize();
-    }
-    const submitComment = (() => {
-        commenter = !commenter;
-        comments += 1;
-        comment = '';
-    })
 
     function autoResize(event) {
         const textarea = event.target;

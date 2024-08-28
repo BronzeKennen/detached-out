@@ -96,16 +96,37 @@
         background-repeat: no-repeat; /* Prevents the image from repeating */
     }
 
+    #addFriend {
+        margin-top: auto;
+        margin-bottom: auto;
+        width: fit-content;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        border:2px black solid;
+        background:none;
+        border-radius:40px;
+        text-wrap: nowrap;
+        height: 2.5rem;
+    }
+    #addFriend:hover {
+        background-color: rgba(0, 0, 0, 0.171);
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+        transition-duration: .3s;
+    }
     .nameJob {
         padding-left: 10%;
         height: 20vh;
         display: flex;
         flex-direction: column;
+        max-width: 50%;
     }
     .name {
+        display: flex;
+        gap: 1rem;
         margin-top: 5%;
         text-align: center;
-        font-size: large;
+        font-size: xx-large;
+        text-align: left;
         font-weight: bold;
     }
     .fieldTitle {
@@ -148,6 +169,7 @@
     <div class="nameJob">
         <div class='name'>{firstName} {lastName} 
             {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}
+            <button id="addFriend"><i class="fa-solid fa-plus"></i> Add Friend</button>
         </div>
         <br>
        {#if bio}
@@ -157,6 +179,7 @@
        {/if}
     
     </div>
+    
 </div>
 <div class="details">
     <div class="fieldTitle">Education</div>

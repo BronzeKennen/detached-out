@@ -78,6 +78,7 @@
 
 </script>
 <style>
+    
     .connection-profile{
         align-self: flex-start;
         margin:.5rem;
@@ -132,7 +133,7 @@
         {#if user.university}
         <ProfileIcon user={user.username} edu={user.university} pfp={user.profile_pic_url}/>
         {:else}
-        <ProfileIcon user={user.username} edu=''/>
+        <ProfileIcon user={user.username} edu='' id={user.UserId}/>
         {/if}
         <button class:follow-button-clicked={user.follow} on:click={() => followRequest(user)} id="follow-button">{#if user.follow}Following {:else}+ Follow{/if}</button>
         </div>

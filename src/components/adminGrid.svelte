@@ -7,22 +7,8 @@
     let classes = 'friend-profile'
     let addButtons = false;
     user = profile.Sender;
-    $: {
-        if(profile.Sender.UserId === id) {
-            user = profile.Recipient
-        } else {
-            if(profile.Status === 'pending'){
-                addButtons = true;
-            } 
-        }
 
-        if(profile.Status === 'pending' && !addButtons) {
-            classes+= ' low-opacity'
-        }
-    }
-    console.log(user)
-
-    const deleteFriend = async () => {
+    const deleteUser = async () => {
         const friendshipId = profile.FriendId;
         const resp = await fetch(`/api/notifications/deleteFriend?friendshipId=${friendshipId}`, {
             method: 'DELETE',
@@ -38,47 +24,6 @@
         }
 
     }
-
-    const acceptFriendRequest = async () => {
-        const resp = await fetch('/api/notifications/acceptFriendRequest',{
-            method: 'PATCH',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify({
-                sender: profile.Sender.UserId,
-                recipient: profile.Recipient.UserId
-            })
-        })
-        if(resp.ok) {
-            console.log('success')
-            goto(window.location.pathname, { replaceState: true });
-        } else {
-            console.log('uuuu what du heeeellll')
-        }
-    }
-
-    const rejectFriendRequest = async () => {
-        const resp = await fetch('/api/notifications/rejectFriendRequest',{
-            method: 'PATCH',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify({
-                sender: profile.Sender.UserId,
-                recipient: profile.Recipient.UserId
-            })
-        })
-        if(resp.ok) {
-            console.log('success')
-            goto(window.location.pathname, { replaceState: true });
-        } else {
-            console.log('uuuu what du heeeellll')
-        }
-
-    }
-
-
 </script>
 <div class={classes}>
     <div class="background">
@@ -86,11 +31,9 @@
         <button class="unfriendButton" on:click={deleteFriend}>X</button>
         {/if}
     </div>
-    {#if user.profile_pic_url}
-        <div class="pfp" style={`background-image: url('${user.profile_pic_url}')`}></div>
-    {:else}
-        <div class="pfp"></div>
-    {/if}
+    <div class="pfp">
+
+    </div>
     <div class="details">
         {#if user.job_title}
         <p>{user.job_title.JobTitle}</p>
@@ -104,23 +47,14 @@
         {/if}
         {#if addButtons}
         <div class="buttons">
-            <button class="accept" on:click={acceptFriendRequest}><h6>ACCEPT</h6></button>
-            <button class="reject" on:click={rejectFriendRequest}><h6>DECLINE</h6></button>
+            <button class="accept"><h6>SELECT</h6></button>
+            <button class="delete" on:click={deleteUser}><h6>DELETE USER</h6></button>
         </div>
         {/if}
-         <!-- those are for testing purposes they will be removed -->
-
     </div>
 </div>
 
 <style>
-    a {
-        text-decoration: none;
-
-    }
-    a:visited {
-        color: inherit;
-    }
     .low-opacity {
         opacity:50%;
     }
@@ -165,9 +99,6 @@
     border:3px white solid;
     background-color:aqua;
     transform: translate(-50%, -50%);
-    background-size: cover; /* Ensures the image covers the element */
-    background-position: center; /* Centers the image within the element */
-    background-repeat: no-repeat;
 }
 .details {
     display: flex;

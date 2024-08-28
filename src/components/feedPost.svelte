@@ -3,13 +3,23 @@
 
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
-    let likes = 0;
-    let comments = 0;
-    let reposts = 0;
+    export let likes = 0;
+    export let comments = 0;
+    export let reposts = 0;
+    export let images;
+    export let poster;
+    export let content;
+
+    images = JSON.parse(images)
+    images = images.uploadedFiles
     let liked = false;
     let reposted = false;
     let commenter = false;
     let comment =''
+    let slider=null
+    if(images) {
+        slider = 0;
+    }
     function handleLikes() {
         if (liked) {
             likes -= 1;
@@ -38,6 +48,17 @@
         comment = '';
     })
 
+    function handleLeft() {
+        if(slider > 0) {
+            slider -= 1;
+        }
+    }
+    function handleRight() {
+        if(slider < images.length) {
+            slider += 1;
+        }
+    }
+
     function autoResize(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -53,11 +74,22 @@
 
     <div class="feed-post">
         <div class="stats">
-            <ProfileIcon user="Hamburger"/>
+            <ProfileIcon user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
         </div>
         <div class="post">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
+            <p>{content}</p>
     
+            <div class="image-slider">
+                
+                {#if images}
+                    <img src={images[slider]} class="post-image">
+                    <div class="buttons-a">
+                        <button id="left" on:click={handleLeft} disabled={slider === 0}> {'<'}</button>
+                        <button id="right" on:click={handleRight} disabled={slider === images.length - 1}> {'>'}</button>
+                    </div>
+                {/if}
+            <!-- <img src="https://res.cloudinary.com/dsyxmtqbu/image/upload/v1724873933/wjxxl74rtlxdbrmkcivq.png" class="post-image"> -->
+            </div>
         </div>
         <div class="likes-buttons">
             <div class="reactions">
@@ -104,6 +136,52 @@
     </div>
     </div>
 <style>
+    /* #left { */
+    .image-slider {
+    position: relative;
+    width: 100%; 
+    max-width: 600px; 
+    height: auto; 
+    margin: 0 auto; 
+    overflow: hidden; 
+    background-color: #f0f0f0; 
+}
+
+.post-image {
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.buttons-a {
+    position: absolute;
+    top: 50%; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%); 
+    z-index: 10; 
+    pointer-events: none; 
+}
+
+.buttons-a button {
+    color:white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    border: 1px white solid;
+    cursor: pointer;
+    pointer-events: auto; /* Make sure buttons are clickable */
+    z-index: 10; /* Ensure buttons are above everything */
+    margin:.5rem;
+}
+
+.buttons-a button:disabled {
+    opacity:0%;
+}
     .feed-post {
         align-self: flex-start;
         background-color: white;
@@ -113,6 +191,12 @@
         border-radius:10px;
         padding:1rem;
         margin:.5rem;
+    }
+    .post-image {
+        width: calc(100% + 2rem);
+        margin:0 -1rem;
+        /* margin:0 -1rem; */
+
     }
 
 

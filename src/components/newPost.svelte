@@ -40,7 +40,7 @@
         }
     }
 
-    let imageUrl;
+    let images
     async function handleFileUpload(event) {
         const files = event.target.files;
         const formData = new FormData();
@@ -52,12 +52,26 @@
             method: 'POST',
             body: formData
         });
-        let data = await response.json();
-        console.log(data)
+        images = await response.json();
         if(response.ok) {
-            console.log('yippie')
+            console.log('images uplaoded succesfully')
         } else {
-            console.log('nah uh')
+            console.log('error uploading image')
+        }
+    }
+
+    async function createPost() {
+        const resp = await fetch('/api/posts/newPost',{method :'POST',
+            body: JSON.stringify({
+                content: postBody,
+                images: images
+            })
+        })
+        if(resp.ok) {
+            console.log('YIPPIE')
+            console.log(resp)
+        } else {
+            console.log('you fucked up');
         }
     }
 
@@ -77,7 +91,7 @@
         <span class="buttons">
             <input type="file" id="uploadButton" on:change={handleFileUpload} multiple> 
             <label for="uploadButton" id="uploadLabel">Upload Files</label>
-            <button id="postButton" class="under-text-button">Post</button>
+            <button id="postButton" class="under-text-button" on:click={createPost}>Post</button>
         </span>
     </div>
 

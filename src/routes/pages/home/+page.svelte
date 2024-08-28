@@ -44,7 +44,16 @@
     <SideProfile {user}/>
     <div class='MiddleCol'>
         <NewPost />
-        <FeedPost />
+        {#each user.posts as post}
+            <FeedPost 
+                poster={post.UserId}
+                likes={post.LikeCount}
+                comments={post.CommentCount}
+                reposts={post.RepostCount}
+                images={post.ImagesJson}
+                content={post.Content}
+            />
+        {/each}
     </div>  
     <Connections />
 </div>

@@ -74,15 +74,21 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     RepostCount INTEGER DEFAULT 0,
     CommentCount INTEGER DEFAULT 0,
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Content TEXT,
+    ImagesJson TEXT,
     FOREIGN KEY(UserId) REFERENCES users(UserId)
 
 )`);
+
+
 
 db.exec(`CREATE TABLE IF NOT EXISTS comments (
     CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
     PostId INTEGER NOT NULL,
     UserFrom INTEGER NOT NULL,
     Content TEXT NOT NULL,
+    Reply INTEGER,
+    FOREIGN KEY(Reply) REFERENCES comments(CommentId)
     FOREIGN KEY(PostId) REFERENCES posts(PostId),
     FOREIGN KEY(UserFrom) REFERENCES users(UserId)
 )`);
@@ -125,6 +131,18 @@ export function changeProfilePicture(UserId,url) {
     const stmt = db.prepare('UPDATE users SET profile_pic_url = ? WHERE UserId = ?');
     return stmt.run(url,UserId)
 
+}
+
+export function newPost(UserId,postData) {
+    const imagesForDb = JSON.stringify(postData.images)
+    const stmt = db.prepare('INSERT INTO posts (UserId,Content,ImagesJson) VALUES (?,?,?);')
+    return stmt.run(UserId,postData.content,imagesForDb);
+
+}
+
+export function getAllPosts() {
+    const stmt = db.prepare('SELECT * from posts')
+    return stmt.all()
 }
 
 export function deleteFriend(friendId) {

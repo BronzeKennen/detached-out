@@ -11,6 +11,7 @@
     export let content;
 
     images = JSON.parse(images)
+    if(images)
     images = images.uploadedFiles
     let liked = false;
     let reposted = false;

@@ -70,7 +70,6 @@ export async function load({ locals, request }) {
             connections: connections,
             posts: posts
         };
-        console.log(userProfile)
 
         return {userProfile}
     } catch (error) {

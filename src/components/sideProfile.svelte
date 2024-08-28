@@ -36,6 +36,9 @@
         border:3px white solid;
         background-color:aqua;
         transform: translate(-50%, -50%);
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat;
     }
     .details {
         display: flex;
@@ -88,10 +91,11 @@
 <div class="side-profile">
     <div class="background">
     </div>
-    <div class="pfp">
-        
-
-    </div>
+    {#if $selectedProfile.profile_pic_url}
+    <div class="pfp" style={`background-image: url('${$selectedProfile.profile_pic_url}')`}></div>
+    {:else}
+    <div class="pfp"></div>
+    {/if}
     <div class="details">
         {#if $selectedProfile.university}
         <div class='info'>{$selectedProfile.university.university_name} • {$selectedProfile.university.major} </div>

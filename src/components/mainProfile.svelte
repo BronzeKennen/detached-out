@@ -1,20 +1,26 @@
 <script>
     import PrevJob from "./prevJob.svelte";
-    import Friend from "./friend.svelte"
-    import { onMount } from 'svelte'
+    import Friend from "./friend.svelte";
+    import { onMount } from "svelte";
 
     export let profile;
 
     //if someone hasn't set these, set a dummy object!
-    if(profile.current_company === null) profile.current_company = {CompanyId: null, company_name: ''};
-    if(profile.job_title === null) profile.job_title= {JobTitleId: null, JobTitle: ''};
-    if(profile.university === null) profile.university = {UniversityId: null, university_name: '', major: ''};
+    if (profile.current_company === null)
+        profile.current_company = { CompanyId: null, company_name: "" };
+    if (profile.job_title === null)
+        profile.job_title = { JobTitleId: null, JobTitle: "" };
+    if (profile.university === null)
+        profile.university = {
+            UniversityId: null,
+            university_name: "",
+            major: "",
+        };
 
     //copy of the profile to refer to any changes made
     let originalProfile = profile;
 
-
-    // ... 
+    // ...
     let firstName = profile.fname;
     let lastName = profile.lname;
     let currJobTitle = profile.job_title.JobTitle;
@@ -29,76 +35,96 @@
     //for future reference
     let uni = profile.university.university_name;
     let major = profile.university.major;
-    let eduFrom =profile.university.StartDate;
+    let eduFrom = profile.university.StartDate;
     let eduTo = profile.university.EndDate;
+    let pfp = profile.profile_pic_url
 
     //reactive variables to spawn save/reset buttons
-    $: changedMand = 
-        lastName !== originalProfile.lname 
-        || firstName !== originalProfile.fname 
-        || country !== originalProfile.country_of_residence 
-        || state !== originalProfile.state
-        || birthday !== originalProfile.date_of_birth
-        || bio !== originalProfile.biography;
+    $: changedMand =
+        lastName !== originalProfile.lname ||
+        firstName !== originalProfile.fname ||
+        country !== originalProfile.country_of_residence ||
+        state !== originalProfile.state ||
+        birthday !== originalProfile.date_of_birth ||
+        bio !== originalProfile.biography;
 
     $: changedEmp =
-        currCompany !== originalProfile.current_company.company_name
-        || currJobTitle !== originalProfile.job_title.JobTitle;
+        currCompany !== originalProfile.current_company.company_name ||
+        currJobTitle !== originalProfile.job_title.JobTitle;
 
     //Both fields are required
-    $: changedUni = 
-        (uni !== originalProfile.university.university_name
-        || major !== originalProfile.university.major
-        || eduFrom !== originalProfile.university.StartDate
-        || eduTo !== originalProfile.university.EndDate) 
-        && (uni && major && eduFrom);
+    $: changedUni =
+        (uni !== originalProfile.university.university_name ||
+            major !== originalProfile.university.major ||
+            eduFrom !== originalProfile.university.StartDate ||
+            eduTo !== originalProfile.university.EndDate) &&
+        uni &&
+        major &&
+        eduFrom;
 
     $: changedExperience = false;
     let workExperience;
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type' : 'application/json'
-            }
-        })
-        if(response.ok) {
+                "Content-Type": "application/json",
+            },
+        });
+        if (response.ok) {
             workExperience = await response.json();
-            console.log('Successfully fetched work experience')
-            
+            console.log("Successfully fetched work experience");
         } else {
-            console.log('ITS A BOMB');
+            console.log("ITS A BOMB");
         }
-    })
-    
+    });
+
     function autoResize(event) {
         const textarea = event.target;
-        textarea.style.height = 'auto';
+        textarea.style.height = "auto";
 
-        if(textarea.scrollHeight < 40) {
+        if (textarea.scrollHeight < 40) {
             textarea.style.height = `2rem`;
         } else {
             textarea.style.height = `${textarea.scrollHeight}px`;
         }
     }
-    
-    
+
+    async function handleFileUpload(e) {
+        let imageUrl,uploadError;
+        const pfp = e.target.files[0];
+
+        const formData = new FormData()
+        formData.append('image',pfp)
+        const resp = await fetch("/api/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await resp.json();
+        if(resp.ok) {
+            imageUrl = result.url
+            console.log(result.url)
+        } else {
+            uploadError = result.error || 'upload failed'            
+        } 
+    }
+
     function newJob() {
         let newJob = {
-            CompanyId : '',
-            JobTitleId: '',
-            StartDate :'',
-            EndDate: '',
-            Private: false
-        }
+            CompanyId: "",
+            JobTitleId: "",
+            StartDate: "",
+            EndDate: "",
+            Private: false,
+        };
         workExperience.body = [...workExperience.body, newJob];
         changedExperience = true;
     }
 
-
-    const resetFields = ((type) => {
+    const resetFields = (type) => {
         switch (type) {
-            case 'mand':
+            case "mand":
                 firstName = profile.fname;
                 lastName = profile.lname;
                 country = profile.country_of_residence;
@@ -106,59 +132,57 @@
                 birthday = profile.date_of_birth;
                 bio = profile.biography;
                 break;
-            case 'uni':
+            case "uni":
                 uni = profile.university.university_name;
                 major = profile.university.major;
                 eduFrom = profile.university.StartDate;
                 eduTo = profile.university.EndDate;
                 break;
-            case 'work': //work
+            case "work": //work
                 currJobTitle = profile.job_title.JobTitle;
                 currCompany = profile.current_company.company_name;
                 break;
         }
-    })
+    };
 
-
-    const saveChanges = (async (type) => {
-
+    const saveChanges = async (type) => {
         let body;
-        if(type === 'mand') {
+        if (type === "mand") {
             body = {
-                UserId :id,
+                UserId: id,
                 fname: firstName,
                 lname: lastName,
                 country_of_residence: country,
                 state: state,
                 date_of_birth: birthday,
-                biography:bio
-            }
-        } else if (type === 'uni') {
+                biography: bio,
+            };
+        } else if (type === "uni") {
             body = {
                 UserId: id,
                 university_name: uni,
                 major: major,
                 from: eduFrom,
-                to: eduTo
-            }
-
-        } else { //work
+                to: eduTo,
+            };
+        } else {
+            //work
             body = {
-                UserId : id,
+                UserId: id,
                 current_company: currCompany,
-                job_title : currJobTitle
-            }
+                job_title: currJobTitle,
+            };
         }
-        const response = await fetch('/api/users', {
-            method: 'PATCH',
+        const response = await fetch("/api/users", {
+            method: "PATCH",
             headers: {
-                'Content-Type' : 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(body)
-        })
-        if(response.ok) {
-            switch(type) {
-                case 'mand' :
+            body: JSON.stringify(body),
+        });
+        if (response.ok) {
+            switch (type) {
+                case "mand":
                     originalProfile.fname = firstName;
                     originalProfile.lname = lastName;
                     originalProfile.country_of_residence = country;
@@ -166,31 +190,312 @@
                     originalProfile.date_of_birth = birthday;
                     originalProfile.biography = bio;
                     break;
-                case 'uni':
+                case "uni":
                     originalProfile.university.university_name = uni;
-                    originalProfile.university.major = major
+                    originalProfile.university.major = major;
                     originalProfile.university.StartDate = eduFrom;
                     originalProfile.university.EndDate = eduTo;
                     break;
-                case 'work':
+                case "work":
                     originalProfile.current_company.company_name = currCompany;
                     originalProfile.job_title.JobTitle = currJobTitle;
                     break;
             }
-            console.log('success')
+            console.log("success");
         } else {
-            console.log('An error has occured');
+            console.log("An error has occured");
         }
-    })
+    };
 </script>
 
+<div class="top-profile">
+    <div class="background"></div>
+    {#if pfp}
+    <div class="pfp" style={`background-image: url('${pfp}');`}>
+        <div class="pfphover">
+            <input type="file" id="uploadButton" on:change={handleFileUpload} />
+            <label for="uploadButton" id="uploadLabel"></label>
+            <h4>Change Profile Picture</h4>
+        </div>
+    </div>
+    {:else}
+        <div class="pfp" >
+            <div class="pfphover">
+                <input type="file" id="uploadButton" on:change={handleFileUpload} />
+                <label for="uploadButton" id="uploadLabel"></label>
+                <h4>Change Profile Picture</h4>
+            </div>
+        </div>
+    {/if}
+    <div class="nameJob">
+        <div class="name">{firstName} {lastName}</div>
+        {#if currCompany}
+            <div class="companyAndTitle">
+                {currCompany}, {#if currJobTitle}
+                    {currJobTitle}
+                {/if}
+            </div>
+        {/if}
+    </div>
+</div>
+<div class="details">
+    <div class="fieldTitle">Personal Information</div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField">First Name</div>
+            <textarea
+                id="textField"
+                type="text"
+                bind:value={firstName}
+                maxlength="16"
+                minlength="3"
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        firstName = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+        <div class="fieldContainer">
+            <div id="labelField">Last Name</div>
+            <textarea
+                id="textField"
+                type="text"
+                maxlength="30"
+                minlength="3"
+                bind:value={lastName}
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        lastName = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+    </div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField">Country</div>
+            <textarea
+                id="textField"
+                type="text"
+                bind:value={country}
+                maxlength="16"
+                minlength="3"
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        country = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+        <div class="fieldContainer">
+            <div id="labelField">State</div>
+            <textarea
+                id="textField"
+                type="text"
+                maxlength="30"
+                minlength="3"
+                bind:value={state}
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        state = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+    </div>
+    <div class="dateOfBirth">
+        <div class="fieldContainer">
+            <div id="labelField">Date of Birth</div>
+            <input
+                type="date"
+                id="birthday"
+                bind:value={birthday}
+                min="1950-01-01"
+                max="2007-01-01"
+            />
+        </div>
+    </div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField">Bio</div>
+            <textarea
+                placeholder={bio}
+                id="textField"
+                type="text"
+                bind:value={bio}
+                on:input={autoResize}
+                minlength="0"
+            />
+        </div>
+    </div>
+    {#if changedMand}
+        <div class="change-buttons">
+            <button class="save-button" on:click={() => saveChanges("mand")}
+                >Save Changes</button
+            >
+            <button class="save-button" on:click={() => resetFields("mand")}
+                >Reset</button
+            >
+        </div>
+    {/if}
+    <div class="separator"></div>
+    <div class="fieldTitle">Education</div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField">Univeristy/College</div>
+            <textarea
+                id="textField"
+                placeholder="University Name"
+                type="text"
+                bind:value={uni}
+                maxlength="16"
+                minlength="3"
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        uni = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+        <div class="fieldContainer">
+            <div id="labelField">Major</div>
+            <textarea
+                id="textField"
+                placeholder="Major Name"
+                type="text"
+                maxlength="30"
+                minlength="3"
+                bind:value={major}
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        major = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+    </div>
+
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <label for="date" id="labelField">From:</label>
+            <input
+                type="date"
+                id="birthday"
+                bind:value={eduFrom}
+                min="1970-01-01"
+                max="2024-12-31"
+            />
+        </div>
+        <div class="fieldContainer">
+            <label for="date" id="labelField">To:</label>
+            <input
+                type="date"
+                id="birthday"
+                bind:value={eduTo}
+                min="1970-01-01"
+                max="2024-12-31"
+            />
+        </div>
+    </div>
+    {#if changedUni}
+        <div class="change-buttons">
+            <button class="save-button" on:click={() => saveChanges("uni")}
+                >Save Changes</button
+            >
+            <button class="save-button" on:click={() => resetFields("uni")}
+                >Reset</button
+            >
+        </div>
+    {/if}
+    <div class="separator"></div>
+    <div class="fieldTitle">Employment Information</div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField">Current Employer</div>
+            <textarea
+                id="textField"
+                type="text"
+                placeholder="Company you currently work in"
+                bind:value={currCompany}
+                maxlength="16"
+                minlength="3"
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        currCompany = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+        <div class="fieldContainer">
+            <div id="labelField">Job Title</div>
+            <textarea
+                id="textField"
+                type="text"
+                placeholder="Job title of company you currently work in"
+                maxlength="30"
+                minlength="3"
+                bind:value={currJobTitle}
+                on:blur={(e) => {
+                    if (e.target.value.length > 3) {
+                        currJobTitle = e.target.value;
+                    } else {
+                        e.target.value = "";
+                    }
+                }}
+            />
+        </div>
+    </div>
+    {#if changedEmp}
+        <div class="change-buttons">
+            <button class="save-button" on:click={() => saveChanges("work")}
+                >Save Changes</button
+            >
+            <button class="save-button" on:click={() => resetFields("work")}
+                >Reset</button
+            >
+        </div>
+    {/if}
+    <div class="separator"></div>
+    <div class="fieldTitle">Work Experience</div>
+    <button class="addPrevJob" on:click={newJob}
+        ><i class="fa-solid fa-plus" id="new"></i></button
+    >
+    {#if workExperience}
+        {#each workExperience.body as exJob}
+            <PrevJob
+                employer={exJob.CompanyId}
+                JobTitle={exJob.JobTitleId}
+                from={exJob.StartDate}
+                to={exJob.EndDate}
+                UserId={id}
+                privacyOn={exJob.Private}
+                expId={exJob.ExperienceId}
+            />
+        {/each}
+    {/if}
+</div>
 
 <style>
     .top-profile {
-        margin:.5rem;
-        border-radius:10%;
-        position:relative;
-        flex:1;
+        margin: 0.5rem;
+        border-radius: 10%;
+        position: relative;
+        flex: 1;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -198,21 +503,59 @@
     }
 
     .background {
-        border-radius:25px;
+        border-radius: 25px;
         height: 45vh;
         background-color: beige;
         width: 100%;
         position: relative;
     }
 
+    #uploadButton {
+        display: none;
+    }
+
+    #uploadLabel {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        border-radius: 50%;
+        cursor: pointer;
+    }
     .pfp {
         height: 40vh;
         width: 40vh;
         border-radius: 50%;
         border: 3px white solid;
         background-color: aqua;
-        position: relative; 
+        background-size:cover;
+        background-position:center;
+        background-repeat:no-repeat;
+        position: relative;
         transform: translate(+25%, -50%);
+    }
+    .pfphover {
+        background-color: black;
+        height: 39vh;
+        width: 39vh;
+        border-radius: 50%;
+        border: 3px white solid;
+        position: relative;
+        opacity: 0%;
+        margin: 1.6px 1.7px;
+    }
+    .pfphover h4 {
+        color: white;
+        opacity: 100%;
+        margin-top: 47%;
+        margin-left: 27%;
+        position: absolute;
+        top: 50;
+        left: 50;
+    }
+    .pfphover:hover {
+        transition-duration: 0.35s;
+        cursor: pointer;
+        opacity: 60%;
     }
 
     .nameJob {
@@ -233,7 +576,6 @@
         font-size: larger;
         text-align: left;
     }
-
 
     .fieldTitle {
         font-weight: bolder;
@@ -257,25 +599,26 @@
     }
 
     .change-buttons {
-        display:flex;
+        display: flex;
         justify-content: flex-end;
-        width:100%;
+        width: 100%;
     }
     .change-buttons button {
-        margin:.2rem;
-        margin-top:-1.3rem;
-        width:15%;
-        border-radius:5px;
-        border:none;
+        margin: 0.2rem;
+        margin-top: -1.3rem;
+        width: 15%;
+        border-radius: 5px;
+        border: none;
         box-shadow: 0px 0px 6px rgb(127, 111, 219);
-        background-color: rgb(193, 176, 221) 
+        background-color: rgb(193, 176, 221);
     }
 
-    .change-buttons button:hover, .addPrevJob:hover {
-        transition-duration: .2s;
+    .change-buttons button:hover,
+    .addPrevJob:hover {
+        transition-duration: 0.2s;
         box-shadow: 0px 0px 12px rgb(127, 111, 219);
     }
-    
+
     .fieldContainer {
         height: auto;
         width: auto;
@@ -301,7 +644,7 @@
         display: flex;
         position: relative;
         resize: none;
-        padding: .5rem;
+        padding: 0.5rem;
         padding-left: 0.5;
         text-align: start;
     }
@@ -315,28 +658,29 @@
         display: flex;
         position: relative;
         resize: none;
-        padding: .5rem;
+        padding: 0.5rem;
         padding-left: 0.5;
         text-align: start;
     }
 
-    #textField:focus, #birthday:focus {
+    #textField:focus,
+    #birthday:focus {
         outline: none;
         box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 
-    #textField:hover, #birthday:hover {
+    #textField:hover,
+    #birthday:hover {
         animation-duration: 0.5s;
         box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 
     .separator {
-        border:none;
-        border-top:1px solid #ccc;
-        margin:3% 0;
-        min-width:100%;
+        border: none;
+        border-top: 1px solid #ccc;
+        margin: 3% 0;
+        min-width: 100%;
     }
-
 
     .addPrevJob {
         border: none;
@@ -362,7 +706,6 @@
     }
 
     @media (max-width: 950px) {
-
         .background {
             height: 35vh;
         }
@@ -372,6 +715,13 @@
             left: 50%;
             height: 30vh;
             width: 30vh;
+        }
+        .pfphover {
+            height: 29vh;
+            width: 29vh;
+        }
+        .pfphover h4 {
+            margin-left: 17%;
         }
 
         .nameJob {
@@ -401,7 +751,6 @@
     }
 
     @media (max-width: 600px) {
-
         .background {
             height: 20vh;
         }
@@ -411,6 +760,15 @@
             height: 20vh;
             width: 20vh;
             transform: translate(-50%, -50%);
+        }
+        .pfphover {
+            width: 19vh;
+            height: 19vh;
+        }
+        .pfphover h4 {
+            font-size: 12px;
+            margin-left: 12%;
+            margin-top: 45%;
         }
 
         .nameJob {
@@ -458,9 +816,9 @@
 
         .change-buttons {
             margin-top: 1rem;
-            display:flex;
+            display: flex;
             justify-content: center;
-            width:100%;
+            width: 100%;
         }
 
         .change-buttons button {
@@ -469,234 +827,3 @@
         }
     }
 </style>
-
-
-
-<div class="top-profile">
-    <div class="background"></div>
-    <div class="pfp"></div>
-    <div class="nameJob">
-        <div class='name'>{firstName} {lastName}</div>
-       {#if currCompany} <div class='companyAndTitle'>{currCompany}, {#if currJobTitle} {currJobTitle} {/if}</div> {/if}
-    </div>
-</div>
-<div class="details">
-    <div class="fieldTitle">Personal Information</div>
-    <div class="mandFields">
-        <div class="fieldContainer">
-            <div id="labelField">First Name</div>
-            <textarea
-                id="textField"
-                type="text" 
-                bind:value={firstName}
-                maxlength="16"
-                minlength="3"
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        firstName = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}    
-            />
-        </div>
-        <div class="fieldContainer">
-            <div id="labelField">Last Name</div>
-            <textarea
-                id="textField"
-                type="text" 
-                maxlength="30"
-                minlength="3"
-                bind:value={lastName}
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        lastName = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}  
-            />
-        </div>
-    </div>
-    <div class="mandFields">
-        <div class="fieldContainer">
-            <div id="labelField">Country</div>
-            <textarea
-                id="textField"
-                type="text" 
-                bind:value={country}
-                maxlength="16"
-                minlength="3"
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        country = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}    
-            />
-        </div>
-        <div class="fieldContainer">
-            <div id="labelField">State</div>
-            <textarea
-                id="textField"
-                type="text" 
-                maxlength="30"
-                minlength="3"
-                bind:value={state}
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        state = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}  
-            />
-        </div>
-    </div>
-    <div class="dateOfBirth">
-        <div class=fieldContainer>
-            <div id="labelField">Date of Birth</div>
-            <input type="date" id="birthday" bind:value={birthday} min="1950-01-01" max="2007-01-01" />
-        </div>
-    </div>
-    <div class="mandFields">
-        <div class="fieldContainer">
-            <div id="labelField">Bio</div>
-            <textarea
-                placeholder={bio}
-                id="textField"
-                type="text" 
-                bind:value={bio}
-                on:input={autoResize} 
-                minlength="0" 
-            />
-        </div>
-    </div>
-    {#if changedMand}
-        <div class="change-buttons">
-            <button class="save-button" on:click={() => saveChanges('mand')}>Save Changes</button>
-            <button class="save-button" on:click={() => resetFields('mand')}>Reset</button>
-        </div>    
-    {/if}
-    <div class="separator"></div>
-    <div class="fieldTitle">Education</div>
-    <div class="mandFields">
-        <div class=fieldContainer>
-            <div id="labelField">Univeristy/College</div>
-            <textarea
-                id="textField"
-                placeholder="University Name"
-                type="text" 
-                bind:value={uni}
-                maxlength="50"
-                minlength="3"
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        uni = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}    
-            />
-        </div>
-        <div class="fieldContainer">
-            <div id="labelField">Major</div>
-            <textarea
-                id="textField"
-                placeholder="Major Name"
-                type="text" 
-                maxlength="35"
-                minlength="3"
-                bind:value={major}
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        major = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}  
-            />
-        </div>
-    </div>
-
-        <div class="mandFields">
-            <div class="fieldContainer">
-                <label for="date" id="labelField">From:</label>
-                <input type="date" id="birthday" bind:value={eduFrom} min="1970-01-01" max="2024-12-31" />
-            </div>
-            <div class="fieldContainer">
-                <label for="date" id="labelField">To:</label>
-                <input type="date" id="birthday" bind:value={eduTo} min="1970-01-01" max="2024-12-31" />
-            </div>
-        </div>
-    {#if changedUni}
-        <div class="change-buttons">
-            <button class="save-button" on:click={() => saveChanges('uni')}>Save Changes</button>
-            <button class="save-button" on:click={() => resetFields('uni')}>Reset</button>
-        </div>    
-    {/if}
-    <div class="separator"></div>
-    <div class="fieldTitle">Employment Information</div>
-    <div class="mandFields">
-        <div class=fieldContainer>
-            <div id="labelField">Current Employer</div>
-            <textarea
-                id="textField"
-                type="text" 
-                placeholder="Company you currently work in"
-                bind:value={currCompany}
-                maxlength="16"
-                minlength="3"
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        currCompany = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}    
-            />
-        </div>
-        <div class=fieldContainer>
-            <div id="labelField">Job Title</div>
-            <textarea
-                id="textField"
-                type="text" 
-                placeholder="Job title of company you currently work in"
-                maxlength="30"
-                minlength="3"
-                bind:value={currJobTitle}
-                on:blur={(e) => {
-                    if (e.target.value.length > 3) {
-                        currJobTitle = e.target.value;
-                    } else {
-                        e.target.value = ''; 
-                    }
-                }}  
-            />
-        </div>
-    </div>
-    {#if changedEmp}
-        <div class="change-buttons">
-            <button class="save-button" on:click={() => saveChanges('work')}>Save Changes</button>
-            <button class="save-button" on:click={() => resetFields('work')}>Reset</button>
-        </div>    
-    {/if}
-    <div class="separator"></div>
-    <div class="fieldTitle">Work Experience</div>
-    <button class="addPrevJob" on:click={newJob}><i class="fa-solid fa-plus" id="new"></i></button>
-    {#if workExperience}
-    {#each workExperience.body as exJob}
-        <PrevJob 
-            employer={exJob.CompanyId} 
-            JobTitle={exJob.JobTitleId} 
-            from={exJob.StartDate} 
-            to={exJob.EndDate}
-            UserId={id}
-            privacyOn={exJob.Private}
-            expId={exJob.ExperienceId}
-        />
-    {/each}
-    {/if}
-
-</div>

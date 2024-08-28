@@ -50,6 +50,9 @@
     //for future reference
     let uni = profile.university.university_name;
     let major = profile.university.major;
+    let uniFrom = profile.university.StartDate;
+    let uniTo = profile.university.EndDate;
+    let pfp = profile.profile_pic_url;
 </script>
 <style>
     .top-profile {
@@ -88,6 +91,9 @@
         background-color: aqua;
         position: relative; 
         transform: translate(+25%, -50%);
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
     }
 
     #addFriend {
@@ -141,12 +147,25 @@
         width:100%;
 
     }
-
+    .university {
+        width:100%;
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .university p {
+        font-size:13px;
+        opacity:60%;
+    }
 </style>
 
 <div class="top-profile">
     <div class="background"></div>
+    {#if pfp}
+    <div class="pfp" style={`background-image:url(${pfp});`}></div>
+    {:else}
     <div class="pfp"></div>
+    {/if}
     <div class="nameJob">
         <div class='name'>{firstName} {lastName} 
             {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}
@@ -164,16 +183,17 @@
 </div>
 <div class="details">
     <div class="fieldTitle">Education</div>
-    <div class="mandFields">
-        <div class="fieldContainer">
             {#if uni}
-            <p>Studied at {uni} with a major in {major}</p>
+            <div class="university">
+                        <h4>Studied at {uni} with a major in {major}</h4>
+                        {#if uniFrom}
+                        <p>{uniFrom} - {#if uniTo} {uniTo} {:else} Present {/if}</p>
+                        {/if}
+            </div>
             {:else}
             <p class="blank">This user has not set their education</p>
             {/if}
             
-        </div>
-    </div>
     <div class="separator"></div>
     <div class="fieldTitle">Current Employment Information</div>
     <div class="mandFields">

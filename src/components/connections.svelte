@@ -49,7 +49,6 @@
             recommended.forEach(item => {
                 item.follow = false;
             }) 
-            console.log(recommended)
         }  
         else {
             console.log('what du heeeelll no way a ay ay ay ')
@@ -131,7 +130,7 @@
     {#each recommended as user}
         <div class="profileIcon">
         {#if user.university}
-        <ProfileIcon user={user.username} edu={user.university} id={user.UserId}/>
+        <ProfileIcon user={user.username} edu={user.university} pfp={user.profile_pic_url}/>
         {:else}
         <ProfileIcon user={user.username} edu='' id={user.UserId}/>
         {/if}

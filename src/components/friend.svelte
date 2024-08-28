@@ -20,6 +20,7 @@
             classes+= ' low-opacity'
         }
     }
+    console.log(user)
 
     const deleteFriend = async () => {
         const friendshipId = profile.FriendId;
@@ -85,9 +86,11 @@
         <button class="unfriendButton" on:click={deleteFriend}>X</button>
         {/if}
     </div>
-    <div class="pfp">
-
-    </div>
+    {#if user.profile_pic_url}
+        <div class="pfp" style={`background-image: url('${user.profile_pic_url}')`}></div>
+    {:else}
+        <div class="pfp"></div>
+    {/if}
     <div class="details">
         {#if user.job_title}
         <p>{user.job_title.JobTitle}</p>
@@ -162,6 +165,9 @@
     border:3px white solid;
     background-color:aqua;
     transform: translate(-50%, -50%);
+    background-size: cover; /* Ensures the image covers the element */
+    background-position: center; /* Centers the image within the element */
+    background-repeat: no-repeat;
 }
 .details {
     display: flex;

@@ -83,7 +83,6 @@
         align-self: flex-start;
         margin:.5rem;
         flex:1;
-        background-color: rgba(192, 161, 161, 0.5);
         display:flex;
         flex-direction: column;
         border-radius: 5px;
@@ -118,9 +117,11 @@
         display:flex;
         flex-direction: column;
         border-radius:5px;
-        margin:.5rem;
+        margin-bottom:.5rem;
+        margin-top:.1rem;
         background-color: aliceblue;
         min-height:100px;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 </style>
 <div class="connection-profile">

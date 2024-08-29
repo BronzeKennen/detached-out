@@ -21,10 +21,12 @@
         flex:1;
     }
     .background {
+        box-shadow: 0 1.5px 10px rgb(174, 0, 255);
         border-top-left-radius:10px;
         border-top-right-radius:10px;
         height:75px;
-        background-color: beige;
+        background-color: rgb(224, 182, 215);
+        margin-bottom:3px;
     }
     .pfp {
         position:absolute;
@@ -33,7 +35,7 @@
         top:75px;
         left:50%;
         border-radius:50%;
-        border:3px white solid;
+        border:4px rgb(212, 0, 255) solid;
         background-color:aqua;
         transform: translate(-50%, -50%);
         background-size: cover; /* Ensures the image covers the element */
@@ -41,19 +43,19 @@
         background-repeat: no-repeat;
     }
     .details {
+        box-shadow: 0 4.5px 9px rgb(174, 0, 255);
         display: flex;
         flex-direction: column-reverse;
         align-items: start;
         border-bottom-left-radius:10px;
         border-bottom-right-radius:10px;
-        background-color:rgb(0, 0, 0);
+        background-color:rgb(255, 255, 255);
         min-height:110px;
         padding-bottom: 2px;
     }
 
     .details .name {
         margin-left: 5%;
-        color: white;
         font-size: large;
         font-weight: bolder;
     }
@@ -61,18 +63,16 @@
     .details .info {
         margin-left: 5%;
         font-size: small;
-        color: white;
     }
     .connections {
         margin-top:2rem;
         min-width:90%;
         padding: 1.5rem 0;
         margin-left:5%;
-        color:white;
         font-size:medium;
     }
     .connections a {
-        color:white;
+        color:black;
     }
 
     @media (max-width: 800px) {

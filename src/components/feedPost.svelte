@@ -3,13 +3,24 @@
 
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
-    let likes = 0;
-    let comments = 0;
-    let reposts = 0;
+    export let likes = 0;
+    export let comments = 0;
+    export let reposts = 0;
+    export let images;
+    export let poster;
+    export let content;
+
+    images = JSON.parse(images)
+    if(images)
+    images = images.uploadedFiles
     let liked = false;
     let reposted = false;
     let commenter = false;
     let comment =''
+    let slider=null
+    if(images) {
+        slider = 0;
+    }
     function handleLikes() {
         if (liked) {
             likes -= 1;
@@ -38,6 +49,17 @@
         comment = '';
     })
 
+    function handleLeft() {
+        if(slider > 0) {
+            slider -= 1;
+        }
+    }
+    function handleRight() {
+        if(slider < images.length) {
+            slider += 1;
+        }
+    }
+
     function autoResize(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -53,11 +75,22 @@
 
     <div class="feed-post">
         <div class="stats">
-            <ProfileIcon user="Hamburger"/>
+            <ProfileIcon user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
         </div>
         <div class="post">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique quisquam tempora vitae veniam cupiditate excepturi minus aspernatur laboriosam eius quibusdam, recusandae, corrupti aliquam libero molestias magnam repellendus esse dolores culpa ab officia eligendi porro! Unde veritatis repellat quia quam vel pariatur? Neque, officia reiciendis! Nesciunt culpa cupiditate dolore expedita alias.</p>
+            <p>{content}</p>
     
+            <div class="image-slider">
+                
+                {#if images}
+                    <img src={images[slider]} class="post-image">
+                    <div class="buttons-a">
+                        <button id="left" on:click={handleLeft} disabled={slider === 0}> {'<'}</button>
+                        <button id="right" on:click={handleRight} disabled={slider === images.length - 1}> {'>'}</button>
+                    </div>
+                {/if}
+            <!-- <img src="https://res.cloudinary.com/dsyxmtqbu/image/upload/v1724873933/wjxxl74rtlxdbrmkcivq.png" class="post-image"> -->
+            </div>
         </div>
         <div class="likes-buttons">
             <div class="reactions">
@@ -104,14 +137,67 @@
     </div>
     </div>
 <style>
+    /* #left { */
+    .image-slider {
+    position: relative;
+    width: 100%; 
+    max-width: 600px; 
+    height: auto; 
+    margin: 0 auto; 
+    overflow: hidden; 
+    background-color: #f0f0f0; 
+}
+
+.post-image {
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.buttons-a {
+    position: absolute;
+    top: 50%; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%); 
+    z-index: 10; 
+    pointer-events: none; 
+}
+
+.buttons-a button {
+    color:white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    border: 1px white solid;
+    cursor: pointer;
+    pointer-events: auto; /* Make sure buttons are clickable */
+    z-index: 10; /* Ensure buttons are above everything */
+    margin:.5rem;
+}
+
+.buttons-a button:disabled {
+    opacity:0%;
+}
     .feed-post {
         align-self: flex-start;
-        background-color: #FFFFFF;
+        background-color: white;
+        box-shadow: 0 1.5px 1px rgb(159, 154, 161);
         align-items: center;
         flex: 2;
         border-radius:10px;
         padding:1rem;
         margin:.5rem;
+    }
+    .post-image {
+        width: calc(100% + 2rem);
+        margin:0 -1rem;
+        /* margin:0 -1rem; */
+
     }
 
 
@@ -132,10 +218,10 @@
     .buttons {
         justify-content: space-between;
         display:flex;
-        color: #393231;
+        color: #000000;
         margin:.5rem 0;
         padding:.6rem;
-        border-top:2px rgba(0,0,0,.3) solid;
+        border-top:2px rgba(109, 23, 158, 0.4) solid;
     }
     .buttons b {
         font-size:20px;
@@ -148,32 +234,32 @@
     }
     #likebutton:hover {
         cursor:pointer;
-        color:#8D000E;
+        color:#70037a;
         transition-duration: 0.3s;
     }
     .liked {
         cursor:pointer;
-        color:#8D000E;
+        color:#70037a;
         transition-duration: 0.3s;
     }
     .reposted {
         cursor:pointer;
-        color:#8D000E;
+        color:#70037a;
         transition-duration: 0.3s;
     }
     #repostbutton:hover {
         cursor:pointer;
-        color:#8D000E;
+        color:#81008d;
         transition-duration: 0.3s;
     }
     .commenter {
         cursor:pointer;
-        color:#8D000E;
+        color:#81008d;
         transition-duration: 0.3s;
     }
     #commentbutton:hover {
         cursor:pointer;
-        color:#8D000E;
+        color:#81008d;
         transition-duration: 0.3s;
     }
     .comment-box {
@@ -194,14 +280,14 @@
         padding-right:10%;
         box-sizing: border-box;
         transition-duration: 0.5s;
-        box-shadow: 0px 0px 2px #8D000E;
+        box-shadow: 0px 0px 2px #76008d;
     }
     .comment-box textarea:hover {
-        box-shadow: 0px 0px 5px #8D000E;
+        box-shadow: 0px 0px 5px #76008d;
     }
     .comment-box textarea:focus {
         outline: none;
-        box-shadow: 0px 0px 5px #8D000E;
+        box-shadow: 0px 0px 5px #76008d;
     }
     .comment-box button {
         font-size:23px;
@@ -228,7 +314,6 @@
 
 
     .commentsBackground {
-        background-color: #E3CAC3;
         border-radius: 10px;
         padding-bottom: 0.1rem;
     }

@@ -39,21 +39,21 @@
         flex: 2;
     }
 
-    .user {
-        background-color: rgba(163, 127, 216, 0.363);
-        border-radius: 10px;
-        margin:1rem;
-        width:20%;
-        padding:.3rem;
-        font-size:15px;
-
-    }
 </style>
 <div class="feed">
     <SideProfile {user}/>
     <div class='MiddleCol'>
         <NewPost />
-        <FeedPost />
+        {#each user.posts as post}
+            <FeedPost 
+                poster={post.UserId}
+                likes={post.LikeCount}
+                comments={post.CommentCount}
+                reposts={post.RepostCount}
+                images={post.ImagesJson}
+                content={post.Content}
+            />
+        {/each}
     </div>  
     <Connections />
 </div>

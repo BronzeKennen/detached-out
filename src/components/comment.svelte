@@ -72,7 +72,7 @@
     .body {
         flex: 1;
         height: fit-content;
-        background-color: #F3E9E9;
+        background-color: #e1d4e7b7;
         margin:.3rem 0.5rem;
         padding: 0.5rem 1rem;
         border-radius: 20px;

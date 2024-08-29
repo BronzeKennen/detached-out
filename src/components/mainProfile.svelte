@@ -392,7 +392,7 @@
         <div class="fieldContainer">
             <label for="date" id="labelField">From:</label>
             <input
-                type="date"
+                type="month"
                 id="birthday"
                 bind:value={eduFrom}
                 min="1970-01-01"
@@ -402,7 +402,7 @@
         <div class="fieldContainer">
             <label for="date" id="labelField">To:</label>
             <input
-                type="date"
+                type="month"
                 id="birthday"
                 bind:value={eduTo}
                 min="1970-01-01"
@@ -747,6 +747,8 @@
 
         .details {
             top: -5vh;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
     }
 

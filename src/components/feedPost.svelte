@@ -1,20 +1,26 @@
 <script>
+    import { onDestroy } from "svelte";
+
 
 
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     export let comments;
-    export let likes = 0;
+    export let likes;
     export let reposts = 0;
     export let images;
     export let poster;
     export let content;
     export let postId;
+    export let userId;
+
+    $: ogLikes = likes.length;
+
 
     const posterPfp = poster.profile_pic_url;
 
     $: commentCount = comments.length;
-
+    $: likeCount = likes.length;
     images = JSON.parse(images)
     if(images)
     images = images.uploadedFiles
@@ -23,24 +29,24 @@
     let commenter = false;
     let comment =''
     let slider=null
-    if(images) {
+
+    for(const like of likes) { //Has the user already liked this post?
+        if(userId === like.SenderId) {
+            liked = true; 
+        }
+    }
+
+    if(images) { //reset the slider if images exist
         slider = 0;
     }
+    //bottom button
     function handleLikes() {
-        if (liked) {
-            likes -= 1;
-        } else {
-            likes +=1;
-        }
+        likeCount += liked ? -1 : +1;
         liked = !liked;
         
     }
     function handleReposts() {
-        if(reposted) {
-            reposts -= 1;
-        } else {
-            reposts += 1;
-        }
+        reposts += reposted ? -1 : +1;
         reposted = !reposted;
     }
 
@@ -48,6 +54,8 @@
         commenter = !commenter
         autoResize();
     }
+
+
     const submitComment = (async () => {
         commenter = !commenter;
         commentCount += 1;
@@ -66,6 +74,7 @@
         comment = '';
     })
 
+    //slider functions
     function handleLeft() {
         if(slider > 0) {
             slider -= 1;
@@ -76,6 +85,34 @@
             slider += 1;
         }
     }
+
+//send the likes/etc on destroy to not send 10 trillion requests if the button is spammed
+    onDestroy(async () => {
+        let status;
+        if(likeCount === ogLikes) return
+        if(likeCount > ogLikes) status = 'added'
+        else status = 'removed'
+
+        let body;
+        const response = await fetch('/api/posts/likes/send', {
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify({
+                status:status,
+                postId:postId
+            })
+        
+        })
+
+        if(response.ok) {
+            console.log('success')
+        } else {
+            console.log(response)
+        }
+    })
+        
 
     function autoResize(event) {
         const textarea = event.target;
@@ -111,7 +148,7 @@
         </div>
         <div class="likes-buttons">
             <div class="reactions">
-                <span>{likes} Likes</span>
+                <span>{likeCount} Likes</span>
                 <span>
                     <span>{commentCount} Comments</span>
                     <span>{reposts} Reposts</span>

@@ -9,12 +9,6 @@
 
     export let data;
     const user = data.userProfile;
-    // onMount(async () => {
-        // const resp = await fetch('/api/users');
-        // const data = await resp.json();
-        // users = data.body;
-    // })
-// 
 </script>
 
 <style>
@@ -46,9 +40,10 @@
         <NewPost pfp={user.profile_pic_url}/>
         {#each user.posts as post}
             <FeedPost 
+                userId={user.UserId}
                 postId={post.PostId}
                 poster={post.UserId}
-                likes={post.LikeCount}
+                likes={post.Likes}
                 commentCount={post.CommentCount}
                 comments={post.Comments}
                 reposts={post.RepostCount}

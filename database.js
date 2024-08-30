@@ -130,6 +130,25 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
     UNIQUE (Sender, Recipient)
 )`);
 
+db.exec(`CREATE TABLE IF NOT EXISTS likes (
+    LikeId INTEGER PRIMARY KEY AUTOINCREMENT,
+    PostId INTEGER,
+    SenderId INTEGER,
+    FOREIGN KEY (PostId) REFERENCES posts(PostId),
+    FOREIGN KEY (SenderId) REFERENCES users(UserId),
+    UNIQUE (SenderId,PostId)
+)`);
+
+export function newLike(userId,postId) {
+    const stmt = db.prepare('INSERT INTO likes (PostId,SenderId) VALUES (?,?)');
+    return stmt.run(postId,userId)
+}
+
+export function removeLike(userId,postId) {
+    const stmt = db.prepare('DELETE FROM likes WHERE PostId = ? AND SenderId = ?');
+    return stmt.run(postId,userId)
+}
+
 export function newComment(userId,postId,content) {
     const stmt = db.prepare('INSERT INTO comments (UserFrom,PostId,Content) VALUES (?,?,?)');
     return stmt.run(userId,postId,content);
@@ -162,11 +181,17 @@ export function getCommentsById(postId) {
     return resp;
 }
 
+export function getLikesById(postId) {
+    const stmt = db.prepare('SELECT * FROM likes where PostId = ? ');
+    return stmt.all(postId);
+}
+
 export function getAllPosts() {
     const stmt = db.prepare('SELECT * from posts')
     const resp = stmt.all();
     for(const line of resp) {
         line.Comments = getCommentsById(line.PostId)
+        line.Likes = getLikesById(line.PostId)
     }
     return resp;
 }

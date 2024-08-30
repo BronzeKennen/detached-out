@@ -43,7 +43,6 @@
         })
         if(resp.ok) {
             console.log('success')
-            console.log(resp)
         } else {
             console.log('an error has occured');
         }

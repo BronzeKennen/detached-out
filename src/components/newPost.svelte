@@ -4,6 +4,8 @@
     export let pfp;
     let postButton;
 
+    export let id;
+
     $: {
         if(postButton) {
             if(postBody === '') {
@@ -46,7 +48,7 @@
         });
         images = await response.json();
         if(response.ok) {
-            console.log('images uplaoded succesfully')
+            console.log('images uploaded succesfully')
         } else {
             console.log('error uploading image')
         }
@@ -91,16 +93,16 @@
             <label for="uploadButton" id="uploadLabel">Upload</label>
             <button bind:this={postButton} id="postButton" class="under-text-button" on:click={createPost}>Post</button>
         </span>
-        <div class="images">
         {#if images}
+        <div class="images">
             {#each images as image,index}
                 <span class="imgContainer">
                     <img src={image} alt='kys'>
                     <button class="imageDelete" on:click={()=>removeImage(index)}>X</button>
                 </span>
             {/each}
-        {/if}
         </div>
+        {/if}
     </div>
 
 
@@ -116,7 +118,7 @@
     .images {
         position:relative;
         display:grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-template-rows: 140px;
     }
     .imgContainer {
@@ -263,6 +265,51 @@
         #postButton {
             margin-left: 0;
             width: 20%;
+        }
+    }
+
+    @media(max-width:1100px) {
+        .images {
+            grid-template-columns:1fr  1fr   1fr 1fr;
+        }
+        .images img {
+            width:100px;
+            height:100px
+        }
+        .imageDelete {
+            margin-top:.9rem;
+            margin-left:-6.2rem;
+    
+        }
+        
+
+    }
+    @media(max-width:400px) {
+        .images {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .images img {
+            width:110px;
+            height:110px;
+        }
+    .imageDelete {
+        margin-top:.9rem;
+        margin-left:-7.6rem;
+
+    }
+    }
+    @media(max-width:350px) {
+        .images {
+            grid-template-columns: 1fr 1fr;
+        }
+        .images img {
+            width:110px;
+            height:110px;
+        }
+        .imageDelete {
+            margin-top:.9rem;
+            margin-left:-7rem;
+    
         }
     }
 </style>

@@ -2,13 +2,17 @@
     import FeedPost from "../../../components/feedPost.svelte";
     import SideProfile from "../../../components/sideProfile.svelte";
     import Connections from "../../../components/connections.svelte";
-    import { onMount } from "svelte";
+    import { invalidate } from '$app/navigation'
     import ProfileIcon from "../../../components/profileIcon.svelte";
     import NewPost from "../../../components/newPost.svelte";
     let newuser = '';
 
     export let data;
+
     const user = data.userProfile;
+
+
+
 </script>
 
 <style>
@@ -37,7 +41,7 @@
 <div class="feed">
     <SideProfile {user}/>
     <div class='MiddleCol'>
-        <NewPost pfp={user.profile_pic_url}/>
+        <NewPost id={user.UserId} pfp={user.profile_pic_url}/>
         {#each user.posts as post}
             <FeedPost 
                 userId={user.UserId}
@@ -54,12 +58,3 @@
     </div>  
     <Connections />
 </div>
-    <!-- {#if users} -->
-        <!-- {#each users as user} -->
-            <!-- <div class="user"> -->
-                <!-- <ProfileIcon user={user.username}/> -->
-                <!-- <p>{user.password}</p> -->
-                <!-- <p>{user.email}</p> -->
-            <!-- </div> -->
-        <!-- {/each} -->
-    <!-- {/if} -->

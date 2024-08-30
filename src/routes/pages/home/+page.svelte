@@ -49,6 +49,7 @@
                 reposts={post.RepostCount}
                 images={post.ImagesJson}
                 content={post.Content}
+                created={post.CreatedAt}
             />
         {/each}
     </div>  

@@ -18,7 +18,7 @@
         <div class="substats">
             <h3 class="username">{user}</h3>
             {#if edu}
-                <p class="subtitle">{edu.university_name} * {edu.major}</p>
+                <p class="subtitle">{edu.university_name} • {edu.major}</p>
             {/if}
         </div>
     </span>

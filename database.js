@@ -196,7 +196,7 @@ export function getLikesById(postId,type) {
 }
 
 export function getAllPosts() {
-    const stmt = db.prepare('SELECT * from posts')
+    const stmt = db.prepare('SELECT * FROM posts ORDER BY createdAt DESC;')
     const resp = stmt.all();
     for(const line of resp) {
         line.Comments = getCommentsById(line.PostId)

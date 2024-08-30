@@ -83,7 +83,7 @@
 <div class={classes}>
     <div class="background">
         {#if !addButtons}
-        <button class="unfriendButton" on:click={deleteFriend}>X</button>
+        <button class="unfriendButton" on:click={deleteFriend}><i class="fa-solid fa-xmark"></i></button>
         {/if}
     </div>
     {#if user.profile_pic_url}
@@ -141,61 +141,69 @@
     .accept {
         background-color: lime;
     }
-.friend-profile {
 
-    color:white;
-    margin:.5rem;
-    border-radius:10%;
-    position:relative;
-}
-.background {
-    position:relative;
-    border-top-left-radius:10px;
-    border-top-right-radius:10px;
-    height:55px;
-    background-color: beige;
-}
-.pfp {
-    position:absolute;
-    width:55px;
-    height:55px;
-    top:55px;
-    left:50%;
-    border-radius:50%;
-    border:3px white solid;
-    background-color:aqua;
-    transform: translate(-50%, -50%);
-    background-size: cover; /* Ensures the image covers the element */
-    background-position: center; /* Centers the image within the element */
-    background-repeat: no-repeat;
-}
-.details {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    border-bottom-left-radius:10px;
-    border-bottom-right-radius:10px;
-    background-color:rgb(0, 0, 0);
-    min-height:130px;
-    padding-bottom: 2px;
-}
-.details p {
-    font-size:12px;
-}
+    .friend-profile {
+        color:black;
+        margin:.5rem;
+        border-radius:10%;
+        position:relative;
+    }
 
-.details a {
-    color:white;
-}
+    .background {
+        padding-right: 0.1rem;
+        padding-top: 0.1rem;
+        position:relative;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        height:55px;
+        background-color: rgb(224, 182, 215);
+        box-shadow: 0 1.5px 10px rgb(174, 0, 255);
+    }
+    .pfp {
+        position:absolute;
+        width:55px;
+        height:55px;
+        top:55px;
+        left:50%;
+        border-radius:50%;
+        border:3px white solid;
+        background-color:aqua;
+        transform: translate(-50%, -50%);
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat;
+    }
+    .details {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
+        box-shadow: 0 4.5px 9px rgb(174, 0, 255);
+        background-color:rgb(255, 255, 255);
+        min-height:130px;
+        padding-bottom: 2px;
+    }
+    .details p {
+        font-size:12px;
+    }
 
-.unfriendButton {
-    position:absolute;
-    top: 9%;
-    right: 5.5%;
-    transform: translateX(50%);
-    border-radius:5px;
-    border:none;
-    background-color: red;
-    width:20px;
-    height:20px;
-}
+    .details a {
+        color:black;
+    }
+
+    .unfriendButton {
+        position:absolute;
+        top: 9%;
+        right: 5.5%;
+        transform: translateX(50%);
+        border-radius:5px;
+        border:none;
+        background: none;
+        color: red;
+        font-weight: bolder;
+        font-size: larger;
+        width:20px;
+        height:20px;
+    }
 </style>

@@ -7,10 +7,11 @@ export async function PATCH({locals,request}) {
 
     const data = await request.json();
     let response;
+
     if(data.status === 'added') {
-        response = newLike(id,data.postId)        
+        response = newLike(id,data.postId,data.type)        
     } else if (data.status === 'removed') {
-        response = removeLike(id,data.postId);
+        response = removeLike(id,data.postId,data.type);
 
     } else {
         console.log('die')

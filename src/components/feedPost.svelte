@@ -33,6 +33,7 @@
     for(const like of likes) { //Has the user already liked this post?
         if(userId === like.SenderId) {
             liked = true; 
+            break;
         }
     }
 
@@ -101,7 +102,8 @@
             method: 'PATCH',
             body: JSON.stringify({
                 status:status,
-                postId:postId
+                postId:postId,
+                type:'post'
             })
         
         })
@@ -171,7 +173,7 @@
             {#if commenter}
                 <div class="commentsBackground">
                     {#each comments as comment}
-                        <Comment user={comment.UserFrom} comment={comment.Content}/>
+                        <Comment commentId={comment.CommentId} user={comment.UserFrom} likes={comment.Likes} comment={comment.Content} />
                     {/each}
                 </div>
             <div class="comment-box">

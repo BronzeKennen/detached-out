@@ -96,6 +96,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY(UserFrom) REFERENCES users(UserId)
 )`);
 
+
 db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
 ('Software Engineer'),
 ('Product Manager'),
@@ -130,23 +131,27 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
     UNIQUE (Sender, Recipient)
 )`);
 
+
+//this is made to work for comments and posts
 db.exec(`CREATE TABLE IF NOT EXISTS likes (
     LikeId INTEGER PRIMARY KEY AUTOINCREMENT,
-    PostId INTEGER,
-    SenderId INTEGER,
-    FOREIGN KEY (PostId) REFERENCES posts(PostId),
+    EntityType TEXT NOT NULL,
+    EntityId INTEGER NOT NULL, 
+    SenderId INTEGER NOT NULL,
     FOREIGN KEY (SenderId) REFERENCES users(UserId),
-    UNIQUE (SenderId,PostId)
+    UNIQUE (SenderId,EntityId,EntityType)
 )`);
 
-export function newLike(userId,postId) {
-    const stmt = db.prepare('INSERT INTO likes (PostId,SenderId) VALUES (?,?)');
-    return stmt.run(postId,userId)
+
+export function newLike(userId,postId,type) {
+    let stmt;
+    stmt = db.prepare('INSERT INTO likes (EntityId,SenderId,EntityType) VALUES (?,?,?)');
+    return stmt.run(postId,userId,type)
 }
 
-export function removeLike(userId,postId) {
-    const stmt = db.prepare('DELETE FROM likes WHERE PostId = ? AND SenderId = ?');
-    return stmt.run(postId,userId)
+export function removeLike(userId,postId,type) {
+    const stmt = db.prepare('DELETE FROM likes WHERE EntityId = ? AND SenderId = ? AND EntityType = ?');
+    return stmt.run(postId,userId,type)
 }
 
 export function newComment(userId,postId,content) {
@@ -177,13 +182,17 @@ export function getCommentsById(postId) {
             UserId: line.UserFrom.UserId,
             profile_pic_url: line.UserFrom.profile_pic_url
         }
+        line.Likes = getLikesById(line.CommentId,'comment');
+        
     }
     return resp;
 }
 
-export function getLikesById(postId) {
-    const stmt = db.prepare('SELECT * FROM likes where PostId = ? ');
-    return stmt.all(postId);
+
+export function getLikesById(postId,type) {
+    let stmt;
+    stmt = db.prepare('SELECT * FROM likes where EntityId = ? AND EntityType = ?');
+    return stmt.all(postId,type);
 }
 
 export function getAllPosts() {
@@ -191,7 +200,7 @@ export function getAllPosts() {
     const resp = stmt.all();
     for(const line of resp) {
         line.Comments = getCommentsById(line.PostId)
-        line.Likes = getLikesById(line.PostId)
+        line.Likes = getLikesById(line.PostId,'post')
     }
     return resp;
 }
@@ -322,7 +331,6 @@ export function updateUserCredentials(updatedata) {
 }
 
 export function updateWorkExperience(id,updatedata) {
-    // console.log('===>',updatedata);
 
     let company = updatedata.employer
     let compId = getCompanyByName(company);
@@ -350,7 +358,6 @@ export function updateWorkExperience(id,updatedata) {
         query = `INSERT INTO work_experience (UserId,CompanyId,JobTitleId,StartDate,EndDate,Private) VALUES (?,?,?,?,?,?)`
         const stmt = db.prepare(query);
         result = stmt.run(id,compId,titleId,updatedata.from,updatedata.to,updatedata.private)
-        console.log(result)
     } else {
         const query = 'UPDATE work_experience SET CompanyId = ?, JobTitleId = ?, StartDate = ?, EndDate = ?, Private = ? WHERE UserId = ? AND ExperienceId = ?';
         const stmt = db.prepare(query);
@@ -394,7 +401,7 @@ export function updateMandInfobyId(id, updateData, partial = false) {
             const result = stmt.run([...values, id]);
             return result.changes > 0;
         } else {
-            console.log('uh oh')
+            console.log('An error occured')
         }
     } 
     // else { //not yet
@@ -422,7 +429,6 @@ export function updateEducationById(id,updateData) {
     const query = `UPDATE users SET university = ? WHERE UserId = ?`
     const stmt = db.prepare(query)
     let res = stmt.run(uniId,id);
-    console.log(res)
     return res.changes > 0;
 
 }
@@ -449,7 +455,6 @@ export function updateEmploymentById(id,updateData) {
             const companyQuery = db.prepare('INSERT OR IGNORE INTO Companies (company_name) VALUES (?)');
             let res = companyQuery.run(values[0])
             values[0] = res.lastInsertRowid;
-            console.log(res.changes)
         } else {
             values[0] = company.CompanyId;
         }

@@ -1,23 +1,62 @@
 
 <script>
+    import { onDestroy } from "svelte";
     import ProfileIcon from "./profileIcon.svelte";
 
     export let user = '';
     export let comment = ''
     const pfp = user.profile_pic_url;
 
-    export let likes = 0;
+    export let commentId;
+    export let likes;
     export let liked = false;
+    $: likeCount = likes.length;
 
     function handleLikes() {
         if (liked) {
-            likes -= 1;
+            likeCount -= 1;
         } else {
-            likes +=1;
+            likeCount +=1;
         }
         liked = !liked;
         
     }
+
+    let ogLikes = likes.length;
+    for(const like of likes) { //Has the user already liked this post?
+        if(user.UserId === like.SenderId) {
+            liked = true; 
+            break;
+        }
+    }
+
+    onDestroy(async () => {
+        let status;
+        if(likeCount === ogLikes) return
+        if(likeCount > ogLikes) status = 'added'
+        else status = 'removed'
+
+        let body;
+        const response = await fetch('/api/posts/likes/send', {
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify({
+                status:status,
+                postId:commentId,
+                type:'comment'
+            })
+        
+        })
+
+        if(response.ok) {
+            console.log('success')
+        } else {
+            console.log(response)
+        }
+    })
+        
 </script>
 
 <div class="comment">
@@ -32,7 +71,7 @@
             <p>{comment}</p>
         </div>
         <div class="likes">
-            <b> {likes} likes</b>
+            <b> {likeCount} likes</b>
             <b>•</b>
             <span on:click={handleLikes} id="likebutton" class:liked={liked}>
                 <b>{liked ? 'Liked' : 'Like'}</b> 

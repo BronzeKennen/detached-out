@@ -4,7 +4,6 @@
     import ProfileIcon from "../../../../components/profileIcon.svelte";
 
     export let data;
-    console.log(data.userProfile)
 
 </script>
 

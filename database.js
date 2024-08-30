@@ -67,6 +67,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
     FOREIGN KEY (CompanyId) REFERENCES Companies(CompanyId)   
 )`);
 
+// 
 db.exec(`CREATE TABLE IF NOT EXISTS posts (
     PostId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,
@@ -77,8 +78,10 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     Content TEXT,
     ImagesJson TEXT,
     FOREIGN KEY(UserId) REFERENCES users(UserId)
-
+    FOREIGN KEY(Comments) REFERENCES comments(CommentId)
 )`);
+
+
 
 
 
@@ -127,6 +130,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS friends (
     UNIQUE (Sender, Recipient)
 )`);
 
+export function newComment(userId,postId,content) {
+    const stmt = db.prepare('INSERT INTO comments (UserFrom,PostId,Content) VALUES (?,?,?)');
+    return stmt.run(userId,postId,content);
+}
+
 export function changeProfilePicture(UserId,url) {
     const stmt = db.prepare('UPDATE users SET profile_pic_url = ? WHERE UserId = ?');
     return stmt.run(url,UserId)
@@ -140,9 +148,27 @@ export function newPost(UserId,postData) {
 
 }
 
+export function getCommentsById(postId) {
+    const stmt = db.prepare('SELECT * FROM comments WHERE PostId = ?');
+    const resp = stmt.all(postId);
+    for(const line of resp) {
+        line.UserFrom = getUserById(line.UserFrom);
+        line.UserFrom = {
+            username: line.UserFrom.username,
+            UserId: line.UserFrom.UserId,
+            profile_pic_url: line.UserFrom.profile_pic_url
+        }
+    }
+    return resp;
+}
+
 export function getAllPosts() {
     const stmt = db.prepare('SELECT * from posts')
-    return stmt.all()
+    const resp = stmt.all();
+    for(const line of resp) {
+        line.Comments = getCommentsById(line.PostId)
+    }
+    return resp;
 }
 
 export function deleteFriend(friendId) {

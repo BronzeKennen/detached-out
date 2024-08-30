@@ -3,12 +3,17 @@
 
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
+    export let comments;
     export let likes = 0;
-    export let comments = 0;
     export let reposts = 0;
     export let images;
     export let poster;
     export let content;
+    export let postId;
+
+    const posterPfp = poster.profile_pic_url;
+
+    $: commentCount = comments.length;
 
     images = JSON.parse(images)
     if(images)
@@ -43,9 +48,21 @@
         commenter = !commenter
         autoResize();
     }
-    const submitComment = (() => {
+    const submitComment = (async () => {
         commenter = !commenter;
-        comments += 1;
+        commentCount += 1;
+
+        const response = await fetch('/api/posts/comments/send', {
+            method:'POST',
+            body: JSON.stringify({
+                Content: comment,
+                postId: postId
+            })
+        })
+        if(response.ok) {
+            console.log('success')
+        }
+
         comment = '';
     })
 
@@ -96,7 +113,7 @@
             <div class="reactions">
                 <span>{likes} Likes</span>
                 <span>
-                    <span>{comments} Comments</span>
+                    <span>{commentCount} Comments</span>
                     <span>{reposts} Reposts</span>
                 </span>
             </div>
@@ -116,11 +133,17 @@
             </div>
             {#if commenter}
                 <div class="commentsBackground">
-                    <Comment user='Mr.Ham' comment='Θα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξωΘα σε αγγιξω'/> 
-                    <Comment user='AlexK' comment='🥵🥵'/>
+                    {#each comments as comment}
+                        <Comment user={comment.UserFrom} comment={comment.Content}/>
+                    {/each}
                 </div>
             <div class="comment-box">
-                <span id="pfp"></span>
+                {#if posterPfp}
+                    <div id="pfp" style={`background-image: url('${posterPfp}')`}></div>
+                {:else}
+                   <span id="pfp"></span>
+                {/if}
+                
                 <textarea
                     id="commentbox"
                     type="text" 
@@ -310,6 +333,9 @@
         max-height:50px;
         background-color:cyan;
         border-radius:50%;
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat;
     }
 
 

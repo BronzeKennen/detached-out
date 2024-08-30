@@ -1,6 +1,7 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
     let postBody =''
+    export let pfp;
 
     function autoResize(event) {
         const textarea = event.target;
@@ -41,10 +42,10 @@
             })
         })
         if(resp.ok) {
-            console.log('YIPPIE')
+            console.log('success')
             console.log(resp)
         } else {
-            console.log('you fucked up');
+            console.log('an error has occured');
         }
     }
 
@@ -52,7 +53,12 @@
 
     <div class="new-post">
         <div class="pfpText">
-            <div id="pfp"></div>
+            {#if pfp}
+                <div id="pfp" style={`background-image: url('${pfp}')`}></div>
+            {:else}
+                <span id="pfp"></span> 
+            {/if}
+
             <textarea
                 id="postBody"
                         type="text" 
@@ -187,7 +193,10 @@
         min-height: 50px;
         background-color:cyan;
         border-radius:50%;
-        }
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat;
+    }
 
     @media(max-width: 500px) {
         #postButton {

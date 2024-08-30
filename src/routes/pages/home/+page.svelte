@@ -43,12 +43,14 @@
 <div class="feed">
     <SideProfile {user}/>
     <div class='MiddleCol'>
-        <NewPost />
+        <NewPost pfp={user.profile_pic_url}/>
         {#each user.posts as post}
             <FeedPost 
+                postId={post.PostId}
                 poster={post.UserId}
                 likes={post.LikeCount}
-                comments={post.CommentCount}
+                commentCount={post.CommentCount}
+                comments={post.Comments}
                 reposts={post.RepostCount}
                 images={post.ImagesJson}
                 content={post.Content}

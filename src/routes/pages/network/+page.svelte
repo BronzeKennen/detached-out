@@ -19,7 +19,7 @@
         margin-top:1rem;
         display:grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: 170px;
+        grid-template-rows: 200px;
         gap:20px;
         min-width:100%;
         text-align: center;

@@ -4,6 +4,7 @@
 
     export let user = '';
     export let comment = ''
+    const pfp = user.profile_pic_url;
 
     export let likes = 0;
     export let liked = false;
@@ -20,10 +21,14 @@
 </script>
 
 <div class="comment">
-    <div id="pfp"></div>
+    {#if pfp}
+        <div id="pfp" style={`background-image: url('${pfp}')`}></div>
+    {:else}
+        <div id="pfp"></div>
+    {/if}
     <div class="bodyReacts">
         <div class="body">
-            <div class="commenter">{user}</div>
+            <div class="commenter">{user.username}</div>
             <p>{comment}</p>
         </div>
         <div class="likes">
@@ -46,6 +51,9 @@
         height: 50px;
         background-color:cyan;
         border-radius:50%;
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat;
     }
 
 

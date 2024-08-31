@@ -202,8 +202,6 @@ export function getAllPosts() {
         line.Comments = getCommentsById(line.PostId)
         line.Likes = getLikesById(line.PostId,'post')
     }
-    resp.sort((a,b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
-
     return resp;
 }
 

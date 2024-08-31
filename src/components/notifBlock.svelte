@@ -20,7 +20,7 @@
             console.log('success')
             notiftype = 'dead'
         } else {
-            console.log('uuuu what du heeeellll')
+            console.log('An error has occured while trying to accept friend request')
         }
     }
 
@@ -39,7 +39,7 @@
             console.log('success')
             notiftype = 'dead'
         } else {
-            console.log('uuuu what du heeeellll')
+            console.log('An error has occured while trying to reject friend request')
         }
 
     }

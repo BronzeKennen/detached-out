@@ -1,7 +1,25 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
-    let postBody =''
+    $: postBody =''
     export let pfp;
+    let postButton;
+
+    export let id;
+
+    $: {
+        if(postButton) {
+            if(postBody === '') {
+                postButton.disabled = true;
+            } else {
+                postButton.disabled = false;
+    
+            }
+        }
+    }
+
+    function removeImage(index) {
+        images = images.filter((_, i) => i !== index);
+    }
 
     function autoResize(event) {
         const textarea = event.target;
@@ -16,6 +34,8 @@
 
     let images
     async function handleFileUpload(event) {
+        const postButton = document.getElementById('postButton');
+        postButton.disabled = true;
         const files = event.target.files;
         const formData = new FormData();
         for(const file of files) {
@@ -28,10 +48,12 @@
         });
         images = await response.json();
         if(response.ok) {
-            console.log('images uplaoded succesfully')
+            console.log('images uploaded succesfully')
         } else {
             console.log('error uploading image')
         }
+        postButton.disabled = false;
+        images = images.uploadedFiles;
     }
 
     async function createPost() {
@@ -68,9 +90,19 @@
         </div>
         <span class="buttons">
             <input type="file" id="uploadButton" on:change={handleFileUpload} multiple> 
-            <label for="uploadButton" id="uploadLabel">Upload Files</label>
-            <button id="postButton" class="under-text-button" on:click={createPost}>Post</button>
+            <label for="uploadButton" id="uploadLabel">Upload</label>
+            <button bind:this={postButton} id="postButton" class="under-text-button" on:click={createPost}>Post</button>
         </span>
+        {#if images}
+        <div class="images">
+            {#each images as image,index}
+                <span class="imgContainer">
+                    <img src={image} alt='kys'>
+                    <button class="imageDelete" on:click={()=>removeImage(index)}>X</button>
+                </span>
+            {/each}
+        </div>
+        {/if}
     </div>
 
 
@@ -80,6 +112,34 @@
         flex-direction: row;
         width:100%;
         justify-content: flex-end;
+
+    }
+
+    .images {
+        position:relative;
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 140px;
+    }
+    .imgContainer {
+        position:relative;
+    }
+    .images img {
+        border-radius:8px;
+        margin-top:.5rem;
+        padding:.2rem;
+        width:128px;
+        height:128px;
+        
+    }
+    .imageDelete {
+        margin-top:.9rem;
+        margin-left:-8.1rem;
+        border-radius:40px;
+        position:absolute;
+        background-color:white;
+        width:20px;
+        height:20px;
 
     }
     .new-post {
@@ -174,6 +234,10 @@
         background-color: #9145a0; 
     }
 
+    #postButton:disabled {
+        opacity:70%;
+    }
+
     #postButton:hover {
         cursor: pointer;
         box-shadow:0 2px 10px rgb(185, 50, 238);
@@ -201,6 +265,51 @@
         #postButton {
             margin-left: 0;
             width: 20%;
+        }
+    }
+
+    @media(max-width:1100px) {
+        .images {
+            grid-template-columns:1fr  1fr   1fr 1fr;
+        }
+        .images img {
+            width:100px;
+            height:100px
+        }
+        .imageDelete {
+            margin-top:.9rem;
+            margin-left:-6.2rem;
+    
+        }
+        
+
+    }
+    @media(max-width:400px) {
+        .images {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .images img {
+            width:110px;
+            height:110px;
+        }
+    .imageDelete {
+        margin-top:.9rem;
+        margin-left:-7.6rem;
+
+    }
+    }
+    @media(max-width:350px) {
+        .images {
+            grid-template-columns: 1fr 1fr;
+        }
+        .images img {
+            width:110px;
+            height:110px;
+        }
+        .imageDelete {
+            margin-top:.9rem;
+            margin-left:-7rem;
+    
         }
     }
 </style>

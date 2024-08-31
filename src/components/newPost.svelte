@@ -5,7 +5,7 @@
     export let pfp;
     let postButton;
 
-    export let id;
+    export let user;
 
     $: {
         if(postButton) {
@@ -58,6 +58,7 @@
         images = images.uploadedFiles;
     }
 
+    let createdPost = null;
     async function createPost() {
         const resp = await fetch('/api/posts/newPost',{method :'POST',
             body: JSON.stringify({
@@ -67,6 +68,14 @@
         })
         if(resp.ok) {
             console.log('success')
+            let body = await resp.json();
+            body = body.post[0]
+            createdPost = {
+                Content: body.Content,
+                ImagesJson: body.ImagesJson,
+                PostId: body.PostId,
+                UserId: body.UserId,
+            }
         } else {
             console.log('an error has occured');
         }
@@ -106,17 +115,21 @@
         </div>
         {/if}
     </div>
-    <!-- <FeedPost  -->
-        <!-- userId={id}  -->
-        <!-- postId={5}  -->
-        <!-- poster={2}  -->
-        <!-- likes={[]}  -->
-        <!-- commentCount={0} -->
-        <!-- comments={[]} -->
-        <!-- reposts={0} -->
-        <!-- content={"Bitch nigga don't let me catch you"} -->
-    <!-- ></FeedPost> -->
-<!--  -->
+    {#if createdPost}
+    <FeedPost 
+        userId={createdPost.UserId} 
+        postId={createdPost.PostId} 
+        poster={user} 
+        reposts={0}
+        commentCount={0}
+        likes={[]} 
+        comments={[]}
+        images={createdPost.ImagesJson}
+        content={createdPost.Content}
+
+    />
+    {/if}
+
 
 <style>
     .buttons {

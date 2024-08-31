@@ -1,5 +1,8 @@
 <script>
     import { onDestroy } from "svelte";
+    import { onMount } from "svelte";
+
+
 
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
@@ -12,6 +15,7 @@
     export let postId;
     export let userId;
     export let user;
+    export let created;
 
     $: ogLikes = likes.length;
 
@@ -27,15 +31,38 @@
     let reposted = false;
     let commenter = false;
     let comment =''
-    let slider=null
+    let slider=null;
 
+    let timePassed = '';
+
+    function calculateTimePassed(timestamp) {
+        const now = new Date();
+        const diff = now - timestamp; // Difference in milliseconds
+
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) {
+            return `${days}d`;
+        } else if (hours > 0) {
+            return `${hours}h`;
+        } else if (minutes > 0) {
+            return `${minutes}m`;
+        } else {
+            return `${seconds}s`;
+        }
+    }
+
+    
     for(const like of likes) { //Has the user already liked this post?
         if(userId === like.SenderId) {
             liked = true; 
             break;
         }
     }
-
+    
     if(images) { //reset the slider if images exist
         slider = 0;
     }
@@ -49,13 +76,13 @@
         reposts += reposted ? -1 : +1;
         reposted = !reposted;
     }
-
+    
     function toggleCommenter() {
         commenter = !commenter
         autoResize();
     }
-
-
+    
+    
     const submitComment = (async () => {
         commenter = !commenter;
         commentCount += 1;
@@ -80,10 +107,10 @@
             content = ''
             console.log('success')
         }
-
+        
         comment = '';
     })
-
+    
     //slider functions
     function handleLeft() {
         if(slider > 0) {
@@ -95,8 +122,13 @@
             slider += 1;
         }
     }
-
-//send the likes/etc on destroy to not send 10 trillion requests if the button is spammed
+    
+    
+    onMount(() => {
+        const createdAt = new Date(created.replace(' ', 'T') + 'Z');
+        timePassed = calculateTimePassed(createdAt);
+    });
+    //send the likes/etc on destroy to not send 10 trillion requests if the button is spammed
     onDestroy(async () => {
         let status;
         if(likeCount === ogLikes) return
@@ -141,10 +173,11 @@
     <div class="feed-post">
         <div class="stats">
             <ProfileIcon user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
+            <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
         </div>
         <div class="post">
             <p>{content}</p>
-    
+            
             <div class="image-slider">
                 
                 {#if images}
@@ -153,7 +186,7 @@
                         <button id="left" on:click={handleLeft} disabled={slider === 0}> {'<'}</button>
                         <button id="right" on:click={handleRight} disabled={slider === images.length - 1}> {'>'}</button>
                     </div>
-                {/if}
+                    {/if}
             <!-- <img src="https://res.cloudinary.com/dsyxmtqbu/image/upload/v1724873933/wjxxl74rtlxdbrmkcivq.png" class="post-image"> -->
             </div>
         </div>
@@ -276,6 +309,13 @@
 
     }
 
+    #timePassed {
+        width: fit-content;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: small;
+    }
 
     .reactions {
         opacity:40%;
@@ -285,6 +325,7 @@
 
     }
     .stats {
+        position: relative;
         margin:-.5rem;
         font-size:18px;
     }

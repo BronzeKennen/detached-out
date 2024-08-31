@@ -1,14 +1,29 @@
 <script>
     import Friend from '../../../components/friend.svelte';
+    import {friendStore} from '$lib/stores'
     export let data;
     let profile = data.userProfile
-    let friends = profile.friends
+    // let friends = profile.friends
+    let friends;
+    $: friendStore
+    if(!$friendStore) {
+        friendStore.set(profile.friends)
+        console.log('aaaa')
+        console.log($friendStore)
+    }
+    else {
+        const newFriends = profile.friends.filter(
+            newFriend => !$friendStore.some(existingFriend => existingFriend.UserId === newFriend.UserId)
+        );
+        friendStore.update(friends => [...friends, ...newFriends])
+        console.log($friendStore)
+    }
     let pendingExist = false;
     let friendsExist = false;
 
     $: {
-        pendingExist = friends.some(friend => friend.Status === 'pending')
-        friendsExist = friends.some(friend => friend.Status === 'accepted')
+        pendingExist = $friendStore.some(friend => friend.Status === 'pending')
+        friendsExist = $friendStore.some(friend => friend.Status === 'accepted')
     }
 
 </script>
@@ -41,9 +56,9 @@
 
 <h1>Friends</h1>
 <div class="friends-tab">
-    {#each friends as friend }
+    {#each $friendStore as friend,index }
         {#if friend.Status === 'accepted'}
-            <Friend profile={friend} id={profile.UserId}/>
+            <Friend profile={friend} id={profile.UserId} index={index}/>
         {/if}
     {/each}
 </div>
@@ -53,9 +68,9 @@
 <div class="separator"></div>
 <h1> Pending Friend Requests</h1>
 <div class="friends-tab pending">
-    {#each friends as friend}
+    {#each $friendStore as friend,index}
         {#if friend.Status === 'pending'}
-            <Friend profile={friend} id={profile.UserId} />
+            <Friend profile={friend} id={profile.UserId} index={index}/>
         {/if}
     {/each}
 </div>

@@ -4,7 +4,6 @@ import {deleteFriend} from "../../../../../database"
 
 export const DELETE = async ({url}) => {
     const id = url.searchParams.get('friendshipId') 
-    console.log(id)
 
     const res = deleteFriend(id)
     if(res) {

@@ -233,8 +233,7 @@ export function sendFriendRequest(idSender,idRecipient) {
 
 export function acceptFriendRequest(idSender,idRecipient) {
     const stmt = db.prepare('UPDATE friends SET Status = \'accepted\' WHERE Sender = ? AND Recipient = ?');
-    const resp =  stmt.run(idSender,idRecipient);
-    return resp.changes > 0;
+    return stmt.run(idSender,idRecipient);
 }
 
 export function rejectFriendRequest(idSender,idRecipient) {

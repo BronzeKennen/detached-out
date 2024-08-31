@@ -5,11 +5,12 @@
 
     export let user = '';
     export let comment = ''
-    const pfp = user.profile_pic_url;
 
     export let commentId;
     export let likes;
     export let liked = false;
+    export let sender;
+    const pfp = sender.profile_pic_url;
     $: likeCount = likes.length;
 
 
@@ -25,6 +26,7 @@
 
     let ogLikes = likes.length;
     for(const like of likes) { //Has the user already liked this post?
+        console.log(like)
         if(user.UserId === like.SenderId) {
             liked = true; 
             break;
@@ -68,7 +70,7 @@
     {/if}
     <div class="bodyReacts">
         <div class="body">
-            <div class="commenter">{user.username}</div>
+            <div class="commenter">{sender.username}</div>
             <p>{comment}</p>
         </div>
         <div class="likes">

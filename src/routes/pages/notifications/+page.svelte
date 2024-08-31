@@ -52,7 +52,7 @@
 
 </style>
 <div class="feed">
-    <SideProfile/>
+    <SideProfile user={data.userProfile}/>
     <div class='MiddleCol'>
         {#each $selectedProfile.friends as friend}
             {#if friend.Recipient === $selectedProfile.UserId && friend.Status === 'pending'}

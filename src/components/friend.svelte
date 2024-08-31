@@ -1,8 +1,10 @@
 <script>
     import { goto } from '$app/navigation';
+    import {friendStore} from '$lib/stores'
 
     export let profile;
     export let id;
+    export let index;
     let user;
     let classes = 'friend-profile'
     let addButtons = false;
@@ -32,6 +34,11 @@
 
         if(resp.ok) {
             console.log('success')
+            friendStore.update(friends => {
+                const updatedFriends = [...friends]; 
+                updatedFriends.splice(index, 1); 
+                return updatedFriends; 
+            });
         } else {
             console.log('what du heeeellll oh my god no wayayayayaay');
         }
@@ -51,7 +58,11 @@
         })
         if(resp.ok) {
             console.log('success')
-            goto(window.location.pathname, { replaceState: true });
+            $friendStore[index].status = 'accepted'
+            friendStore.update(friends => {
+                friends[index].Status = 'accepted'; // Update the status
+                return [...friends]; // Return a new array to trigger reactivity
+            });
         } else {
             console.log('uuuu what du heeeellll')
         }
@@ -70,7 +81,10 @@
         })
         if(resp.ok) {
             console.log('success')
-            goto(window.location.pathname, { replaceState: true });
+            friendStore.update(friends => {
+                friends[index].Status = 'rejected'; // Update the status
+                return [...friends]; // Return a new array to trigger reactivity
+            });
         } else {
             console.log('uuuu what du heeeellll')
         }

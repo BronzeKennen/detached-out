@@ -1,4 +1,4 @@
-import { newComment } from '../../../../../../database.js';
+import { newComment } from '../../../../../../setters.js';
 
 export async function POST({locals,request}) {
     const id = locals.user?.id;

@@ -3,10 +3,8 @@ import {
     getJobTitleById,
     getFriends,
     getCompanyById,
-    getFriendRequests,
     getUniversityById,
-    getAll,
-    getUserById } from '../../../../database.js';
+    getUserById } from '../../../../getters.js';
 
 
 export async function load({ locals, request }) {

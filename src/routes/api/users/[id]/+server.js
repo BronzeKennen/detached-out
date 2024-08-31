@@ -1,4 +1,4 @@
-import { getUserById } from '/database.js' 
+import { getUserById } from '/getters.js' 
 export async function GET({ params }) {
     const { id } = params;
 

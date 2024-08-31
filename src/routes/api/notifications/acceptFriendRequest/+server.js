@@ -1,4 +1,5 @@
-import {getUserById,acceptFriendRequest, getFriends , getNotifications} from "../../../../../database"
+import {getUserById} from "../../../../../getters.js"
+import {acceptFriendRequest} from '../../../../setters.js'
 
 export const PATCH = async ({request}) => {
     const data = await request.json();

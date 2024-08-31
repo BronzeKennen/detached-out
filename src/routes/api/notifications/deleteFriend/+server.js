@@ -1,6 +1,6 @@
 
 
-import {deleteFriend} from "../../../../../database"
+import {deleteFriend} from "../../../../../setters.js"
 
 export const DELETE = async ({url}) => {
     const id = url.searchParams.get('friendshipId') 

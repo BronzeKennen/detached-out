@@ -1,4 +1,4 @@
-import { getCompanyById, getJobTitleById, getWorkExperienceById } from "../../../../database";
+import { getCompanyById, getJobTitleById, getWorkExperienceById } from "../../../../getters.js";
 
 export const GET = ({ url }) => {
 

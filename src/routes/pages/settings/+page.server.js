@@ -1,4 +1,4 @@
-import { getCompanyById,getJobTitleById } from '/database.js' 
+import { getCompanyById,getJobTitleById } from '/getters.js' 
 export async function load({ locals, request }) {
     const id = locals.user?.id;
 

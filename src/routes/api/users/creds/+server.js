@@ -1,5 +1,5 @@
 
-import { updateUserCredentials, updatePassword } from '/database.js' 
+import { updateUserCredentials, updatePassword } from '/setters.js' 
 export const GET = () => {
 
     const users = getUsers();

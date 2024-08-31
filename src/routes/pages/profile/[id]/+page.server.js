@@ -6,7 +6,7 @@ import {
     getFriends,
     getCompanyById,
     getJobTitleById
-} from '../../../../../database.js';
+} from '../../../../../getters.js';
 
 
 

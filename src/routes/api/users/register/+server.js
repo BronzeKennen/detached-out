@@ -1,5 +1,5 @@
 
-import { addUser ,findUserByEmail} from '/database.js' 
+import { addUser ,findUserByEmail} from '/setters.js' 
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { ACCESS_TOKEN_SECRET } from '$env/static/private';

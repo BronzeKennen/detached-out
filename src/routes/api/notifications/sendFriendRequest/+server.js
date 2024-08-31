@@ -1,4 +1,5 @@
-import { getCompanyById, getJobTitleById, getUserById, sendFriendRequest } from "../../../../../database"
+import { getCompanyById, getJobTitleById, getUserById} from "../../../../../getters.js"
+import {sendFriendRequest } from "../../../../../setters.js"
 
 export const POST = async ({request}) => {
     let data = await request.json()

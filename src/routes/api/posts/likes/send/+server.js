@@ -1,6 +1,5 @@
 
-import { removeLike } from '../../../../../../database.js';
-import { newLike } from '../../../../../../database.js';
+import { removeLike ,newLike} from '../../../../../../setters.js';
 
 export async function PATCH({locals,request}) {
     const id = locals.user?.id;

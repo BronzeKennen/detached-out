@@ -705,6 +705,12 @@
         margin: auto;
     }
 
+    .details {
+        transform: translateY(-15vh);
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
     @media (max-width: 950px) {
         .background {
             height: 35vh;

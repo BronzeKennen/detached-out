@@ -22,7 +22,24 @@
     }
 
     
-    @media (max-width : 1000px) {
+    
+    .LeftCol {
+        display: flex;
+        flex-direction: row;
+        width: 300px;
+        height: 50vh;
+        margin-right: 1rem;
+    }
+    
+    .MiddleCol {
+        flex-direction: column;
+        flex: 2;
+    }
+
+    @media (max-width : 820px) {
+        .LeftCol {
+            width: 250px;
+        }
     }
 
     @media (max-width: 600px) {
@@ -30,16 +47,19 @@
             display:flex;
             flex-direction: column;
         }
-    }
 
-    .MiddleCol {
-        flex-direction: column;
-        flex: 2;
+        .LeftCol {
+            width: 100%;
+            height: fit-content;
+            flex-direction: column;
+        }
     }
-
 </style>
+
 <div class="feed">
-    <SideProfile {user}/>
+    <div class='LeftCol'>
+        <SideProfile {user}/>
+    </div>
     <div class='MiddleCol'>
         <NewPost id={user.UserId} pfp={user.profile_pic_url}/>
         {#each user.posts as post}

@@ -58,11 +58,11 @@
     <div class='MiddleCol'>
         {#each $selectedProfile.friends as friend}
             {#if friend.Recipient === $selectedProfile.UserId && friend.Status === 'pending'}
-                <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request' pfp={friend.Sender.profile_pic_url}/>
+                <NotifBlock recipient={$selectedProfile.UserId} sender={friend.Sender} notiftype='friend_request' pfp={friend.Sender.profile_pic_url} />
             {/if}
         {/each}
         {#each notifications as notif} 
-            <NotifBlock recipient={$selectedProfile.UserId} sender={notif.UserFrom} notiftype={notif.type} pfp={notif.UserFrom.profile_pic_url}/>
+            <NotifBlock recipient={$selectedProfile.UserId} sender={notif.UserFrom} notiftype={notif.type} pfp={notif.UserFrom.profile_pic_url} created={notif.DateCreated}/>
         {/each}
         {#if !pending && notifications.length === 0}
         <div class='no-notif'><h3>No notifications to show </h3></div>

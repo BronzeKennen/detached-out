@@ -71,7 +71,7 @@ export function getFriends(id) {
 
 
 export function getNotifications(id) {
-    const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ?;');
+    const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ? ORDER BY DateCreated DESC;');
     const resp =  stmt.all(id);
     console.log(resp)
     return resp;

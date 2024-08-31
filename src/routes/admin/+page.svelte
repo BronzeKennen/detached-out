@@ -2,12 +2,10 @@
     import AdminGrid from "../../components/adminGrid.svelte";
     import Friend from "../../components/friend.svelte";
 
-    export const users = [];
+    export let data;
 </script> 
 
-<AdminGrid />
-{#each users as user }
-        {#if user.Status === 'accepted'}
-            <Friend profile={user} id={user.UserId}/>
-        {/if}
+<AdminGrid data={data}/>
+{#each data as user }
+        <Friend profile={user} id={UserId}/>
 {/each}

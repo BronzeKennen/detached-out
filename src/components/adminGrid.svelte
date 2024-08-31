@@ -3,38 +3,23 @@
 
     export let profile;
     export let id;
-    let user;
+    export let data;
+    export let user;
     let classes = 'friend-profile'
     let addButtons = false;
-    user = profile.Sender;
 
-    const deleteUser = async () => {
-        const friendshipId = profile.FriendId;
-        const resp = await fetch(`/api/notifications/deleteFriend?friendshipId=${friendshipId}`, {
-            method: 'DELETE',
-            heeaders: {
-                'Content-Type' : 'application/json'
-            }
-        })
-
-        if(resp.ok) {
-            console.log('success')
-        } else {
-            console.log('what du heeeellll oh my god no wayayayayaay');
-        }
-
-    }
 </script>
 <div class={classes}>
     <div class="background">
         {#if !addButtons}
-        <button class="unfriendButton" on:click={deleteFriend}>X</button>
+        <button class="unfriendButton">X</button>
         {/if}
     </div>
     <div class="pfp">
 
     </div>
     <div class="details">
+        {#if user}
         {#if user.job_title}
         <p>{user.job_title.JobTitle}</p>
         {/if}
@@ -50,6 +35,7 @@
             <button class="accept"><h6>SELECT</h6></button>
             <button class="delete" on:click={deleteUser}><h6>DELETE USER</h6></button>
         </div>
+        {/if}
         {/if}
     </div>
 </div>

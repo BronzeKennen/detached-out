@@ -156,7 +156,8 @@ export function updateMandInfobyId(id, updateData, partial = false) {
 }
 
 export function updateEducationById(id,updateData) {
-    let filteredUpdateData = {...updateData};
+    let filteredUpdateData = {...updateData}
+    console.log(filteredUpdateData)
     delete filteredUpdateData.UserId;
     let uniId;
 
@@ -167,6 +168,8 @@ export function updateEducationById(id,updateData) {
         uniId = res.lastInsertRowid;
     } else {
         uniId = education.UniversityId;
+        const updateUni = db.prepare('UPDATE Universities SET major = ?, StartDate = ? , EndDate = ? WHERE UniversityId = ?')
+        const query = updateUni.run(filteredUpdateData.major,filteredUpdateData.from,filteredUpdateData.to,uniId)
     }
     const query = `UPDATE users SET university = ? WHERE UserId = ?`
     const stmt = db.prepare(query)

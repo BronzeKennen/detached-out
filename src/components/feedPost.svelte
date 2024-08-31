@@ -1,8 +1,6 @@
 <script>
     import { onDestroy } from "svelte";
 
-
-
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     export let comments;

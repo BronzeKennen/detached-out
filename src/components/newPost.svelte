@@ -1,4 +1,5 @@
 <script>
+    import FeedPost from "./feedPost.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     $: postBody =''
     export let pfp;
@@ -32,7 +33,7 @@
         }
     }
 
-    let images
+    let images,requestImages;
     async function handleFileUpload(event) {
         const postButton = document.getElementById('postButton');
         postButton.disabled = true;
@@ -53,6 +54,7 @@
             console.log('error uploading image')
         }
         postButton.disabled = false;
+        requestImages = images;
         images = images.uploadedFiles;
     }
 
@@ -60,7 +62,7 @@
         const resp = await fetch('/api/posts/newPost',{method :'POST',
             body: JSON.stringify({
                 content: postBody,
-                images: images
+                images: requestImages
             })
         })
         if(resp.ok) {
@@ -104,7 +106,17 @@
         </div>
         {/if}
     </div>
-
+    <!-- <FeedPost  -->
+        <!-- userId={id}  -->
+        <!-- postId={5}  -->
+        <!-- poster={2}  -->
+        <!-- likes={[]}  -->
+        <!-- commentCount={0} -->
+        <!-- comments={[]} -->
+        <!-- reposts={0} -->
+        <!-- content={"Bitch nigga don't let me catch you"} -->
+    <!-- ></FeedPost> -->
+<!--  -->
 
 <style>
     .buttons {

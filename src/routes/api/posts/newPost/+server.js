@@ -1,4 +1,4 @@
-import { newPost } from '../../../../../database.js';
+import { newPost,getPostById } from '../../../../../database.js';
 
 export async function POST({locals,request}) {
     const id = locals.user?.id;
@@ -8,10 +8,12 @@ export async function POST({locals,request}) {
 
     const resp = newPost(id,data)
     if(resp) {
-        console.log("yippie I created a new post")
+        const post = getPostById(resp.lastInsertRowid);
+        console.log(post)
+        return new Response(JSON.stringify({post:post},{status:200}));
     } else {
-        console.log("you fucked up bitch nigga")
+        console.log("Internal Error when creating post")
+        return new Response(JSON.stringify({message:"Internal Error"},{status:500}))
     }
-    return new Response(JSON.stringify({message:"success"},{status:200}));
 
 }

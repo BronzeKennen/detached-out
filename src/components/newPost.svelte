@@ -1,10 +1,11 @@
 <script>
+    import FeedPost from "./feedPost.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     $: postBody =''
     export let pfp;
     let postButton;
 
-    export let id;
+    export let user;
 
     $: {
         if(postButton) {
@@ -32,7 +33,7 @@
         }
     }
 
-    let images
+    let images,requestImages;
     async function handleFileUpload(event) {
         const postButton = document.getElementById('postButton');
         postButton.disabled = true;
@@ -53,18 +54,30 @@
             console.log('error uploading image')
         }
         postButton.disabled = false;
+        requestImages = images;
         images = images.uploadedFiles;
     }
 
+    let createdPost = null;
     async function createPost() {
         const resp = await fetch('/api/posts/newPost',{method :'POST',
             body: JSON.stringify({
                 content: postBody,
-                images: images
+                images: requestImages
             })
         })
         if(resp.ok) {
             console.log('success')
+            let body = await resp.json();
+            body = body.post[0]
+            createdPost = {
+                Content: body.Content,
+                ImagesJson: body.ImagesJson,
+                PostId: body.PostId,
+                UserId: body.UserId,
+            }
+            postBody = '' 
+            images = null;
         } else {
             console.log('an error has occured');
         }
@@ -104,6 +117,21 @@
         </div>
         {/if}
     </div>
+    {#if createdPost}
+    <FeedPost 
+        user={user}
+        userId={createdPost.UserId} 
+        postId={createdPost.PostId} 
+        poster={user} 
+        reposts={0}
+        commentCount={0}
+        likes={[]} 
+        comments={[]}
+        images={createdPost.ImagesJson}
+        content={createdPost.Content}
+
+    />
+    {/if}
 
 
 <style>

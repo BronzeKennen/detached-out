@@ -172,6 +172,17 @@ export function newPost(UserId,postData) {
 
 }
 
+export function getPostById(postId) {
+    const stmt = db.prepare('SELECT * FROM posts WHERE PostId = ?')
+    const resp = stmt.all(postId);
+    for(const line of resp) {
+        line.Comments = getCommentsById(line.PostId)
+        line.Likes = getLikesById(line.PostId,'post')
+    }
+    return resp;
+
+}
+
 export function getCommentsById(postId) {
     const stmt = db.prepare('SELECT * FROM comments WHERE PostId = ?');
     const resp = stmt.all(postId);

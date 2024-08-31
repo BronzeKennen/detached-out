@@ -20,7 +20,6 @@
             classes+= ' low-opacity'
         }
     }
-    console.log(user)
 
     const deleteFriend = async () => {
         const friendshipId = profile.FriendId;

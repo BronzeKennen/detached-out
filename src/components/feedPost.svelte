@@ -14,6 +14,7 @@
     export let content;
     export let postId;
     export let userId;
+    export let user;
     export let created;
 
     $: ogLikes = likes.length;
@@ -85,7 +86,8 @@
     const submitComment = (async () => {
         commenter = !commenter;
         commentCount += 1;
-        
+
+        let commentId
         const response = await fetch('/api/posts/comments/send', {
             method:'POST',
             body: JSON.stringify({
@@ -94,6 +96,15 @@
             })
         })
         if(response.ok) {
+            let body = await response.json()
+            comments = [...comments,{
+                CommentId : body.commentId,
+                UserFrom:user,
+                Likes:[],
+                Content:content
+            }]
+
+            content = ''
             console.log('success')
         }
         
@@ -204,7 +215,12 @@
             {#if commenter}
                 <div class="commentsBackground">
                     {#each comments as comment}
-                        <Comment commentId={comment.CommentId} user={comment.UserFrom} likes={comment.Likes} comment={comment.Content} />
+                        <Comment 
+                            commentId={comment.CommentId} 
+                            user={comment.UserFrom} 
+                            likes={comment.Likes} 
+                            comment={comment.Content} 
+                        />
                     {/each}
                 </div>
             <div class="comment-box">

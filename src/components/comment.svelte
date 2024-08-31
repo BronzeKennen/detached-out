@@ -12,6 +12,7 @@
     export let liked = false;
     $: likeCount = likes.length;
 
+
     function handleLikes() {
         if (liked) {
             likeCount -= 1;

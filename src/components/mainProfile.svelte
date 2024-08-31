@@ -104,7 +104,6 @@
         const result = await resp.json();
         if(resp.ok) {
             imageUrl = result.url
-            console.log(result.url)
         } else {
             uploadError = result.error || 'upload failed'            
         } 

@@ -76,6 +76,8 @@
                 PostId: body.PostId,
                 UserId: body.UserId,
             }
+            postBody = '' 
+            images = null;
         } else {
             console.log('an error has occured');
         }
@@ -117,6 +119,7 @@
     </div>
     {#if createdPost}
     <FeedPost 
+        user={user}
         userId={createdPost.UserId} 
         postId={createdPost.PostId} 
         poster={user} 

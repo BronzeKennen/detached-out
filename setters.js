@@ -230,3 +230,13 @@ export function findUserByEmail(email) {
     const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
     return stmt.get(email);
 }
+
+export function newNotification(idFrom,idTo,type) {
+    if(idFrom === idTo) {
+        console.log("Can't add notification. The user cannot create a notification to themselves");
+        return false;
+    }
+    const stmt = db.prepare('INSERT INTO notifications (UserFrom,UserTo,type) VALUES (?,?,?)');
+    return stmt.run(idFrom,idTo,type);
+
+}

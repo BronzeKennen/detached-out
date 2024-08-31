@@ -1,28 +1,6 @@
 import Database from "better-sqlite3";
 import bcrypt from 'bcryptjs'
 
-import { 
-    getPostById,
-    getCommentsById,
-    getAllFriends,
-    getAllPosts,
-    getCompanies,
-    getCompanyById,
-    getCompanyByName,
-    getFriends,
-    getJobTitleById,
-    getJobTitleByName,
-    getLikesById,
-    getNotifications,
-    getUniversityById,
-    getUniversityByName,
-    getUserById,
-    getUserByName,
-    getUsers,
-    getWorkExperience,
-    getWorkExperienceById
-
- } from "./getters";
 const db = new Database('./database.db');
 
 
@@ -52,8 +30,10 @@ db.exec(`CREATE TABLE IF NOT EXISTS notifications (
     UserFrom INTEGER NOT NULL,
     UserTo INTEGER NOT NULL,
     type TEXT NOT NULL,
+    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (UserFrom) REFERENCES users(UserId),
     FOREIGN KEY (UserTo) REFERENCES users(UserId)
+    CHECK (UserFrom != UserTo)
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS Companies (
@@ -103,10 +83,6 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     FOREIGN KEY(Comments) REFERENCES comments(CommentId)
 )`);
 
-
-
-
-
 db.exec(`CREATE TABLE IF NOT EXISTS comments (
     CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
     PostId INTEGER NOT NULL,
@@ -117,30 +93,6 @@ db.exec(`CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY(PostId) REFERENCES posts(PostId),
     FOREIGN KEY(UserFrom) REFERENCES users(UserId)
 )`);
-
-
-db.exec(`INSERT OR IGNORE INTO JobTitles (JobTitle) VALUES
-('Software Engineer'),
-('Product Manager'),
-('Data Scientist'),
-('UX/UI Designer'),
-('Marketing Specialist'),
-('Financial Analyst'),
-('Sales Manager'),
-('Human Resources Manager'),
-('Project Coordinator'),
-('Network Administrator'),
-('Content Writer'),
-('Customer Support Representative'),
-('Quality Assurance Engineer'),
-('Business Development Executive'),
-('Operations Manager'),
-('Graphic Designer'),
-('IT Support Specialist'),
-('Account Manager'),
-('Research Scientist'),
-('Mobile App Developer');
-`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS friends (
     FriendId INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -27,6 +27,20 @@ export function getCommentsById(postId) {
     return resp;
 }
 
+export function getCommentById(commentId) {
+    const stmt = db.prepare('SELECT * FROM comments WHERE CommentId = ?');
+    let resp = stmt.all(commentId);
+    for(const comment of resp) {
+        comment.UserFrom = getUserById(comment.UserFrom);
+        comment.UserFrom = {
+            UserFrom : comment.UserFrom.UserId,
+            username: comment.UserFrom.username,
+            profile_pic_url: comment.UserFrom.profile_pic_url
+        }
+    }
+    return resp;
+} 
+
 export function getLikesById(postId,type) {
     let stmt;
     stmt = db.prepare('SELECT * FROM likes where EntityId = ? AND EntityType = ?');
@@ -58,7 +72,9 @@ export function getFriends(id) {
 
 export function getNotifications(id) {
     const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ?;');
-    return stmt.all(id);
+    const resp =  stmt.all(id);
+    console.log(resp)
+    return resp;
 }
 
 export function getUsers() {

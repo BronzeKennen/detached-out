@@ -4,7 +4,8 @@ import {
     getFriends,
     getCompanyById,
     getUniversityById,
-    getUserById } from '../../../../getters.js';
+    getUserById, 
+    getUserByName} from '../../../../getters.js';
 
 
 export async function load({ locals, request }) {
@@ -27,7 +28,7 @@ export async function load({ locals, request }) {
 
         const profile = await res.json();
         const friends = getFriends(profile.UserId);
-        const notifs = getNotifications(profile.UserId);
+        let notifs = getNotifications(profile.UserId);
 
         let connections = 0;
         for(const friend of friends) {
@@ -44,7 +45,11 @@ export async function load({ locals, request }) {
 
         for(const notif of notifs) {
             let senderName = getUserById(notif.UserFrom);
-            notif.UserFrom = senderName.username;
+            notif.UserFrom = {
+                username: senderName.username,
+                UserId: senderName.UserId,
+                profile_pic_url: senderName.profile_pic_url
+            }
             //same logic as above
         }
 

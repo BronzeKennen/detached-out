@@ -142,6 +142,10 @@
             width: 30%;
         }
     }
+    a {
+        text-decoration: none;
+        color:inherit
+    }
 </style>
 
 <div class="notifBlock"> 
@@ -159,8 +163,14 @@
         </div>
         {:else if notiftype === 'dead'}
             <div class="message"><a href='/pages/profile/{sender.UserId}'>Friend Request {sender.Status}</div>
+        {:else if notiftype === 'comment'}
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> commented on your post</div>
+        {:else if notiftype === 'comment-like'}
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> like your comment</div>
+        {:else if notiftype === 'post-like'}
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> liked your post</div>
         {:else}
-        <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
+            <div class="message">An error has occured while fetching notification</div>
         {/if}
     </div>
 </div>

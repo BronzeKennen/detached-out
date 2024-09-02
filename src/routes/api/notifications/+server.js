@@ -1,4 +1,4 @@
-import { getFriends , getNotifications} from "../../../../database"
+import { getFriends , getNotifications} from "../../../../getters.js"
 
 export const GET = async () => {
 

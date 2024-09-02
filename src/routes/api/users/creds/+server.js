@@ -1,5 +1,6 @@
 
-import { updateUserCredentials, updatePassword } from '/database.js' 
+import { getUsers } from '../../../../../getters.js';
+import { updateUserCredentials, updatePassword } from '/setters.js' 
 export const GET = () => {
 
     const users = getUsers();

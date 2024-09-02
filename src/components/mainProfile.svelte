@@ -92,10 +92,10 @@
 
     async function handleFileUpload(e) {
         let imageUrl,uploadError;
-        const pfp = e.target.files[0];
+        let imagepfp = e.target.files[0];
 
         const formData = new FormData()
-        formData.append('image',pfp)
+        formData.append('image',imagepfp)
         const resp = await fetch("/api/upload", {
             method: "POST",
             body: formData
@@ -103,7 +103,7 @@
 
         const result = await resp.json();
         if(resp.ok) {
-            imageUrl = result.url
+            pfp = result.url
         } else {
             uploadError = result.error || 'upload failed'            
         } 

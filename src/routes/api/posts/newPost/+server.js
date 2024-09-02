@@ -1,4 +1,5 @@
-import { newPost,getPostById } from '../../../../../database.js';
+import { newPost} from '../../../../../setters.js';
+import {getPostById } from '../../../../../getters.js'
 
 export async function POST({locals,request}) {
     const id = locals.user?.id;

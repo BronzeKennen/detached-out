@@ -4,7 +4,7 @@ import {
     getFriends,
     getCompanyById,
     getJobTitleById
-} from './database.js';
+} from './getters.js';
 
 
 export async function load({ locals, request }) {

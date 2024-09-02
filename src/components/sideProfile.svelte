@@ -94,21 +94,21 @@
 <div class="side-profile">
     <div class="background">
     </div>
-    {#if $selectedProfile.profile_pic_url}
-    <div class="pfp" style={`background-image: url('${$selectedProfile.profile_pic_url}')`}></div>
+    {#if user.profile_pic_url}
+    <div class="pfp" style={`background-image: url('${user.profile_pic_url}')`}></div>
     {:else}
     <div class="pfp"></div>
     {/if}
     <div class="details">
-        {#if $selectedProfile.university}
-        <div class='info'>{$selectedProfile.university.university_name} • {$selectedProfile.university.major} </div>
+        {#if user.university}
+        <div class='info'>{user.university.university_name} • {user.university.major} </div>
         {/if}
-        {#if $selectedProfile.current_company && $selectedProfile.job_title}
-        <div class='info'>{$selectedProfile.current_company.company_name} • {$selectedProfile.job_title.JobTitle}</div>
+        {#if user.current_company && user.job_title}
+        <div class='info'>{user.current_company.company_name} • {user.job_title.JobTitle}</div>
         {/if}
-        <div class='name'>  {$selectedProfile.fname} {$selectedProfile.lname}</div>
+        <div class='name'>  {user.fname} {user.lname}</div>
         <div class="connections">
-            <div class=""> Connections {$selectedProfile.connections} - <a href="/pages/network">Grow your network</a></div>
+            <div class=""> Connections {user.connections} - <a href="/pages/network">Grow your network</a></div>
         </div>
     </div>
 </div>

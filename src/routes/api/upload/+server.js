@@ -1,7 +1,6 @@
-import { json } from '@sveltejs/kit';
 import cloudinary from 'cloudinary';
 import { CLOUD_NAME,API_KEY,API_SECRET } from '$env/static/private';
-import { changeProfilePicture, getUserById } from '../../../../database.js';
+import { changeProfilePicture} from '../../../../setters.js';
 
 // Configure Cloudinary
 cloudinary.v2.config({

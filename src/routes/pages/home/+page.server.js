@@ -1,5 +1,5 @@
-import { getFriends, getUniversityById } from '../../../../database.js';
-import { getAllPosts, getCompanyById,getUserById,getJobTitleById } from '/database.js' 
+import { getFriends, getUniversityById } from '../../../../getters.js';
+import { getAllPosts, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
 
 
 export async function load({ locals, request }) {

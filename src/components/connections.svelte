@@ -1,7 +1,7 @@
 <script>
     import ProfileIcon from "./profileIcon.svelte";
     import {onMount,onDestroy} from 'svelte'
-    import { selectedProfile } from '$lib/stores'
+    import { selectedProfile,friendStore } from '$lib/stores'
 
     export let user;
 
@@ -24,13 +24,8 @@
         }
     }
 
-    $: recommended = [];
-    const followRequest = ((user) => {
-        user.follow = !user.follow
-        recommended = recommended;
-    })
-    let resp;
-    onMount(async () => {
+    const getRecommended = async () => {
+
         resp = await fetch('/api/users', { 
             method:'GET', 
             //basically fetching people for the recommended tab. Cannot fetch friends or yourself
@@ -45,7 +40,6 @@
         shuffle(e);
         if(resp.ok) {
             recommended = await e.slice(0,3);
-            //need to check not to add myself as a user
             recommended.forEach(item => {
                 item.follow = false;
             }) 
@@ -53,27 +47,41 @@
         else {
             console.log('what du heeeelll no way a ay ay ay ')
         }
+    }
+
+    $: recommended = [];
+    const followRequest = (async (user) => {
+        user.follow = !user.follow
+        recommended = recommended;
+        resp = await fetch('/api/notifications/sendFriendRequest', { 
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            method:'POST',
+            body: JSON.stringify({
+                sender: profile.UserId,
+                recipient: user.UserId
+            })
+        })
+        .then(resp => resp.ok ? resp.json() : null)
+        .then(friend => {
+            if(friend) {
+                if(!$friendStore) {
+                    friendStore.set([friend.friend]);
+                } else {
+                    friendStore.update(friends => [...friends, friend.friend]);
+                }
+                console.log($friendStore)
+            }
+        }).then(
+            getRecommended()
+        );
+    })
+    let resp;
+    onMount(async () => {
+        await getRecommended();
     })
     
-    onDestroy(async () => {
-        recommended.forEach(async (user) =>  {
-            if(user.follow) {
-                resp = await fetch('/api/notifications/sendFriendRequest', { 
-                    headers : {
-                        'Content-Type' : 'application/json'
-                    },
-                    method:'POST',
-                    body: JSON.stringify({
-                        sender: profile.UserId,
-                        recipient: user.UserId
-                    })
-                });
-                if(resp.ok) {
-                    console.log('success')
-                }
-            } 
-        })
-    })
 
 
 </script>

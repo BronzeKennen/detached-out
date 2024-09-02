@@ -1,9 +1,12 @@
 <script>
+    import { onMount } from "svelte";
     import ProfileIcon from "./profileIcon.svelte";
     export let sender;
     export let notiftype;
     export let recipient;
     export let pfp;
+    export let created
+    let timePassed
 
     const acceptFriendRequest = async () => {
         const resp = await fetch('/api/notifications/acceptFriendRequest',{
@@ -43,10 +46,47 @@
         }
 
     }
+    function calculateTimePassed(timestamp) {
+        const now = new Date();
+        const diff = now - timestamp; // Difference in milliseconds
+
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) {
+            return `${days}d`;
+        } else if (hours > 0) {
+            return `${hours}h`;
+        } else if (minutes > 0) {
+            return `${minutes}m`;
+        } else {
+            return `${seconds}s`;
+        }
+    }
+
+    
+    onMount(() => {
+        if(!created) {
+            timePassed = 'Just Now'
+            return
+        }
+        const createdAt = new Date(created.replace(' ', 'T') + 'Z');
+        timePassed = calculateTimePassed(createdAt);
+    });
 </script>
 
 <style>
+    #timePassed {
+        width: fit-content;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: small;
+    }
     .notifBlock {
+        position:relative;
         align-self: flex-start;
         display: flex;
         flex-direction: row;
@@ -81,12 +121,14 @@
     }
 
     .notifBlock .rest {
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 90%;
     }
 
     .notifBlock .message {
+        position:relative;
         background-color: white;
         color: black;
         padding: 1%;
@@ -142,9 +184,14 @@
             width: 30%;
         }
     }
+    a {
+        text-decoration: none;
+        color:inherit
+    }
 </style>
 
 <div class="notifBlock"> 
+    <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
     {#if pfp}
     <div class="pfp" style={`background-image:url(${pfp});`}><span class="notifIcon"><i class="fa-solid fa-user"></i></span></div>
     {:else}
@@ -159,8 +206,16 @@
         </div>
         {:else if notiftype === 'dead'}
             <div class="message"><a href='/pages/profile/{sender.UserId}'>Friend Request {sender.Status}</div>
+        {:else if notiftype === 'comment'}
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> commented on your post</div>
+        {:else if notiftype === 'comment-like'}
+            <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> like your comment</div>
+        {:else if notiftype === 'post-like'}
+            <div class="message">
+                
+                <a href='/pages/profile/{sender.UserId}'>{sender.username}</a> liked your post</div>
         {:else}
-        <div class="message"><a href='/pages/profile/{sender.UserId}'>{sender.username}</a> wants to connect with you.</div>
+            <div class="message">An error has occured while fetching notification</div>
         {/if}
     </div>
 </div>

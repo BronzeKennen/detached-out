@@ -1,4 +1,4 @@
-import { getAllPosts, getUserById } from "../../../../database"
+import { getAllPosts, getUserById } from "../../../../getters"
 
 
 export const GET = async () => {

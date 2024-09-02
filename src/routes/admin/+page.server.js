@@ -1,15 +1,18 @@
-onMount(async () => {
-    const response = await fetch(`/api/workexp?id=${id}`, {
+export async function load({locals,request}) {
+    const cookies = request.headers.get('cookie') || '';
+    const response = await fetch(`http://localhost:5173/api/users/`, {
+
         method: 'GET',
         headers: {
-            'Content-Type' : 'application/json'
+            'cookie': cookies // Pass the token in Authorization header
         }
     })
     if(response.ok) {
-        workExperience = await response.json();
-        console.log('Successfully fetched work experience')
+        let workExperience = await response.json();
+        console.log(workExperience)
+        return{workExperience}
         
     } else {
         console.log('ITS A BOMB');
     }
-})
+}

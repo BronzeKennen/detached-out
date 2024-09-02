@@ -1,4 +1,4 @@
-import {deletePreviousJob} from "../../../../../database"
+import {deletePreviousJob} from "../../../../../setters.js"
 
 export const DELETE = async ({url}) => {
     const id = url.searchParams.get('expId') 

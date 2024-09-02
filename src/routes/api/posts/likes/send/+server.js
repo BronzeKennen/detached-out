@@ -1,6 +1,6 @@
 
-import { removeLike } from '../../../../../../database.js';
-import { newLike } from '../../../../../../database.js';
+import { getCommentById, getPostById } from '../../../../../../getters.js';
+import { removeLike ,newLike, newNotification} from '../../../../../../setters.js';
 
 export async function PATCH({locals,request}) {
     const id = locals.user?.id;
@@ -10,6 +10,22 @@ export async function PATCH({locals,request}) {
 
     if(data.status === 'added') {
         response = newLike(id,data.postId,data.type)        
+        if(data.type === 'comment') {
+            const user = getCommentById(data.postId)
+            const resp = newNotification(id,user[0].UserFrom.UserFrom,'comment-like');
+            if(!resp) {
+                console.log("You cant create a notification to yourself")
+            }
+        } else if (data.type === 'post') {
+            let user = getPostById(data.postId);
+            console.log(user)
+            user = user[0].UserId
+            const resp = newNotification(id,user,'post-like')
+            if(!resp) {
+                console.log("You cant create a notification to yourself")
+            }
+
+        }
     } else if (data.status === 'removed') {
         response = removeLike(id,data.postId,data.type);
 

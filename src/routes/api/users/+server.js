@@ -1,16 +1,19 @@
 
 import { 
     getFriends,
-    getAllFriends,
     getCompanyById, 
     getJobTitleById, 
     getUniversityById, 
-    getUsers, 
+    getUsers
+} from '../../../../getters.js';
+
+import {
     updateEducationById, 
     updateEmploymentById, 
     updateMandInfobyId, 
     updateWorkExperience 
-} from '../../../../database.js';
+} from '../../../../setters.js'
+
 
 export const GET = ({request}) => {
     const userQuery = request.headers.get('userquerytype');

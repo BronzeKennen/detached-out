@@ -20,7 +20,7 @@
     $: ogLikes = likes.length;
 
 
-    const posterPfp = poster.profile_pic_url;
+    const posterPfp = user.profile_pic_url;
 
     $: commentCount = comments.length;
     $: likeCount = likes.length;
@@ -101,10 +101,10 @@
                 CommentId : body.commentId,
                 UserFrom:user,
                 Likes:[],
-                Content:content
+                Content:comment
             }]
 
-            content = ''
+            comment = ''
             console.log('success')
         }
         
@@ -125,6 +125,10 @@
     
     
     onMount(() => {
+        if(!created) {
+            timePassed = 'Just Now'
+            return
+        }
         const createdAt = new Date(created.replace(' ', 'T') + 'Z');
         timePassed = calculateTimePassed(createdAt);
     });
@@ -158,6 +162,7 @@
         
 
     function autoResize(event) {
+        if(!event) return
         const textarea = event.target;
         textarea.style.height = 'auto';
 
@@ -172,7 +177,7 @@
 
     <div class="feed-post">
         <div class="stats">
-            <ProfileIcon user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
+            <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
         </div>
         <div class="post">
@@ -216,8 +221,9 @@
                 <div class="commentsBackground">
                     {#each comments as comment}
                         <Comment 
+                            user={user}
                             commentId={comment.CommentId} 
-                            user={comment.UserFrom} 
+                            sender={comment.UserFrom} 
                             likes={comment.Likes} 
                             comment={comment.Content} 
                         />

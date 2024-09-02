@@ -2,6 +2,7 @@
 
 <script>
     export let user;
+    export let id;
     export let edu;
 
     export let pfp;
@@ -16,13 +17,17 @@
             <span id="pfp" ></span>
         {/if}
         <div class="substats">
-            <h3 class="username">{user}</h3>
+            <h3 class="username"><a href="/pages/profile/{id}">{user}</a></h3>
             {#if edu}
                 <p class="subtitle">{edu.university_name} • {edu.major}</p>
             {/if}
         </div>
     </span>
 <style>
+    a {
+        text-decoration: none;
+        color:inherit;
+    }
     .stats {
         display:flex;
         flex-direction: row;

@@ -2,6 +2,8 @@
     import PrevJob from "./prevJob.svelte";
     import Friend from "./friend.svelte";
     import { onMount } from "svelte";
+    import SoftSkillsView from "./softSkillsView.svelte";
+    import SoftSkillsEdit from "./softSkillsEdit.svelte";
 
     export let profile;
 
@@ -334,6 +336,12 @@
                 on:input={autoResize}
                 minlength="0"
             />
+        </div>
+    </div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField" style="width: 100%;">Skills</div>
+            <SoftSkillsEdit />
         </div>
     </div>
     {#if changedMand}
@@ -705,6 +713,7 @@
     }
 
     .details {
+        position: relative;
         transform: translateY(-15vh);
         padding-left: 1rem;
         padding-right: 1rem;
@@ -751,7 +760,7 @@
         }
 
         .details {
-            top: -5vh;
+            top: 10vh;
             padding-left: 1rem;
             padding-right: 1rem;
         }
@@ -800,7 +809,7 @@
         }
 
         .details {
-            top: -5vh;
+            top: 10vh;
         }
 
         .fieldTitle {

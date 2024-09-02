@@ -136,3 +136,9 @@ export function getWorkExperience() {
     const stmt = db.prepare('SELECT * FROM work_experience');
     return stmt.get();
 }
+
+export function getAllSkills() {
+    const stmt = db.prepare('SELECT * FROM skills;')
+    const resp = stmt.all();
+    return resp;
+}

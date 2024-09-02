@@ -3,7 +3,8 @@ import {
     getUserById,
     getFriends,
     getCompanyById,
-    getJobTitleById
+    getJobTitleById,
+    getAllSkills
 } from '../../../../../getters.js';
 
 

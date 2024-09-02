@@ -251,8 +251,8 @@
         {/if}
     </div>
     </div>
+    
 <style>
-    /* #left { */
     .image-slider {
     position: relative;
     width: 100%; 

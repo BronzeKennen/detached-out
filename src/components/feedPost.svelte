@@ -311,8 +311,6 @@
     .post-image {
         width: calc(100% + 2rem);
         margin:0 -1rem;
-        /* margin:0 -1rem; */
-
     }
 
     #timePassed {

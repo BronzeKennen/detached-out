@@ -2,8 +2,6 @@
 <script>
     import { onMount } from "svelte";
     import { onDestroy } from "svelte";
-    import ProfileIcon from "./profileIcon.svelte";
-    import Comment from "./comment.svelte";
 
     let clicked = false;
 

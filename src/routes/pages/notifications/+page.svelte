@@ -54,9 +54,28 @@
         margin-right: 1rem;
     }
 
-    @media (max-width : 820px) {
+    .RightCol {
+        display: flex;
+        flex-direction: row;
+        width: 260px;
+        margin-right: 5px;
+        height: 50vh;
+    }
+    
+
+    @media (max-width : 950px) {
+        .RightCol {
+            width: 210px;
+        }
+    }
+
+    @media (max-width : 850px) {
         .LeftCol {
             width: 250px;
+        }
+
+        .RightCol {
+            display: none;
         }
     }
 
@@ -91,5 +110,7 @@
         <div class='no-notif'><h3>No notifications to show </h3></div>
         {/if}
     </div>
-    <Connections />
+    <div class='RightCol'>
+        <Connections />
+    </div>
 </div>

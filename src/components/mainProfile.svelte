@@ -2,7 +2,6 @@
     import PrevJob from "./prevJob.svelte";
     import Friend from "./friend.svelte";
     import { onMount } from "svelte";
-    import SoftSkillsView from "./softSkillsView.svelte";
     import SoftSkillsEdit from "./softSkillsEdit.svelte";
 
     export let profile;

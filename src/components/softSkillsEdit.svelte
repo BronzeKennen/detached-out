@@ -36,10 +36,21 @@
         'Time prioritization', 'Virtual collaboration', 'Work-life balance'
     ]; 
 
+    let currSkills = ['Talkative', 'Social', 'Hard-Working'];
+    let skillToAdd = '';
     let newSkills = [];
 
-    function addSkill(skill) {
+    
+    
+    function updateSkillsToAdd(skill) {
         newSkills = [...newSkills, skill];
+    }
+    
+    function addNewSkills() {
+        currSkills = [...currSkills, ...newSkills];
+        newSkills = [];
+        clicked = false;
+        document.body.style.overflow = 'visible';
     }
 
     const handleClick = () => {
@@ -73,24 +84,27 @@
     <button id="popupClose" on:click={handleClick}><i class="fa-solid fa-x"></i></button>
     <div class="title">Add new skill</div>
         
-        <select required id="textField">
+        <select required id="textField" bind:value={skillToAdd} on:change={updateSkillsToAdd(skillToAdd)}>
             <option value="" disabled selected hidden></option>
             {#each skills as skill}
                 <option value={skill}>{skill}</option>
             {/each}
         </select>
-        
-        {#each newSkills as skill}
-            <div class="skill">{skill}<button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
-        {/each}
-        <button id="confirm">Confirm</button>
+        <div class='newSkills'>
+            {#each newSkills as skill}
+                <div class="skill">{skill}<button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
+            {/each}
+        </div>
+        <button id="confirm" on:click={addNewSkills}>Confirm</button>
 </div>
 <div id="overlay" class:show={clicked}></div>
+
+
 <div class="mandFields">
     <button id="newSkill" on:click={handleClick}><i class="fa-solid fa-plus"></i></button>
-    <div class="skill">Talkative <button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
-    <div class="skill">Social <button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
-    <div class="skill">Hard-Working <button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
+    {#each currSkills as skill}
+        <div class="skill">{skill}<button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
+    {/each}
 </div>
 
 
@@ -161,6 +175,7 @@
     #textField {
         height: 2rem;
         margin-top: 1rem;
+        margin-bottom: 1rem;
         width: 70%;
         border: none;
         border-radius: 10px;
@@ -216,6 +231,14 @@
         box-shadow:0 1px 3.5px rgb(185, 50, 238);
         background-color: rgb(240, 227, 240);
         border-radius: 10px;
+    }
+
+    .newSkills {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 0.5rem; 
     }
 
     #deleteSkill {

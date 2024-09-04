@@ -113,95 +113,7 @@
         cursor: pointer;
     }
 
-    #popupWindow {
-        display: flex;
-        flex-direction: row;
-        position: fixed;
-        z-index: 200;
-        left: 50%;
-        height: fit-content;
-        padding: 1rem;
-        width: fit-content;
-        min-width: 50%;
-        transform: translateX(-50%);
-        box-shadow:0 1px 3.5px rgb(185, 50, 238);
-        background-color: rgb(240, 227, 240);
-        border-radius: 10px;
-        display: none;
-    }
-
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 199;
-        opacity: 0.5;
-        background-color: rgb(235, 235, 235);
-        display: none;
-    }
-
-    #textField {
-        height: 2rem;
-        margin-top: 1rem;
-        width: 70%;
-        border: none;
-        border-radius: 10px;
-        box-sizing: border-box;
-        background-color: white;
-        display: flex;
-        position: relative;
-        resize: none;
-        padding: 0.5rem;
-        padding-left: 0.5;
-        text-align: start;
-    }
-
-    #textField:focus{
-        outline: none;
-        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
-    }
-
-    #textField:hover {
-        animation-duration: 0.5s;
-        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
-    }
-    #popupWindow.show, #overlay.show {
-        display: block;
-    }
-
-    .title {
-        font-size: large;
-        font-weight: bold;
-        text-wrap: nowrap;
-    }
-
-    #popupClose {
-        margin: 1rem;
-        width: fit-content;
-        position: absolute;
-        top: 0;
-        right: 0;
-        background: none;
-        border: none;
-        font-weight: bolder;
-    }
-
-    #confirm {
-        display: flex;
-        margin-top: 1rem;
-        margin-right: 1rem;
-        margin-left: auto;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        width: fit-content;
-        font-weight: bold;
-        box-shadow:0 1px 3.5px rgb(185, 50, 238);
-        background-color: rgb(240, 227, 240);
-        border-radius: 10px;
-    }
-
+   
     #deleteSkill {
         cursor: pointer;
         background: none;
@@ -213,8 +125,5 @@
     }
 
     @media (max-width: 600px) {
-        #textField {
-            width: 100%;
-        }
     }
 </style>

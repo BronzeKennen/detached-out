@@ -8,7 +8,7 @@
     // export let likes;
     // export let reposts = 0;
     // export let images;
-    export let poster;
+    // export let poster;
     // export let content;
     // export let postId;
     // export let userId;
@@ -101,7 +101,11 @@
     //         textarea.style.height = `${textarea.scrollHeight}px`;
     //     }
     // }
+    let apply = false;
 
+    function applyToJob() {
+        apply = !apply;
+    }
 </script>
 
     <div class="feed-post">
@@ -111,8 +115,26 @@
             <div id="timePassed"> timePassed <i class="fa-regular fa-clock"></i></div>
         </div>
         <div class="post">
-            <p>This is post jobBody</p>
+            <div class="jobTitle">Barista needed for take away coffee shop</div>
+            <div id="basicInfo">• Employment type: Full-time</div>
+            <div id="basicInfo">• Location: Peristeri(On-Site)</div>
+            <div id="basicInfo">• Monthly wage: 890€</div>
+            <div id="basicInfo">• Desired Skills:
+                <div class="desiredSkills">
+                    <div class="skill">Talkative</div>
+                    <div class="skill">Social</div>
+                    <div class="skill">Consistent</div>
+                    <div class="skill">Talkative</div>
+                    <div class="skill">Talkative</div>
+                    <div class="skill">Consistent</div>
+                    <div class="skill">Social</div>
+                    <div class="skill">Social</div>
+                    <div class="skill">Consistent</div>
+                </div>
+            </div>
+            <p>Additional information here.</p>
         </div>
+        <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button>
     </div>
     
 <style>
@@ -144,6 +166,70 @@
         margin:1rem 0rem .5rem 0;
     }
 
-    @media(max-width: 500px) {
+    .jobTitle {
+        font-size: x-large;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #basicInfo {
+        display: flex;
+        flex-direction: row;
+        font-weight: bold;
+        text-wrap: nowrap;
+        margin-bottom: 0.25rem;
+    }
+
+    .desiredSkills {
+        margin-left: 1rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .skill {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        color:black;
+        font-size:11px;
+        font-weight: bold;
+        border-radius: 8px;
+        height: 1.25rem;
+        box-sizing: border-box;
+        position: relative;
+        width:fit-content;
+        padding: 0 0.5rem;
+        box-shadow:0 1px 3.5px rgb(185, 50, 238);
+        background-color: rgb(240, 227, 240);
+    }
+
+    #applyButton {
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        height: 1.5rem;
+        box-sizing: border-box;
+        position: relative;
+        width:20%;
+        margin:0 .2rem 0 80%;
+    }
+
+    #applyButton:hover {
+        cursor: pointer;
+        box-shadow:0 2px 10px rgb(185, 50, 238);
+        transition-duration: .25s; 
+    }
+
+    @media(max-width: 800px) {
+        .jobTitle {
+            font-size: large;
+            font-weight: bold;
+            font-style: italic;
+        }
     }
 </style>

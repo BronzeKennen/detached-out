@@ -11,6 +11,20 @@
 
 </script>
 
+<div class="feed">
+    <div class='LeftCol'>
+        <SideProfile {user}/>
+    </div>
+    <div class='MiddleCol'>
+        <!-- #if {user.adverts}  -->
+        <FeedJob />
+    </div>  
+    <div class='RightCol'>
+        <Connections />
+    </div>
+</div>
+
+
 <style>
     .feed {
         display:flex;
@@ -69,14 +83,3 @@
     }
 </style>
 
-<div class="feed">
-    <div class='LeftCol'>
-        <SideProfile {user}/>
-    </div>
-    <div class='MiddleCol'>
-        <FeedJob />
-    </div>  
-    <div class='RightCol'>
-        <Connections />
-    </div>
-</div>

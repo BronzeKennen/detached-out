@@ -2,12 +2,11 @@
     import SideProfile from "../../../components/sideProfile.svelte";
     import Connections from "../../../components/connections.svelte";
     import FeedJob from "../../../components/feedJob.svelte";
+    import NewJob from "../../../components/newJob.svelte";
 
     export let data;
 
     const user = data.userProfile;
-
-
 
 </script>
 
@@ -16,7 +15,11 @@
         <SideProfile {user}/>
     </div>
     <div class='MiddleCol'>
+        <h1>Your job adverts</h1>
+        <NewJob />
         <!-- #if {user.adverts}  -->
+        <div class="separator"></div>
+        <h1>Job adverts from other users</h1>
         <FeedJob />
     </div>  
     <div class='RightCol'>
@@ -26,6 +29,19 @@
 
 
 <style>
+    .separator {
+        border: none;
+        border-top: 1px solid #ccc;
+        margin: 3% auto;
+        min-width: 95%;
+        width: 95%;
+    }
+
+    h1 {
+        margin-left: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
     .feed {
         display:flex;
         flex-direction: row;

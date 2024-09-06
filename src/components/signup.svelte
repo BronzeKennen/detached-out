@@ -123,7 +123,7 @@
         justify-content: center;
         align-items: center;
         margin: auto auto;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(235, 235, 235);
     }
 
     .names {
@@ -135,6 +135,8 @@
         padding:.5rem 0;
     }
     .signIn {
+        position: absolute;
+        top: 15vh;
         display: flex;
         align-items: start; 
         flex-direction: column;
@@ -294,6 +296,8 @@
             width: 100%;
         }
         .signIn {
+            top: 50%;
+            transform: translate(0, -50%);
             height: 70%;
             width: 90%;
         }

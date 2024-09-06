@@ -56,10 +56,12 @@
         justify-content: center;
         align-items: center;
         margin: auto auto;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(235, 235, 235);
     }
 
     .signIn {
+        position: absolute;
+        top: 15vh;
         display: flex;
         align-items: start; 
         flex-direction: column;
@@ -160,12 +162,14 @@
         
         .container {
             flex-direction: column;
-            justify-content: space-around; /* Or use 'space-between' if you prefer */
+            justify-content: space-around; 
             margin: 0;
             padding: 0;
             width: 100%;
         }
         .signIn {
+            top: 50%;
+            transform: translate(0, -50%);
             height: 70%;
             width: 90%;
         }

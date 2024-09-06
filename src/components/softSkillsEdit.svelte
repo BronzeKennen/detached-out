@@ -38,6 +38,13 @@
     let skillToAdd = '';
     let newSkills = [];
 
+    function deleteNewSkill(skill) {
+        newSkills = newSkills.filter(s => s !== skill); 
+    }
+
+    function deleteCurrSkill(skill) {
+        currSkills = currSkills.filter(s => s !== skill); 
+    }
     
     
     function updateSkillsToAdd(skill) {
@@ -74,7 +81,6 @@
         document.removeEventListener('click', handleOutsideClick);
     });
 
-
 </script>
 
 
@@ -90,7 +96,7 @@
         </select>
         <div class='newSkills'>
             {#each newSkills as skill}
-                <div class="skill">{skill}<button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
+                <div class="skill">{skill}<button id="deleteSkill" on:click={() => deleteNewSkill(skill)}><i class="fa-solid fa-x"></i></button></div>
             {/each}
         </div>
         <button id="confirm" on:click={addNewSkills}>Confirm</button>
@@ -101,12 +107,17 @@
 <div class="mandFields">
     <button id="newSkill" on:click={handleClick}><i class="fa-solid fa-plus"></i></button>
     {#each currSkills as skill}
-        <div class="skill">{skill}<button id="deleteSkill"><i class="fa-solid fa-x"></i></button></div>
+        <div class="skill">{skill}<button id="deleteSkill" on:click={() => deleteCurrSkill(skill)}><i class="fa-solid fa-x"></i></button></div>
     {/each}
 </div>
 
 
 <style>
+    select {
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
     .mandFields {
         width: 100%;
         display: flex;
@@ -198,6 +209,12 @@
     }
     #popupWindow.show, #overlay.show {
         display: block;
+    }
+
+    select {
+        -moz-appearance:none; 
+        -webkit-appearance:none; 
+        appearance:none;
     }
 
     .title {

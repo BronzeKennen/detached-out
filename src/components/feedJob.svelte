@@ -3,7 +3,6 @@
     import { onMount } from "svelte";
     import ProfileIcon from "./profileIcon.svelte";
 
-
     // export let comments;
     // export let likes;
     // export let reposts = 0;

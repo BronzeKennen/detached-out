@@ -20,6 +20,7 @@
 
     function removeImage(index) {
         images = images.filter((_, i) => i !== index);
+        if(images.length === 0) postButton.disabled = true;
     }
 
     function autoResize(event) {
@@ -33,7 +34,8 @@
         }
     }
 
-    let images,requestImages;
+    let images = []
+    let requestImages;
     async function handleFileUpload(event) {
         const postButton = document.getElementById('postButton');
         postButton.disabled = true;
@@ -52,12 +54,14 @@
             console.log('images uploaded succesfully')
         } else {
             console.log('error uploading image')
+            return;
         }
         postButton.disabled = false;
         requestImages = images;
         images = images.uploadedFiles;
     }
 
+    let newPosts = []
     let createdPost = null;
     async function createPost() {
         const resp = await fetch('/api/posts/newPost',{method :'POST',
@@ -76,8 +80,9 @@
                 PostId: body.PostId,
                 UserId: body.UserId,
             }
+            newPosts = [createdPost,...newPosts];
             postBody = '' 
-            images = null;
+            images = [];
         } else {
             console.log('an error has occured');
         }
@@ -106,7 +111,7 @@
             <label for="uploadButton" id="uploadLabel">Upload</label>
             <button bind:this={postButton} id="postButton" class="under-text-button" on:click={createPost}>Post</button>
         </span>
-        {#if images}
+        {#if images.length > 0}
         <div class="images">
             {#each images as image,index}
                 <span class="imgContainer">
@@ -117,21 +122,21 @@
         </div>
         {/if}
     </div>
-    {#if createdPost}
+    {#each newPosts as post}
     <FeedPost 
         user={user}
-        userId={createdPost.UserId} 
-        postId={createdPost.PostId} 
+        userId={post.UserId} 
+        postId={post.PostId} 
         poster={user} 
         reposts={0}
         commentCount={0}
         likes={[]} 
         comments={[]}
-        images={createdPost.ImagesJson}
-        content={createdPost.Content}
+        images={post.ImagesJson}
+        content={post.Content}
 
     />
-    {/if}
+    {/each}
 
 
 <style>

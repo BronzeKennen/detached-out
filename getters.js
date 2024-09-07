@@ -154,7 +154,12 @@ export function getSkillById(skillId) {
 }
 
 
-export function getUserSkillsById(UserId) {
-    const stmt = db.prepare('SELECT * FROM user_skills WHERE UserId = ?');
-    return stmt.all(UserId);
+export function getUserSkillsById(UserId,Type) {
+    const stmt = db.prepare('SELECT * FROM user_skills WHERE ObjectId = ? AND Type = ? ');
+    return stmt.all(UserId,Type);
+}
+
+export function getAllJobs() {
+    const stmt = db.prepare('SELECT * FROM job_adverts ORDER BY DateCreated DESC');
+    return stmt.all();
 }

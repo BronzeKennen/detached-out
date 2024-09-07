@@ -1,5 +1,5 @@
-import { getFriends, getUniversityById } from '../../../../getters.js';
-import { getAllPosts, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
+import { getFriends, getUniversityById, getUserSkillsById,getSkillById } from '../../../../getters.js';
+import { getAllJobs, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
 
 
 export async function load({ locals, request }) {
@@ -29,10 +29,10 @@ export async function load({ locals, request }) {
             //modify a new object
         }
 
-        let posts = getAllPosts();
-        for (const post of posts) {
-            const poster = getUserById(post.UserId);
-            post.UserId = {
+        let jobs = getAllJobs();
+        for (const job of jobs) {
+            const poster = getUserById(job.PosterId);
+            job.Poster = {
                 UserId: poster.UserId,
                 username: poster.username,
                 fname: poster.fname,
@@ -49,6 +49,10 @@ export async function load({ locals, request }) {
                 biography : poster.biography ? poster.biography : null,
                 connections: connections,
 
+            }
+            job.skills = getUserSkillsById(job.AdvertId,"Job")
+            for(const skill of job.skills) {
+                skill.name = getSkillById(skill.SkillId);
             }
         }
 
@@ -68,7 +72,7 @@ export async function load({ locals, request }) {
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
             biography : profile.biography ? profile.biography : null,
             connections: connections,
-            posts: posts
+            jobs:jobs
         };
 
         return {userProfile}

@@ -30,7 +30,7 @@ export async function load({ locals, request }) {
             console.log("an error has occured");
         }
 
-        let skills = getUserSkillsById(id)
+        let skills = getUserSkillsById(id,'User')
         for(const skill of skills) {
             skill.name = getSkillById(skill.SkillId);
         }

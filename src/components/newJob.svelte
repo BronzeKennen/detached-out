@@ -134,14 +134,48 @@
         postJob = !postJob;
     }
 
-    let title = '';
-    let enrollmentOptions = ['Full-time', 'Part-time'];
-    let enrollmentType = '';
-    let location = '';
-    let workplaceOptions = ['On-Site', 'Hybrid', 'Remote'];
-    let workplaceType = '';
-    let monthlyWage;
-    let moreInfo = '';
+    async function createPost() {
+        const resp = await fetch('/api/jobs',{
+            method:"POST",
+            body: JSON.stringify({
+                title:title,
+                enrollmentType: enrollmentType,
+                location:location,
+                workplaceType:workplaceType,
+                monthlyWage:monthlyWage,
+                moreInfo:moreInfo
+            })
+        })
+        if(!resp.ok) {
+            console.log("An error has occured")
+            return;
+        }
+        console.log('success')
+        const response = await resp.json()
+
+        if(!desiredSkills.length) return;
+
+        const skillResp = await fetch('/api/skills', {
+            method:"POST",
+            body: JSON.stringify({
+                type:"Job",
+                newSkills: desiredSkills,
+                id: response.postId
+            })
+        })
+        if(skillResp.ok) {
+            console.log('success')
+        }
+    }
+
+    export let title = '';
+    export let enrollmentOptions = ['Full-time', 'Part-time'];
+    export let enrollmentType = '';
+    export let location = '';
+    export let workplaceOptions = ['On-Site', 'Hybrid', 'Remote'];
+    export let workplaceType = '';
+    export let monthlyWage;
+    export let moreInfo = '';
 </script>
 
     {#if !postJob}
@@ -224,7 +258,7 @@
                 />
             </div>
             <span class="buttons">
-                <button id="postButton" class="under-text-button" >Post</button>
+                <button id="postButton" class="under-text-button" on:click={createPost}>Post</button>
                 <label for="uploadButton" id="uploadLabel">Cancel</label>
                 <button id="uploadButton" on:click={newPost}></button>
             </span>

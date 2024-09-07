@@ -1,9 +1,12 @@
 import { addNewSkills, deleteUserSkill } from '../../../../setters.js';
 
 export const POST = async ({locals,request}) => {
-    const id = locals.user?.id;
+    let id = locals.user?.id;
     const data = await request.json();
-    const resp = addNewSkills(id,data.newSkills);
+    if(data.type === 'Job') {
+        id = data.id; 
+    }
+    const resp = addNewSkills(id,data.newSkills,data.type);
     if(resp) {
         return new Response({status:200});
     } else {
@@ -15,7 +18,7 @@ export const POST = async ({locals,request}) => {
 export const DELETE = async ({locals,request}) => {
     const id = locals.user?.id;
     const data = await request.json();
-    const resp = deleteUserSkill(id,data.skill)
+    const resp = deleteUserSkill(id,data.skill,data.type)
     
     if(resp) {
         console.log('success')

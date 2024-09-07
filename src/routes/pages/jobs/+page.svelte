@@ -7,6 +7,7 @@
     export let data;
 
     const user = data.userProfile;
+    const jobs = user.jobs
 
 </script>
 
@@ -20,7 +21,9 @@
         <!-- #if {user.adverts}  -->
         <div class="separator"></div>
         <h1>Job adverts from other users</h1>
-        <FeedJob />
+        {#each jobs as job}
+            <FeedJob {job}/>
+        {/each}
     </div>  
     <div class='RightCol'>
         <Connections />

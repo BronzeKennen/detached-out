@@ -3,135 +3,62 @@
     import { onMount } from "svelte";
     import ProfileIcon from "./profileIcon.svelte";
 
-    // export let comments;
-    // export let likes;
-    // export let reposts = 0;
-    // export let images;
-    // export let poster;
-    // export let content;
-    // export let postId;
-    // export let userId;
-    // export let user;
-    // export let created;
+    export let job;
+    let created = job.DateCreated
+    const poster = job.Poster
+    let timePassed = '';
 
-    // $: ogLikes = likes.length;
-
-
-    // const posterPfp = user.profile_pic_url;
-
-    // $: commentCount = comments.length;
-    // $: likeCount = likes.length;
-    // images = JSON.parse(images)
-    // if(images)
-    // images = images.uploadedFiles
-    // let liked = false;
-    // let reposted = false;
-    // let commenter = false;
-    // let comment =''
-    // let slider=null;
-
-    // let timePassed = '';
-
-    // function calculateTimePassed(timestamp) {
-    //     const now = new Date();
-    //     const diff = now - timestamp; // Difference in milliseconds
-
-    //     const seconds = Math.floor(diff / 1000);
-    //     const minutes = Math.floor(seconds / 60);
-    //     const hours = Math.floor(minutes / 60);
-    //     const days = Math.floor(hours / 24);
-
-    //     if (days > 0) {
-    //         return `${days}d`;
-    //     } else if (hours > 0) {
-    //         return `${hours}h`;
-    //     } else if (minutes > 0) {
-    //         return `${minutes}m`;
-    //     } else {
-    //         return `${seconds}s`;
-    //     }
-    // }
-
-    // onMount(() => {
-    //     if(!created) {
-    //         timePassed = 'Just Now'
-    //         return
-    //     }
-    //     const createdAt = new Date(created.replace(' ', 'T') + 'Z');
-    //     timePassed = calculateTimePassed(createdAt);
-    // });
-    // //send the likes/etc on destroy to not send 10 trillion requests if the button is spammed
-    // onDestroy(async () => {
-    //     let status;
-    //     if(likeCount === ogLikes) return
-    //     if(likeCount > ogLikes) status = 'added'
-    //     else status = 'removed'
-
-    //     let body;
-    //     const response = await fetch('/api/posts/likes/send', {
-    //         headers: {
-    //             'Content-Type' : 'application/json'
-    //         },
-    //         method: 'PATCH',
-    //         body: JSON.stringify({
-    //             status:status,
-    //             postId:postId,
-    //             type:'post'
-    //         })
-        
-    //     })
-
-    //     if(response.ok) {
-    //         console.log('success')
-    //     } else {
-    //         console.log(response)
-    //     }
-    // })
-        
-
-    // function autoResize(event) {
-    //     if(!event) return
-    //     const textarea = event.target;
-    //     textarea.style.height = 'auto';
-
-    //     if(textarea.scrollHeight < 70) {// wtf is this 
-    //         textarea.style.height = `${textarea.scrollHeight - 15}px`;
-    //     } else {
-    //         textarea.style.height = `${textarea.scrollHeight}px`;
-    //     }
-    // }
     let apply = false;
 
     function applyToJob() {
         apply = !apply;
     }
+
+    onMount(() => {
+
+        const createdAt = new Date(created.replace(' ', 'T') + 'Z');
+        timePassed = calculateTimePassed(createdAt);
+    })
+
+    function calculateTimePassed(timestamp) {
+        const now = new Date();
+        const diff = now - timestamp; // Difference in milliseconds
+
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) {
+            return `${days}d`;
+        } else if (hours > 0) {
+            return `${hours}h`;
+        } else if (minutes > 0) {
+            return `${minutes}m`;
+        } else {
+            return `${seconds}s`;
+        }
+    }
 </script>
 
     <div class="feed-post">
         <div class="stats">
-            <!-- <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/> -->
-            <p>This is poster info.</p>
-            <div id="timePassed"> timePassed <i class="fa-regular fa-clock"></i></div>
+            <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
+            <div id="timePassed"> {timePassed} <i class="fa-regular fa-clock"></i></div>
         </div>
         <div class="post">
-            <div class="jobTitle">Barista needed for take away coffee shop</div>
-            <div id="basicInfo">• Employment type: Full-time</div>
-            <div id="basicInfo">• Location: Peristeri(On-Site)</div>
-            <div id="basicInfo">• Monthly wage: 890€</div>
+            <div class="jobTitle">{job.JobTitle}</div>
+            <div id="basicInfo">• {job.EnrollmentType}</div>
+            <div id="basicInfo">• Location: ({job.WorkplaceType})</div>
+            <div id="basicInfo">• Monthly wage: {job.MonthlyWage}€</div>
             <div id="basicInfo">• Desired Skills:
                 <div class="desiredSkills">
-                    <div class="skill">Talkative</div>
-                    <div class="skill">Social</div>
-                    <div class="skill">Consistent</div>
-                    <div class="skill">Talkative</div>
-                    <div class="skill">Talkative</div>
-                    <div class="skill">Consistent</div>
-                    <div class="skill">Social</div>
-                    <div class="skill">Social</div>
-                    <div class="skill">Consistent</div>
+                    {#each job.skills as skill}
+                        <div class="skill">{skill.name.SkillName}</div>
+                    {/each}
                 </div>
             </div>
-            <p>Additional information here.</p>
+            <p>{job.AdditionalInfo}</p>
         </div>
         <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button>
     </div>

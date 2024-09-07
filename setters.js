@@ -32,11 +32,11 @@ export function newPost(UserId,postData) {
 }
 
 
-export function addNewSkills(UserId,skills) {
+export function addNewSkills(UserId,skills,type) {
     for (const skill of skills) {
         let skillId = getSkillByName(skill);
-        const stmt = db.prepare('INSERT INTO user_skills (UserId,SkillId) VALUES (?,?)');
-        const resp = stmt.run(UserId,skillId.SkillId);
+        const stmt = db.prepare('INSERT INTO user_skills (ObjectId,SkillId,Type) VALUES (?,?,?)');
+        const resp = stmt.run(UserId,skillId.SkillId,type);
     }
 }
 
@@ -252,9 +252,16 @@ export function newNotification(idFrom,idTo,type) {
 
 }
 
-export function deleteUserSkill(UserId,SkillId) {
-    const stmt = db.prepare('DELETE FROM user_skills WHERE UserId = ? AND SkillId = ?');
+export function deleteUserSkill(UserId,SkillId,Type) {
+    const stmt = db.prepare('DELETE FROM user_skills WHERE ObjectId = ? AND SkillId = ? AND Type = ?');
     const skillId = getSkillByName(SkillId);
-    const resp =  stmt.run(UserId,skillId.SkillId);
+    const resp =  stmt.run(UserId,skillId.SkillId,Type);
     return resp.changes > 0;
+}
+
+export function newJobAdvert(PosterId,body) {
+    console.log(body)
+    const stmt = db.prepare('INSERT INTO job_adverts (PosterId,JobTitle,EnrollmentType,WorkplaceType,MonthlyWage,AdditionalInfo,Location) VALUES (?,?,?,?,?,?,?)')
+    const resp = stmt.run(PosterId,body.title,body.enrollmentType,body.workplaceType,body.monthlyWage,body.moreInfo,body.location);
+    return resp;
 }

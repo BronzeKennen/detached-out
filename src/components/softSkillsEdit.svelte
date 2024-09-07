@@ -47,7 +47,8 @@
         const resp = await fetch('/api/skills',{
             method: 'DELETE',
             body: JSON.stringify({
-                skill:skill
+                skill:skill,
+                type:'User'
             })
         })
     }
@@ -63,7 +64,8 @@
         const resp = await fetch('/api/skills',{
             method:"POST",
             body: JSON.stringify({
-                newSkills: newSkills
+                newSkills: newSkills,
+                type:'User'
             })
         })
         if(resp.ok) {

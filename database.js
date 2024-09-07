@@ -124,12 +124,27 @@ db.exec(`CREATE TABLE IF NOT EXISTS softskills (
 
 db.exec(`CREATE TABLE IF NOT EXISTS user_skills (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    UserId INTEGER NOT NULL,    
+    ObjectId INTEGER NOT NULL,    
     SkillId INTEGER NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES users(UserId),
+    Type TEXT NOT NULL,
     FOREIGN KEY (SkillId) REFERENCES softskills(SkillId)
-    UNIQUE (UserId,SkillId)
+    UNIQUE (ObjectId,SkillId,Type)
 )`);
+
+db.exec(`CREATE TABLE IF NOT EXISTS job_adverts (
+    AdvertId INTEGER PRIMARY KEY AUTOINCREMENT,
+    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PosterId INTEGER NOT NULL,
+    JobTitle TEXT NOT NULL,
+    Location TEXT NOT NULL,
+    EnrollmentType TEXT NOT NULL,
+    WorkplaceType TEXT NOT NULL,
+    JobDescription TEXT,
+    MonthlyWage INTEGER,
+    AdditionalInfo TEXT,
+    FOREIGN KEY (PosterId) REFERENCES users(UserId)
+
+);`)
 // 
 db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),

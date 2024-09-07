@@ -17,8 +17,9 @@
     .side-profile {
         margin:.5rem;
         border-radius:10%;
-        position:relative;
-        flex:1;
+        position:fixed;
+        height: fit-content;
+        width: 300px;
     }
     .background {
         box-shadow: 0 1.5px 10px rgb(174, 0, 255);
@@ -75,13 +76,15 @@
         color:black;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 850px) {
         .side-profile {
-            width:50%;
+            width: 250px;
         }
     }
+
     @media (max-width: 600px) {
         .side-profile {
+            position: relative;
             margin-left: auto;
             margin-right: auto;
             width:80%;

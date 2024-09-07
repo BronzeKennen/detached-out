@@ -88,14 +88,21 @@
 <style>
     
     .connection-profile{
+        position:fixed;
         align-self: flex-start;
         margin:.5rem;
         flex:1;
         display:flex;
         flex-direction: column;
+        width: 250px;
         border-radius: 5px;
     }
-    @media (max-width: 820px) {
+    @media (max-width : 950px) {
+        .connection-profile {
+            width: 200px;
+        }
+    }
+    @media (max-width: 850px) {
         .connection-profile {
             display:none;
         }
@@ -139,7 +146,7 @@
     {#each recommended as user}
         <div class="profileIcon">
         {#if user.university}
-        <ProfileIcon user={user.username} edu={user.university} pfp={user.profile_pic_url}/>
+        <ProfileIcon user={user.username} edu={user.university} pfp={user.profile_pic_url} id={user.UserId}/>
         {:else}
         <ProfileIcon user={user.username} edu='' id={user.UserId}/>
         {/if}

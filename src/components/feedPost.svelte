@@ -251,8 +251,8 @@
         {/if}
     </div>
     </div>
+    
 <style>
-    /* #left { */
     .image-slider {
     position: relative;
     width: 100%; 
@@ -311,8 +311,6 @@
     .post-image {
         width: calc(100% + 2rem);
         margin:0 -1rem;
-        /* margin:0 -1rem; */
-
     }
 
     #timePassed {

@@ -3,7 +3,11 @@ import {
     getUserById,
     getFriends,
     getCompanyById,
-    getJobTitleById
+    getJobTitleById,
+    getAllSkills,
+    getUserSkillsById,
+    getSkillByName,
+    getSkillById
 } from '../../../../../getters.js';
 
 
@@ -26,6 +30,11 @@ export async function load({ locals, request }) {
             console.log("an error has occured");
         }
 
+        let skills = getUserSkillsById(id)
+        for(const skill of skills) {
+            skill.name = getSkillById(skill.SkillId);
+        }
+
         const profile = await res.json();
 
 
@@ -43,7 +52,8 @@ export async function load({ locals, request }) {
                 profile_pic_url: profile.profile_pic_url,
                 date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-                biography: profile.biography ? profile.biography : null
+                biography: profile.biography ? profile.biography : null,
+                skills: skills
             };
             return { userProfile }
         } catch (error) {

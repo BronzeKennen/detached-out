@@ -2,6 +2,7 @@
     import PrevJob from "./prevJob.svelte";
     import Friend from "./friend.svelte";
     import { onMount } from "svelte";
+    import SoftSkillsEdit from "./softSkillsEdit.svelte";
 
     export let profile;
 
@@ -38,6 +39,11 @@
     let eduFrom = profile.university.StartDate;
     let eduTo = profile.university.EndDate;
     let pfp = profile.profile_pic_url
+
+    let softSkills = [];
+    for(const skill of profile.skills) {
+        softSkills = [...softSkills, skill.name.SkillName]
+    }
 
     //reactive variables to spawn save/reset buttons
     $: changedMand =
@@ -334,6 +340,12 @@
                 on:input={autoResize}
                 minlength="0"
             />
+        </div>
+    </div>
+    <div class="mandFields">
+        <div class="fieldContainer">
+            <div id="labelField" style="width: 100%;">Skills</div>
+            <SoftSkillsEdit currSkills={softSkills}/>
         </div>
     </div>
     {#if changedMand}
@@ -704,6 +716,13 @@
         margin: auto;
     }
 
+    .details {
+        position: relative;
+        transform: translateY(-15vh);
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
     @media (max-width: 950px) {
         .background {
             height: 35vh;
@@ -745,7 +764,7 @@
         }
 
         .details {
-            top: -5vh;
+            top: 10vh;
             padding-left: 1rem;
             padding-right: 1rem;
         }
@@ -794,7 +813,7 @@
         }
 
         .details {
-            top: -5vh;
+            top: 10vh;
         }
 
         .fieldTitle {

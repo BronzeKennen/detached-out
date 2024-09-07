@@ -1,5 +1,5 @@
 
-import { getCompanyByName,getJobTitleByName,getUniversityByName,getUserById,getUsers } from "./getters";
+import { getCompanyByName,getJobTitleByName,getSkillByName,getUniversityByName,getUserById,getUsers } from "./getters";
 import db from  './database'
 
 export function newLike(userId,postId,type) {
@@ -31,6 +31,14 @@ export function newPost(UserId,postData) {
 
 }
 
+
+export function addNewSkills(UserId,skills) {
+    for (const skill of skills) {
+        let skillId = getSkillByName(skill);
+        const stmt = db.prepare('INSERT INTO user_skills (UserId,SkillId) VALUES (?,?)');
+        const resp = stmt.run(UserId,skillId.SkillId);
+    }
+}
 
 
 
@@ -242,4 +250,11 @@ export function newNotification(idFrom,idTo,type) {
     const stmt = db.prepare('INSERT INTO notifications (UserFrom,UserTo,type) VALUES (?,?,?)');
     return stmt.run(idFrom,idTo,type);
 
+}
+
+export function deleteUserSkill(UserId,SkillId) {
+    const stmt = db.prepare('DELETE FROM user_skills WHERE UserId = ? AND SkillId = ?');
+    const skillId = getSkillByName(SkillId);
+    const resp =  stmt.run(UserId,skillId.SkillId);
+    return resp.changes > 0;
 }

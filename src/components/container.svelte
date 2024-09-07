@@ -11,6 +11,7 @@
         .container {
             max-width: 1200px;
             margin:auto;
+            margin-top: 3rem;
             /* padding:1em; */
             background-color: none;
         }

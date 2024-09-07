@@ -2,8 +2,6 @@
 
 import {
     getUniversityById,
-    getUserById,
-    getFriends,
     getCompanyById,
     getJobTitleById
 } from '../../../../../getters.js';

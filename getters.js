@@ -136,3 +136,25 @@ export function getWorkExperience() {
     const stmt = db.prepare('SELECT * FROM work_experience');
     return stmt.get();
 }
+
+export function getAllSkills() {
+    const stmt = db.prepare('SELECT * FROM skills;')
+    const resp = stmt.all();
+    return resp;
+}
+
+export function getSkillByName(skillName) {
+    const stmt = db.prepare('SELECT * FROM softskills WHERE SkillName = ?');
+    return stmt.get(skillName);
+}
+
+export function getSkillById(skillId) {
+    const stmt = db.prepare('SELECT SkillName FROM softskills WHERE SkillId = ?');
+    return stmt.get(skillId);
+}
+
+
+export function getUserSkillsById(UserId) {
+    const stmt = db.prepare('SELECT * FROM user_skills WHERE UserId = ?');
+    return stmt.all(UserId);
+}

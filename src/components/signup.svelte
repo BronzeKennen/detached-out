@@ -118,12 +118,12 @@
 <style>
     .container {
         max-width: 1200px;
-        height: 100vh;
+        height: 90vh;
         display: flex;
         justify-content: center;
         align-items: center;
         margin: auto auto;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(235, 235, 235);
     }
 
     .names {
@@ -135,6 +135,8 @@
         padding:.5rem 0;
     }
     .signIn {
+        position: absolute;
+        top: 15vh;
         display: flex;
         align-items: start; 
         flex-direction: column;
@@ -142,13 +144,13 @@
         width: 400px;
         margin: 1rem;
         border-radius: 10px;
-        background-color: rgb(225, 225, 225);
+        background-color: white;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
     .signIn b {
         display: flex; 
-        background-color: rgb(225, 225, 225);
+        background-color: white;
         text-align: center;
         margin: 5% auto 5%;
     }
@@ -165,22 +167,29 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        border-radius: 4px;
+        border-radius: 8px;
+        font-weight: bold;
     }
 
     #signup {
         background-color: rgb(60, 170, 30);
-        color: rgb(225, 225, 225);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
         width: 40%; 
         margin-left: 0;
-        height: 50%;
+        height: 55%;
         margin-right: 0;
+        background-color: rgb(60, 170, 30);
+        box-shadow:0 2px 5px rgb(80, 202, 27);
+        color: rgb(255, 255, 255);
+    }
+    #signup:hover {
+        cursor: pointer;
+        box-shadow:0 2px 10px rgb(80, 202, 27);
+        transition-duration: .25s; 
     }
 
     #login {
-        background-color: rgb(150, 50, 150);
         color: rgb(255, 255, 255);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
@@ -188,6 +197,14 @@
         height: 65%;
         margin: 5% auto;
         cursor: pointer;
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+    }
+
+    #login:hover {
+        cursor: pointer;
+        box-shadow:0 2px 10px rgb(185, 50, 238);
+        transition-duration: .25s; 
     }
 
     .button-container {
@@ -213,15 +230,22 @@
         width: 80%; 
         padding: 1.5%; 
         display: flex;
-        border-radius: 6px;
-        border: 2px solid black;
         box-sizing: border-box; 
         position: relative; 
-        background-color: rgba(0, 0, 0, 0.082);
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(250, 240, 255);
+        resize: none;
+    }
+
+    .input-wrapper input:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 
     .input-wrapper input:hover {
-        box-shadow: 0px 0px 2px rgba(155, 17, 113, 1.452);
+        animation-duration: 0.5s;
+        box-shadow: 0px 0px 5px rgba(75, 17, 113, 1.452);
     }
 
     .input-wrapper {
@@ -294,6 +318,8 @@
             width: 100%;
         }
         .signIn {
+            top: 50%;
+            transform: translate(0, -50%);
             height: 70%;
             width: 90%;
         }

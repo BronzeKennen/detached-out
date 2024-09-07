@@ -146,7 +146,7 @@
     {#each recommended as user}
         <div class="profileIcon">
         {#if user.university}
-        <ProfileIcon user={user.username} edu={user.university} pfp={user.profile_pic_url}/>
+        <ProfileIcon user={user.username} edu={user.university} pfp={user.profile_pic_url} id={user.UserId}/>
         {:else}
         <ProfileIcon user={user.username} edu='' id={user.UserId}/>
         {/if}

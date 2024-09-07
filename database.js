@@ -118,10 +118,20 @@ db.exec(`CREATE TABLE IF NOT EXISTS likes (
 
 db.exec(`CREATE TABLE IF NOT EXISTS softskills (
     SkillId INTEGER PRIMARY KEY AUTOINCREMENT,
-    SkillName TEXT NOT NULL
+    SkillName TEXT NOT NULL UNIQUE
 )`);
 
-db.exec(`INSERT INTO SoftSkills (SkillName) VALUES 
+
+db.exec(`CREATE TABLE IF NOT EXISTS user_skills (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId INTEGER NOT NULL,    
+    SkillId INTEGER NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES users(UserId),
+    FOREIGN KEY (SkillId) REFERENCES softskills(SkillId)
+    UNIQUE (UserId,SkillId)
+)`);
+// 
+db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),
     ('Leadership'),
     ('Teamwork'),

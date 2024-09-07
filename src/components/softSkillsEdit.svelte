@@ -34,7 +34,7 @@
         'Time prioritization', 'Virtual collaboration', 'Work-life balance'
     ]; 
 
-    let currSkills = ['Talkative', 'Social', 'Hard-Working'];
+    export let currSkills = [];
     let skillToAdd = '';
     let newSkills = [];
 
@@ -42,8 +42,14 @@
         newSkills = newSkills.filter(s => s !== skill); 
     }
 
-    function deleteCurrSkill(skill) {
+    async function deleteCurrSkill(skill) {
         currSkills = currSkills.filter(s => s !== skill); 
+        const resp = await fetch('/api/skills',{
+            method: 'DELETE',
+            body: JSON.stringify({
+                skill:skill
+            })
+        })
     }
     
     
@@ -51,11 +57,26 @@
         newSkills = [...newSkills, skill];
     }
     
-    function addNewSkills() {
+    async function addNewSkills() {
         currSkills = [...currSkills, ...newSkills];
+
+        const resp = await fetch('/api/skills',{
+            method:"POST",
+            body: JSON.stringify({
+                newSkills: newSkills
+            })
+        })
+        if(resp.ok) {
+            console.log("Success")
+        } else {
+            console.log("An error has occured, Response:");
+            console.log(resp);
+        }
+
         newSkills = [];
         clicked = false;
-        document.body.style.overflow = 'visible';
+        if(document)
+            document.body.style.overflow = 'visible';
     }
 
     const handleClick = () => {
@@ -63,6 +84,7 @@
     };
 
     const handleOutsideClick = (event) => {
+        if(!document) return;
         const col = document.getElementById('popupWindow');
         const inboxOpen = document.getElementById('newSkill');
         
@@ -74,11 +96,15 @@
     
 
     onMount(() => {
-        document.addEventListener('click', handleOutsideClick);
+        if(document) {
+            document.addEventListener('click', handleOutsideClick);
+        }
     });
 
     onDestroy(() => {
-        document.removeEventListener('click', handleOutsideClick);
+        if(document) {
+            document.removeEventListener('click', handleOutsideClick);
+        }
     });
 
 </script>

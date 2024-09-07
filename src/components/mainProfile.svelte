@@ -40,6 +40,11 @@
     let eduTo = profile.university.EndDate;
     let pfp = profile.profile_pic_url
 
+    let softSkills = [];
+    for(const skill of profile.skills) {
+        softSkills = [...softSkills, skill.name.SkillName]
+    }
+
     //reactive variables to spawn save/reset buttons
     $: changedMand =
         lastName !== originalProfile.lname ||
@@ -340,7 +345,7 @@
     <div class="mandFields">
         <div class="fieldContainer">
             <div id="labelField" style="width: 100%;">Skills</div>
-            <SoftSkillsEdit />
+            <SoftSkillsEdit currSkills={softSkills}/>
         </div>
     </div>
     {#if changedMand}

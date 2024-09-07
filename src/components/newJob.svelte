@@ -404,6 +404,7 @@
     }
 
     #newAdvert {
+        cursor: pointer;
         margin-left: 0.5rem;
         width: fit-content;
         padding: 0 0.5rem;

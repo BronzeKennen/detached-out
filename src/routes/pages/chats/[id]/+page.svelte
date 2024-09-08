@@ -8,6 +8,8 @@
     const userId = data.loggedId;
     const profile = data.userProfile;
 
+    let inputContent = '';
+
     function autoResize(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -22,6 +24,8 @@
         }
     }
 
+    $: receivedMsgs = [];
+    $: sentMessages = [];
     let ws;
     onMount(() => {
         ws = new WebSocket(`ws://localhost:5173/${userId}`);
@@ -32,7 +36,7 @@
     
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log("Received message:",data);
+            receivedMsgs = [...receivedMsgs,data]
         }
     
         ws.onclose = () => {
@@ -44,6 +48,13 @@
         }
     })
 
+    const sendMessage = () => {
+        ws.send(JSON.stringify({message:inputContent}));
+        sentMessages = [...sentMessages,inputContent]
+        inputContent =''
+    }
+
+
 </script>
     <div class="selectedChat">
         <div class="userInfo">
@@ -53,11 +64,13 @@
         </div>
         <div class="seperator"></div>
         <div class="messages">
+            {#each receivedMsgs as msg}
+                <Message type="received" message={msg.message}/>
+            {/each}
+            {#each sentMessages as msg}
+                <Message type="sent" message={msg}/>
+            {/each}
             <!-- Messages Here -->
-            <Message type = 'received' message ='Nice'/>
-            <Message type = 'sent' message ='All gud'/>
-            <Message type = 'received' message ='THIS IS A LONG MESSAGE SO I CAN SEE WHAT WILL HAPPEN. NEED TO GO LONGER.'/>
-            <Message type = 'received' message ='Hey!'/>
         </div>
         <div class="seperator"></div>
         <div class="newMessage">
@@ -65,8 +78,9 @@
             id="textField"
             type="text"
             on:input={autoResize} 
+            bind:value={inputContent}
             />
-            <button id="send">
+            <button id="send" on:click={sendMessage}>
                 <i class="fa-solid fa-paper-plane" id="plane"></i>
             </button>
         </div>

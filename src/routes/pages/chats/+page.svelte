@@ -1,6 +1,8 @@
 <script>
     import Message from "../../../components/message.svelte";
 
+    export let data;
+    const userId = data.id
 
 
     let innerWidth = 0;

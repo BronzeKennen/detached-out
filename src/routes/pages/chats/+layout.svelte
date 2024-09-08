@@ -20,10 +20,10 @@
 
 <div class="feed">
     {#if condition === 1}
-        <PeopleCol {users}/>
+        <PeopleCol/>
     {/if}
     {#if condition === 0}
-        <PeopleColToggle {users}/>
+        <PeopleColToggle/>
     {/if}
 
     <slot/>

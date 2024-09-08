@@ -1,10 +1,11 @@
 import { getCompanyById, getJobTitleById, getUserById} from "../../../../../getters.js"
 import {sendFriendRequest } from "../../../../../setters.js"
 
-export const POST = async ({request}) => {
+export const POST = async ({locals,request}) => {
     let data = await request.json()
-    const resp = sendFriendRequest(data.sender,data.recipient);
-    let sender = getUserById(data.sender)
+    const id = locals.user?.id
+    const resp = sendFriendRequest(id,data.recipient);
+    let sender = getUserById(id)
     let recipient = getUserById(data.recipient)
     sender = {
         UserId: sender.UserId,

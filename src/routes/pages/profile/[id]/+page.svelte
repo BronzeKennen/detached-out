@@ -3,11 +3,14 @@
     import PrevJobView from "../../../../components/prevJobView.svelte";
     import Friend from "../../../../components/friend.svelte";
     import { onMount } from 'svelte'
+    import { friendStore } from '$lib/stores'
 
     export let data;
     const profile = data.userProfile;
 
+
     let workExperience;
+    let connectButton;
     let workExp = true;
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
@@ -53,6 +56,29 @@
     let uniFrom = profile.university.StartDate;
     let uniTo = profile.university.EndDate;
     let pfp = profile.profile_pic_url;
+
+    const followRequest = (async () => {
+        const resp = await fetch('/api/notifications/sendFriendRequest', { 
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            method:'POST',
+            body: JSON.stringify({
+                recipient: id
+            })
+        })
+        .then(resp => resp.ok ? resp.json() : null)
+        .then(friend => {
+            profile.button = 'pending'
+            if(friend) {
+                if(!$friendStore) {
+                    friendStore.set([friend.friend]);
+                } else {
+                    friendStore.update(friends => [...friends, friend.friend]);
+                }
+            }
+        })
+    })
 </script>
 <style>
     .top-profile {
@@ -106,7 +132,7 @@
         background:none;
         border-radius:40px;
         text-wrap: nowrap;
-        height: 2.5rem;
+        height: 2rem;
     }
     #addFriend:hover {
         background-color: rgba(0, 0, 0, 0.171);
@@ -157,6 +183,15 @@
         font-size:13px;
         opacity:60%;
     }
+    .interaction-buttons {
+        margin-top:1rem;
+    }
+    .accepted {
+        font-size:10px;
+        margin-top:1rem;
+        opacity:90%;
+        color:rgb(22, 155, 22);
+    }
 </style>
 
 <div class="top-profile">
@@ -167,9 +202,8 @@
     <div class="pfp"></div>
     {/if}
     <div class="nameJob">
-        <div class='name'>{firstName} {lastName} 
+        <div class='name'>{firstName} {lastName} {#if profile.button === 'accepted'} <span class="accepted">Connected</span>{/if}
             {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}
-            <button id="addFriend"><i class="fa-solid fa-plus"></i> Add Friend</button>
         </div>
         <br>
        {#if bio}
@@ -177,7 +211,16 @@
        {:else}
        <p class="blank">This user has no biography.</p>
        {/if}
-    
+        <div class="interaction-buttons">
+            {#if profile.button === 'pending'}
+                <button id="addFriend" disabled=true><i class="fa-solid fa-plus"></i> Pending...</button>
+            {:else if profile.button === 'rejected'}
+                <button id="addFriend" disabled=true><i class="fa-solid fa-plus"></i> Connect</button>
+            {:else if profile.button !== 'accepted'}
+                <button id="addFriend" on:click={followRequest}><i class="fa-solid fa-plus"></i> Connect</button>
+            {/if}
+            <button id="addFriend"><i class="fa-solid fa-paper-plane"></i> Message</button>
+        </div>
     </div>
     
 </div>

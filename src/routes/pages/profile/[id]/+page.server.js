@@ -1,6 +1,7 @@
 
 
 import {
+    getFriendShipStatus,
     getUniversityById,
     getCompanyById,
     getJobTitleById
@@ -8,10 +9,20 @@ import {
 
 
 
-export async function load({params,request}) {
+export async function load({locals,params,request}) {
     const { id } = params;
+
+    const loggedId = locals.user?.id;
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';
+
+    const friendStatus = getFriendShipStatus(loggedId,id)
+    let buttonStatus = 'unlocked';
+
+    if(friendStatus) buttonStatus = friendStatus.Status
+
+
+
 
     try {
         // Include the JWT cookie in the fetch request headers
@@ -42,7 +53,8 @@ export async function load({params,request}) {
                 profile_pic_url: profile.profile_pic_url,
                 date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-                biography: profile.biography ? profile.biography : null
+                biography: profile.biography ? profile.biography : null,
+                button:buttonStatus
             };
             return { userProfile }
         } catch (error) {

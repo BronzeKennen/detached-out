@@ -168,3 +168,8 @@ export  function getConversationBySender(senderId) {
     const stmt = db.prepare('SELECT * FROM chat_messages WHERE SenderId = ? OR RecipientId = ?');
     return stmt.all(senderId,senderId);
 }
+
+export function getFriendShipStatus(senderId,recipientId) {
+    const stmt = db.prepare('SELECT Status FROM friends WHERE (Sender = ? AND Recipient = ?) OR (Recipient = ? AND Sender = ?)')
+    return stmt.get(senderId,recipientId,senderId,recipientId);
+}

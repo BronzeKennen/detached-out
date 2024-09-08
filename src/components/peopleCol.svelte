@@ -31,9 +31,11 @@
         flex-direction: row;
         align-items: center;
         padding: .5rem;
+        margin:.2rem;
         min-height:50px;
         position:relative;
         background-color: rgb(255, 255, 255);
+
     }
 
     .userContainer #name {
@@ -42,7 +44,7 @@
     }
     .userContainer:hover {
         animation-duration: 0.2s;
-        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+        background-color: rgb(240, 240, 240);
         border-radius: 10px;
 
     }
@@ -75,20 +77,4 @@
         <div id="pfp"></div>
         <div id="name">MrHaminator</div>
     </div>
-    <div class="seperator"></div>
-    <div class="userContainer">
-        <div id="pfp"></div>
-        <div id="name">MrHaminator</div>
-    </div>
-    <div class="seperator"></div>
-    <div class="userContainer">
-        <div id="pfp"></div>
-        <div id="name">MrHaminator</div>
-    </div>
-    <div class="seperator"></div>
-    <div class="userContainer">
-        <div id="pfp"></div>
-        <div id="name">MrHaminator</div>
-    </div>
-    <div class="seperator"></div>
 </div>

@@ -81,6 +81,10 @@
     })
 </script>
 <style>
+    a {
+        color:inherit;
+        text-decoration: none;
+    }
     .top-profile {
         margin:.5rem;
         border-radius:10%;
@@ -219,7 +223,7 @@
             {:else if profile.button !== 'accepted'}
                 <button id="addFriend" on:click={followRequest}><i class="fa-solid fa-plus"></i> Connect</button>
             {/if}
-            <button id="addFriend"><i class="fa-solid fa-paper-plane"></i> Message</button>
+            <button id="addFriend"><a href="/pages/chats/{id}"><i class="fa-solid fa-paper-plane"></i> Message</a> </button>
         </div>
     </div>
     

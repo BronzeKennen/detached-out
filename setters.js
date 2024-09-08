@@ -1,6 +1,6 @@
 
-import { getCompanyByName,getJobTitleByName,getSkillByName,getUniversityByName,getUserById,getUsers } from "./getters";
-import db from  './database'
+import { getCompanyByName,getJobTitleByName,getSkillByName,getUniversityByName,getUserById,getUsers } from "./getters.js";
+import db from  './database.js'
 
 export function newLike(userId,postId,type) {
     let stmt;
@@ -264,4 +264,10 @@ export function newJobAdvert(PosterId,body) {
     const stmt = db.prepare('INSERT INTO job_adverts (PosterId,JobTitle,EnrollmentType,WorkplaceType,MonthlyWage,AdditionalInfo,Location) VALUES (?,?,?,?,?,?,?)')
     const resp = stmt.run(PosterId,body.title,body.enrollmentType,body.workplaceType,body.monthlyWage,body.moreInfo,body.location);
     return resp;
+}
+
+export  function saveMessageSent(senderId,recipientId,content) {
+    const stmt = db.prepare('INSERT INTO chat_messages (SenderId,RecipientId,Content) VALUES (?,?,?)')
+    const resp = stmt.run(senderId,recipientId,content);
+    return resp.changes > 0;
 }

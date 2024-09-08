@@ -25,7 +25,7 @@
         flex-direction: row;
         min-height: 50px;
         position:relative;
-        background-color: rgb(250, 240, 255);
+        background-color: rgb(255, 255, 255);
         align-items: center; 
         padding:.2rem;
         border-radius: 10px;
@@ -37,7 +37,7 @@
         min-height: 50px;
         align-items: center; 
         position: relative;
-        background-color: rgb(250, 240, 255);
+        background-color: rgb(255, 255, 255);
         padding:.2rem;
         border-radius: 10px;
     }

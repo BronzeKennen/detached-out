@@ -3,6 +3,31 @@
     import Message from "../../../components/message.svelte";
     import PeopleColToggle from "../../../components/peopleColToggle.svelte";
 
+    export let data;
+    const userId = data.id
+
+    let ws;
+    
+    ws= new WebSocket(`ws://localhost:5173/${userId}`);
+
+    ws.onopen = () => {
+        console.log("Connected to WebSocket")
+    }
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log("Received message:",data);
+    }
+
+    ws.onclose = () => {
+        console.log("Connection closed.")
+    }
+
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    }
+
+
     let users = ['Aris B.', 'JJ', 'Ham']; /* fetch people that have messaged */
 
     function autoResize(event) {
@@ -84,7 +109,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            background-color: rgb(250, 240, 255);
+            background-color: rgb(255, 255, 255);
             height: 92vh;
             border-radius: 10px;
             padding-left: 1rem;
@@ -141,7 +166,7 @@
             display: flex;
             flex-direction: row;
             gap: 1rem;
-            background-color: rgb(250, 240, 255);
+            background-color: white;
             padding: 1rem;
             padding-top: 0;
             flex: 1;
@@ -153,7 +178,7 @@
             border: none;
             border-radius: 10px;
             box-sizing: border-box;
-            background-color: white;
+            background-color: rgb(240, 240, 240);
             display: flex;
             position: relative;
             resize: none;

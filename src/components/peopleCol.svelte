@@ -5,11 +5,12 @@
     #col {
         width: 25%;
         height: 92vh;
-        background-color: rgb(250, 240, 255);
+        background-color: rgb(255, 255, 255);
         display: flex;
         flex-direction: column;
         gap: .25rem;
         border-radius: 10px;
+        box-shadow: -2px 2px 5px 2px rgb(204, 153, 204);
     }
 
     .header {
@@ -32,7 +33,7 @@
         padding: .5rem;
         min-height:50px;
         position:relative;
-        background-color: rgb(250, 240, 255);
+        background-color: rgb(255, 255, 255);
     }
 
     .userContainer #name {

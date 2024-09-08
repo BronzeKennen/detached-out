@@ -145,7 +145,16 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_adverts (
     FOREIGN KEY (PosterId) REFERENCES users(UserId)
 
 );`)
-// 
+
+db.exec(`CREATE TABLE IF NOT EXISTS chat_messages (
+    SenderId INTEGER NOT NULL,
+    RecipientId INTEGER NOT NULL,
+    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Content TEXT NOT NULL,
+    FOREIGN KEY (SenderId) REFERENCES users(UserId),
+    FOREIGN KEY (RecipientId) REFERENCES users(UserId)
+);`)
+
 db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),
     ('Leadership'),

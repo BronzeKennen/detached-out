@@ -1,4 +1,5 @@
 <script>
+    import { fly } from 'svelte/transition';
     import FeedPost from "./feedPost.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     $: postBody =''
@@ -61,7 +62,7 @@
         images = images.uploadedFiles;
     }
 
-    let newPosts = []
+    let newPosts = [];
     let createdPost = null;
     async function createPost() {
         const resp = await fetch('/api/posts/newPost',{method :'POST',
@@ -122,24 +123,41 @@
         </div>
         {/if}
     </div>
-    {#each newPosts as post}
-    <FeedPost 
-        user={user}
-        userId={post.UserId} 
-        postId={post.PostId} 
-        poster={user} 
-        reposts={0}
-        commentCount={0}
-        likes={[]} 
-        comments={[]}
-        images={post.ImagesJson}
-        content={post.Content}
-
-    />
-    {/each}
-
+    <!-- {#each newPosts as post}
+        <div class="fly-in">
+            <FeedPost 
+                user={user}
+                userId={post.UserId} 
+                postId={post.PostId} 
+                poster={user} 
+                reposts={0}
+                commentCount={0}
+                likes={[]} 
+                comments={[]}
+                images={post.ImagesJson}
+                content={post.Content}
+            />
+        </div>
+    {/each} -->
+    {#each newPosts as post (post.PostId)}
+    <div transition:fly={{ y: -50, duration: 1000 }}>
+        <FeedPost 
+            user={user}
+            userId={post.UserId} 
+            postId={post.PostId} 
+            poster={user} 
+            reposts={0}
+            commentCount={0}
+            likes={[]} 
+            comments={[]}
+            images={post.ImagesJson}
+            content={post.Content}
+        />
+    </div>
+{/each}
 
 <style>
+
     .buttons {
         display:flex;
         flex-direction: row;

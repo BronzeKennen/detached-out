@@ -1,4 +1,5 @@
 <script>
+    import FeedJob from "./feedJob.svelte";
     import feedJob from "./feedJob.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     // $: postBody =''
@@ -38,6 +39,7 @@
 
     let desiredSkills = [];
     let skillToAdd = '';
+    let createdJob = false;
 
     function updateSkills(event) {
         const skill = event.target.value; 
@@ -166,6 +168,16 @@
         if(skillResp.ok) {
             console.log('success')
         }
+        // Reset all things
+        postJob = !postJob;
+        title = '';
+        enrollmentType = '';
+        location = '';
+        workplaceType = '';
+        monthlyWage;
+        moreInfo = '';
+        desiredSkills = [];
+        // createdJob = true;
     }
 
     export let title = '';
@@ -263,21 +275,16 @@
                 <button id="uploadButton" on:click={newPost}></button>
             </span>
         </div>
-        <!-- {#if createdJob}
-        <FeedPost 
-            user={user}
-            userId={createdPost.UserId} 
-            postId={createdPost.PostId} 
-            poster={user} 
-            reposts={0}
-            commentCount={0}
-            likes={[]} 
-            comments={[]}
-            images={createdPost.ImagesJson}
-            content={createdPost.Content}
-
+    {/if}
+    {#if createdJob}
+        <FeedJob
+            title = {title};
+            enrollmentType = {enrollmentType};
+            location = {location};
+            workplaceType = {workplaceType};
+            monthlyWage = {monthlyWage};
+            moreInfo = {moreInfo};
         />
-        {/if} -->
     {/if}
 
 

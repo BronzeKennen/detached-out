@@ -80,7 +80,7 @@
     <div class='MiddleCol'>
         <NewPost user={user} pfp={user.profile_pic_url}/>
         {#each user.posts as post}
-            <FeedPost 
+            <FeedPost
                 user={user}
                 userId={user.UserId}
                 postId={post.PostId}

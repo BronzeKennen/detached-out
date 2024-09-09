@@ -8,7 +8,6 @@
         profile = $selectedProfile
     }
 
-
 </script>
 
 

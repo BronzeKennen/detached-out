@@ -1,32 +1,13 @@
+import { getCompanyById,getJobTitleById,getUniversityById } from '../../../../../getters.js';
 
-
-import {
-    getFriendShipStatus,
-    getUniversityById,
-    getCompanyById,
-    getJobTitleById
-} from '../../../../../getters.js';
-
-
-
-export async function load({locals,params,request}) {
-    const { id } = params;
-
+export async function load ({request,params,locals}) {
     const loggedId = locals.user?.id;
-    // Extract the cookie from the request headers
+    const recId = params.id
     const cookies = request.headers.get('cookie') || '';
-
-    const friendStatus = getFriendShipStatus(loggedId,id)
-    let buttonStatus = 'unlocked';
-
-    if(friendStatus) buttonStatus = friendStatus.Status
-
-
-
 
     try {
         // Include the JWT cookie in the fetch request headers
-        const res = await fetch(`http://localhost:5173/api/users/${id}`, {
+        const res = await fetch(`http://localhost:5173/api/users/${recId}`, {
             headers: {
                 'cookie': cookies // Pass the token in Authorization header
             }
@@ -53,12 +34,11 @@ export async function load({locals,params,request}) {
                 profile_pic_url: profile.profile_pic_url,
                 date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
-                biography: profile.biography ? profile.biography : null,
-                button:buttonStatus
+                biography: profile.biography ? profile.biography : null
             };
-            return { userProfile }
+            return { userProfile, loggedId}
         } catch (error) {
             console.error(error);
             return { status: 404, error: 'Profile not found' };
         }
-    }
+}

@@ -17,11 +17,11 @@
     };
     
     onMount(() => {
-        document.addEventListener('click', handleOutsideClick);
+        if( typeof window !== 'undefined') document.addEventListener('click', handleOutsideClick);
     });
 
     onDestroy(() => {
-        document.removeEventListener('click', handleOutsideClick);
+        if(typeof window !== 'undefined') document.removeEventListener('click', handleOutsideClick);
     });
 </script>
 

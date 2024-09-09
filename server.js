@@ -63,18 +63,16 @@ export async function createWebSocketServer(server) {
     })
 }
 
-if (process.env.NODE_ENV === 'development') {
-  createViteServer({
-    server: { middlewareMode: true }
-  }).then((vite) => {
-    app.use(vite.middlewares);
+createViteServer({
+  server: { middlewareMode: true }
+}).then((vite) => {
+  app.use(vite.middlewares);
 
-    app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'public')));
 
-    createWebSocketServer(server);
+  createWebSocketServer(server);
 
-    server.listen(5173, () => {
-      console.log('Development server running on port 5173');
-    });
+  server.listen(5173, () => {
+    console.log('Development server running on port 5173');
   });
-} 
+});

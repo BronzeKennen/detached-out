@@ -18,7 +18,6 @@
             condition = 1;
         }
     }
-    let users = ['Aris B.', 'JJ', 'Ham']; /* fetch people that have messaged */
 </script>
 
 <div class="feed">

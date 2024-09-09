@@ -11,6 +11,16 @@ export function getPostById(postId) {
     return resp;
 }
 
+export function getPostsByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ?')
+    const resp = stmt.all(userId)
+    for(const line of resp) {
+        line.Comments = getCommentsById(line.PostId)
+        line.Likes = getLikesById(line.PostId, 'post')
+    }
+    return resp;
+}
+
 export function getCommentsById(postId) {
     const stmt = db.prepare('SELECT * FROM comments WHERE PostId = ?');
     const resp = stmt.all(postId);
@@ -138,7 +148,7 @@ export function getWorkExperience() {
 }
 
 export function getAllSkills() {
-    const stmt = db.prepare('SELECT * FROM skills;')
+    const stmt = db.prepare('SELECT * FROM user_skills;')
     const resp = stmt.all();
     return resp;
 }
@@ -162,6 +172,11 @@ export function getUserSkillsById(UserId, Type) {
 export function getAllJobs() {
     const stmt = db.prepare('SELECT * FROM job_adverts ORDER BY DateCreated DESC');
     return stmt.all();
+}
+
+export function getJobsByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ?');
+    return stmt.all(userId);
 }
 
 export function getConversationBySender(senderId, receiverId) {

@@ -1,11 +1,132 @@
 <script> 
-    import AdminGrid from "../../components/adminGrid.svelte";
-    import Friend from "../../components/friend.svelte";
 
     export let data;
+    const users = data.allUsers;
+
+    const jsonExport = () => {
+        const userString = JSON.stringify(users);
+
+        const blob = new Blob([userString], {type: 'application/json'});
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'All-Users.json'
+        a.click();
+
+        URL.revokeObjectURL(url);
+
+    }
 </script> 
 
-<AdminGrid data={data}/>
-{#each data as user }
-        <Friend profile={user} id={UserId}/>
+<div class="header">
+    <h2>Welcome to the shittiest admin page of all time!</h2>
+    <h3>You can do bunch of bs like...</h3>
+    <div class="buttons head-buttons">
+        <button on:click={jsonExport}>EXPORT ALL USERS IN JSON</button>
+        <button>EXPORT ALL USERS IN XML</button>
+
+    </div>
+</div>
+<div class="user-grid">
+{#each users as user}
+    <div class="user-block">
+        <h4>Basic info</h4>
+        <div class="id">
+            <span style="color:red">UserID</span>
+            <span>{user.UserId}</span>
+        </div>
+        <div class="username">
+            <span style="color:red">Username </span>
+            <span>{user.username}</span>
+        </div>
+        <div class="full-name">
+            <span style="color:red">Full Name</span>
+            <span>{user.fname} {user.lname}</span>
+        </div>
+         <!-- Remember to add profile pic somewhere or the profile icon component -->
+        <div class="origin">
+        <span style="color:red">Origin</span>
+        <span>{user.state} {user.country_of_residence}</span>
+        </div>
+            <div class="company">
+                <span style="color:red">Current Company</span>
+                {#if user.current_company}
+                    <span>{user.current_company.company_name}</span>
+                {:else}
+                    <span>null</span>
+                {/if}
+            </div>
+
+        <div class="job-title">
+            <span style="color:red">job title</span>
+        {#if user.job_title}
+            <span>{user.job_title.JobTitle}</span>
+        {:else}
+            <span>null</span>
+        {/if}
+        </div>
+
+        <div class="university">
+            <span style="color:red">Education</span>
+            {#if user.university}
+                <span>{user.university.university_name}</span>
+            {:else}
+                <span>null</span>
+            {/if}
+        </div>
+        <p>Joined in {user.date_created}</p>
+        <a href="pages/profile/{user.UserId}">Profile Page</a>
+        <div class="buttons">
+            <button class="export">Export in JSON</button>
+            <button class="export">Export in XML</button>
+        </div>
+    </div>
 {/each}
+</div>
+
+<style>
+.header {
+    margin:0 15%;
+    padding:1em;
+}
+.user-grid {
+    margin:0 15%;
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:10px;
+    
+}
+
+.head-buttons {
+    display:flex;
+    flex-direction: row;
+}
+.user-block {
+    background-color:antiquewhite;
+    width:100%;
+    min-height:200px;
+    margin:1rem;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-block div {
+    width:100%;
+    display:flex;
+    margin:.2rem;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttons button{
+    margin:.2rem .5rem;
+    background-color: aquamarine;
+    border-radius:7px;
+    padding: 0.5em;
+    width:100%;
+}
+</style>

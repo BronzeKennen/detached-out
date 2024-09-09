@@ -172,33 +172,32 @@
     }
 
     #signup {
-        background-color: rgb(60, 170, 30);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
         width: 40%; 
         margin-left: 0;
         height: 55%;
         margin-right: 0;
-        background-color: rgb(60, 170, 30);
-        box-shadow:0 2px 5px rgb(80, 202, 27);
         color: rgb(255, 255, 255);
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
     }
     #signup:hover {
         cursor: pointer;
-        box-shadow:0 2px 10px rgb(80, 202, 27);
+        box-shadow:0 2px 10px rgb(185, 50, 238);
         transition-duration: .25s; 
     }
 
     #login {
-        color: rgb(255, 255, 255);
         text-decoration: none;
         font-family: Helvetica, sans-serif;
         width: 80%; 
         height: 65%;
         margin: 5% auto;
         cursor: pointer;
-        box-shadow:0 2px 5px rgb(185, 50, 238);
-        background-color: #9145a0; 
+        color: #9145a0; 
+        box-shadow:0 1px 3.5px rgb(185, 50, 238);
+        background-color: rgb(240, 227, 240);
     }
 
     #login:hover {

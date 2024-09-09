@@ -8,6 +8,7 @@
         profile = $selectedProfile
     }
 
+    console.log('vite pls');
 </script>
 
 

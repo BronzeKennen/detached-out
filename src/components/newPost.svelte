@@ -123,22 +123,6 @@
         </div>
         {/if}
     </div>
-    <!-- {#each newPosts as post}
-        <div class="fly-in">
-            <FeedPost 
-                user={user}
-                userId={post.UserId} 
-                postId={post.PostId} 
-                poster={user} 
-                reposts={0}
-                commentCount={0}
-                likes={[]} 
-                comments={[]}
-                images={post.ImagesJson}
-                content={post.Content}
-            />
-        </div>
-    {/each} -->
     {#each newPosts as post (post.PostId)}
     <div transition:fly={{ y: -50, duration: 1000 }}>
         <FeedPost 

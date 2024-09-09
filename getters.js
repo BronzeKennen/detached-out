@@ -165,7 +165,7 @@ export function getAllJobs() {
 }
 
 export  function getConversationBySender(senderId) {
-    const stmt = db.prepare('SELECT * FROM chat_messages WHERE SenderId = ? OR RecipientId = ?');
+    const stmt = db.prepare('SELECT * FROM chat_messages WHERE SenderId = ? OR RecipientId = ? ORDER BY DateCreated ASC');
     return stmt.all(senderId,senderId);
 }
 

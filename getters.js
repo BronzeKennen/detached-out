@@ -166,7 +166,7 @@ export function getAllJobs() {
 
 export function getConversationBySender(senderId, receiverId) {
     const stmt = db.prepare('SELECT * FROM chat_messages WHERE (SenderId = ? AND RecipientId = ?) OR (SenderId = ? AND RecipientId = ?) ORDER BY DateCreated ASC');
-    return stmt.all(senderId, receiverId, senderId, receiverId);
+    return stmt.all(senderId, receiverId, receiverId, senderId);
 }
 
 export function getFriendShipStatus(senderId, recipientId) {

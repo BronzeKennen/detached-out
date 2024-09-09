@@ -24,13 +24,14 @@ export async function createWebSocketServer(server) {
 
     wss.on('connection', async (ws,req) => {
         const userId = req.url.split('/')[1];
+        const senderId = userId.split(',')[0];
+        const receiver = userId.split(',')[1];
 
-        userConnections.set(userId,ws);
+        userConnections.set(senderId,ws);
 
 
         console.log(`User ${userId} connected.`)
-        //fetch message history either here or page.server.js
-        const convo =  getConversationBySender(userId)
+        const convo =  getConversationBySender(senderId,receiver)
         for(const message of convo) {
           ws.send(JSON.stringify({message:message}))
         }

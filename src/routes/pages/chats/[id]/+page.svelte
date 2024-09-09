@@ -1,12 +1,12 @@
 <script>
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import Message from "../../../../components/message.svelte";
     import ProfileIcon from "../../../../components/profileIcon.svelte";
 
 
     export let data;
     const userId = data.loggedId;
-    const profile = data.userProfile;
+    let profile = data.userProfile;
 
     let inputContent = '';
 
@@ -24,15 +24,8 @@
         }
     }
 
-    let disabled = true;
-    $: messages = [];
-    $: {
-        if(inputContent === '') disabled = true;
-        else disabled = false
-    }
-    let ws;
-    onMount(() => {
-        ws = new WebSocket(`ws://localhost:5173/${userId.loggedId}`);
+    function initializeWSS() {
+        ws = new WebSocket(`ws://localhost:5173/${userId.loggedId},${data.userProfile.UserId}`);
     
         ws.onopen = () => {
             console.log("Connected to WebSocket")
@@ -49,6 +42,36 @@
     
         ws.onerror = (error) => {
             console.error('WebSocket error:', error);
+        }
+
+    }
+
+    $: {
+        if(data.userProfile) {
+            profile = data.userProfile;
+            if(ws) {
+                ws.close();
+                messages= [];
+                initializeWSS();
+            }
+        }
+    }
+
+    let disabled = true;
+    $: messages = [];
+    $: {
+        if(inputContent === '') disabled = true;
+        else disabled = false
+    }
+
+    let ws;
+    onMount(() => {
+        initializeWSS();
+    })
+    onDestroy(() => {
+        if(ws) {
+            ws.close();
+            console.log("websocket connection closed")
         }
     })
 
@@ -69,6 +92,7 @@
 
 
 </script>
+
     <div class="selectedChat">
         <div class="userInfo">
             <div class="test">

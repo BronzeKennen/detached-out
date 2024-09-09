@@ -1,4 +1,5 @@
 <script>
+    export let users;
 </script>
 
 <style>
@@ -56,6 +57,9 @@
         min-height:50px;
         background-color:cyan;
         border-radius:50%;
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat;
     }
 
     .seperator {
@@ -66,6 +70,10 @@
         margin-left: auto;
         margin-right: auto;
     }
+    a {
+        text-decoration: none;
+        color:inherit
+    }
 
 
 </style>
@@ -73,8 +81,17 @@
 <div id="col">
     <div class="header">Inbox</div>
     <div class="seperator"></div>
-    <div class="userContainer">
-        <div id="pfp"></div>
-        <div id="name">MrHaminator</div>
+    {#each users as user}
+    <a href="/pages/chats/{user.UserId}">
+        <div class="userContainer">
+                {#if user.profile_pic_url}
+                    <span id="pfp" style={`background-image: url(${user.profile_pic_url})`}></span>
+                {:else}
+                    <span id="pfp" ></span>
+                {/if}
+            <div id="name">{user.username}</div>
+        </div>
+        <div class="seperator"></div>
+    </a>
+    {/each}
     </div>
-</div>

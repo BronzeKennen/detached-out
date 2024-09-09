@@ -212,10 +212,6 @@
                     <i class="fa-solid fa-comments"></i>
                     <b>Comment</b>
                 </span>
-                <span on:click={handleReposts} id="repostbutton" class:reposted={reposted}>
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <b>Repost</b>
-                </span>
             </div>
             {#if commenter}
                 <div class="commentsBackground">

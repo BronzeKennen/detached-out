@@ -1,12 +1,12 @@
 
-import db from  './database.js'
+import db from './database.js'
 
 export function getPostById(postId) {
     const stmt = db.prepare('SELECT * FROM posts WHERE PostId = ?')
     const resp = stmt.all(postId);
-    for(const line of resp) {
+    for (const line of resp) {
         line.Comments = getCommentsById(line.PostId)
-        line.Likes = getLikesById(line.PostId,'post')
+        line.Likes = getLikesById(line.PostId, 'post')
     }
     return resp;
 }
@@ -14,15 +14,15 @@ export function getPostById(postId) {
 export function getCommentsById(postId) {
     const stmt = db.prepare('SELECT * FROM comments WHERE PostId = ?');
     const resp = stmt.all(postId);
-    for(const line of resp) {
+    for (const line of resp) {
         line.UserFrom = getUserById(line.UserFrom);
         line.UserFrom = {
             username: line.UserFrom.username,
             UserId: line.UserFrom.UserId,
             profile_pic_url: line.UserFrom.profile_pic_url
         }
-        line.Likes = getLikesById(line.CommentId,'comment');
-        
+        line.Likes = getLikesById(line.CommentId, 'comment');
+
     }
     return resp;
 }
@@ -30,29 +30,29 @@ export function getCommentsById(postId) {
 export function getCommentById(commentId) {
     const stmt = db.prepare('SELECT * FROM comments WHERE CommentId = ?');
     let resp = stmt.all(commentId);
-    for(const comment of resp) {
+    for (const comment of resp) {
         comment.UserFrom = getUserById(comment.UserFrom);
         comment.UserFrom = {
-            UserFrom : comment.UserFrom.UserId,
+            UserFrom: comment.UserFrom.UserId,
             username: comment.UserFrom.username,
             profile_pic_url: comment.UserFrom.profile_pic_url
         }
     }
     return resp;
-} 
+}
 
-export function getLikesById(postId,type) {
+export function getLikesById(postId, type) {
     let stmt;
     stmt = db.prepare('SELECT * FROM likes where EntityId = ? AND EntityType = ?');
-    return stmt.all(postId,type);
+    return stmt.all(postId, type);
 }
 
 export function getAllPosts() {
     const stmt = db.prepare('SELECT * FROM posts ORDER BY createdAt DESC;')
     const resp = stmt.all();
-    for(const line of resp) {
+    for (const line of resp) {
         line.Comments = getCommentsById(line.PostId)
-        line.Likes = getLikesById(line.PostId,'post')
+        line.Likes = getLikesById(line.PostId, 'post')
     }
     return resp;
 }
@@ -66,13 +66,13 @@ export function getAllFriends() {
 
 export function getFriends(id) {
     const stmt = db.prepare('SELECT * FROM friends WHERE Recipient = ? OR Sender = ?;');
-    return stmt.all(id,id);
+    return stmt.all(id, id);
 }
 
 
 export function getNotifications(id) {
     const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ? ORDER BY DateCreated DESC;');
-    const resp =  stmt.all(id);
+    const resp = stmt.all(id);
     console.log(resp)
     return resp;
 }
@@ -154,9 +154,9 @@ export function getSkillById(skillId) {
 }
 
 
-export function getUserSkillsById(UserId,Type) {
+export function getUserSkillsById(UserId, Type) {
     const stmt = db.prepare('SELECT * FROM user_skills WHERE ObjectId = ? AND Type = ? ');
-    return stmt.all(UserId,Type);
+    return stmt.all(UserId, Type);
 }
 
 export function getAllJobs() {
@@ -164,12 +164,28 @@ export function getAllJobs() {
     return stmt.all();
 }
 
-export  function getConversationBySender(senderId) {
-    const stmt = db.prepare('SELECT * FROM chat_messages WHERE SenderId = ? OR RecipientId = ? ORDER BY DateCreated ASC');
-    return stmt.all(senderId,senderId);
+export function getConversationBySender(senderId, receiverId) {
+    const stmt = db.prepare('SELECT * FROM chat_messages WHERE (SenderId = ? AND RecipientId = ?) OR (SenderId = ? AND RecipientId = ?) ORDER BY DateCreated ASC');
+    return stmt.all(senderId, receiverId, senderId, receiverId);
 }
 
-export function getFriendShipStatus(senderId,recipientId) {
+export function getFriendShipStatus(senderId, recipientId) {
     const stmt = db.prepare('SELECT Status FROM friends WHERE (Sender = ? AND Recipient = ?) OR (Recipient = ? AND Sender = ?)')
-    return stmt.get(senderId,recipientId,senderId,recipientId);
+    return stmt.get(senderId, recipientId, senderId, recipientId);
+}
+export function getChatBubbles(senderId) {
+    const stmt = db.prepare(` SELECT DISTINCT
+                                CASE 
+                                    WHEN SenderId < RecipientId THEN SenderId 
+                                    ELSE RecipientId 
+                                END AS FirstId,
+                                CASE 
+                                    WHEN SenderId < RecipientId THEN RecipientId 
+                                    ELSE SenderId 
+                                END AS SecondId
+                            FROM chat_messages
+                            WHERE SenderId = ? OR RecipientId = ?
+                            ORDER BY FirstId, SecondId;
+                            `)
+    return stmt.all(senderId, senderId);
 }

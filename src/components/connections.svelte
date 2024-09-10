@@ -140,9 +140,6 @@
     }
 </style>
 <div class="connection-profile">
-    {#if recommended.length === 0} 
-    <p>No people to recommend</p>
-    {/if}
     {#each recommended as user}
         <div class="profileIcon">
         {#if user.university}

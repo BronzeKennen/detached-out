@@ -335,7 +335,17 @@
     }
     .post {
         margin:1rem 0rem .5rem 0;
+        
     }
+
+    .post p {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+    }
+
     .buttons {
         justify-content: space-between;
         display:flex;

@@ -11,7 +11,12 @@
     let email = ''
     let password = ''
 
-
+    function handleEnter(event) {
+        if (event.key === "Enter" && !event.shiftKey) { 
+            event.preventDefault();
+            login(); 
+        }
+    }
 
     export async function login() {
 
@@ -216,8 +221,8 @@
     <div class='signIn'>
         <b><img src={Logo} alt="Logo" /></b>
         <div id="info">Welcome Back!</div>
-        <input bind:value={email} type='email' placeholder="Email"/>
-        <input bind:value={password} type='password' placeholder="Password"/>
+        <input bind:value={email} type='email' placeholder="Email" on:keypress={handleEnter}/>
+        <input bind:value={password} type='password' placeholder="Password" on:keypress={handleEnter}/>
         <div class="button-container">
             <a on:click|preventDefault={login} href='#' id="login">Log In</a>
             <a href='/pages/home' id="forgot">Forgot Password?</a>

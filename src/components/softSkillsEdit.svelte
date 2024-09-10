@@ -91,6 +91,7 @@
         const inboxOpen = document.getElementById('newSkill');
         
         if (clicked && col && !col.contains(event.target) && !inboxOpen.contains(event.target)) {
+            newSkills = [];
             clicked = false;
             document.body.style.overflow = 'visible';
         }

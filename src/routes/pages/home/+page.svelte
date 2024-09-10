@@ -48,6 +48,7 @@
         .RightCol {
             width: 210px;
         }
+
     }
 
     @media (max-width : 850px) {

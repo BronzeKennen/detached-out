@@ -89,6 +89,12 @@
         }
     }
 
+    function handleEnter(event) {
+        if (event.key === "Enter" && !event.shiftKey) { 
+            event.preventDefault();
+            createPost(); 
+        }
+    }
 </script>
 
     <div class="new-post">
@@ -105,6 +111,7 @@
                         placeholder="Write something..."
                         bind:value={postBody}
                         on:input={autoResize} 
+                        on:keypress={handleEnter}
             />
         </div>
         <span class="buttons">

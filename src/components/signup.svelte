@@ -9,6 +9,14 @@
     let password = '';
     let validUser = false;
 
+
+    function handleEnter(event) {
+        if (event.key === "Enter" && !event.shiftKey) { 
+            event.preventDefault();
+            addUser(); 
+        }
+    }
+    
     async function addUser() {
 
         if(fname.trim() === '' || lname.trim() === '' || username.trim() === '') {
@@ -61,6 +69,7 @@
         <div class="names">
             <div class="input-wrapper">
                 <input 
+                id="fname"
                 bind:value={fname}
                 type='name' 
                 placeholder="First Name" 
@@ -72,6 +81,7 @@
             </div>
             <div class="input-wrapper">
                 <input 
+                id="lname"
                 type='name' 
                 bind:value={lname}
                 placeholder="Last Name" 
@@ -95,6 +105,7 @@
         </div>
         <div class="input-wrapper">
             <input 
+            on:keypress={handleEnter}
             bind:value={password}
             type='password' 
             placeholder="Password" 
@@ -134,6 +145,7 @@
         height:36px;
         padding:.5rem 0;
     }
+
     .signIn {
         position: absolute;
         top: 15vh;
@@ -260,11 +272,12 @@
     }
 
     .invalid-feedback {
+        box-shadow: 0 1px 3.5px rgb(185, 50, 238);
+        background-color: rgb(185, 50, 238);
+        color: rgb(240, 227, 240);
         z-index: 1;
         position:absolute;
-        background-color: red;
         border-radius: 50%;
-        color: white;
         text-align: center;
         font-weight: bolder;
         right: 15%;
@@ -285,24 +298,27 @@
     }
 
     .feedbackText {
-        z-index: 1;
+        z-index: 999;
         position:absolute;
-        background-color: red;
-        color: white;
+        box-shadow: 0 1px 3.5px rgb(185, 50, 238);
+        background-color: rgb(185, 50, 238);
+        color: rgb(240, 227, 240);
         text-align: center;
         font-size: x-small;
-        transform: translateY(-50%);
         border-radius: 5px;
-        right: 21%;
-        top: 50%;
-        height: 50%;
-        width: fit-content;
-        padding: 0.25%;
         display: flex;
         align-items: center;
         justify-content: center;
         visibility: hidden;
         opacity: 0.8;
+
+        transform: translateY(-150%);  
+        transform: translateX(50%);
+        left: 50%;
+        top: 0;  
+        height: auto;
+        width: max-content;  
+        padding: 2px 8px; 
     }
 
     @media (max-width: 450px) {

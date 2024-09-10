@@ -22,7 +22,7 @@
         width: 300px;
     }
     .background {
-        box-shadow: 0 1.5px 10px rgb(174, 0, 255);
+        box-shadow: 0 1.5px 5px rgb(185, 50, 238);
         border-top-left-radius:10px;
         border-top-right-radius:10px;
         height:75px;
@@ -44,7 +44,7 @@
         background-repeat: no-repeat;
     }
     .details {
-        box-shadow: 0 4.5px 9px rgb(174, 0, 255);
+        box-shadow: 0 4.5px 5px rgb(185, 50, 238);
         display: flex;
         flex-direction: column-reverse;
         align-items: start;

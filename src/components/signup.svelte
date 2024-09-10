@@ -114,8 +114,8 @@
             maxlength="32"/>
             <span class="invalid-feedback">
                 <i class="fa-solid fa-exclamation"></i>
+                <span class="feedbackText">Must be between 8 and 32 characters.</span>
             </span>
-            <span class="feedbackText">Must be between 8 and 32 characters.</span>
         </div>
         <div class="button-container">
             <a href='#' id="signup" on:click|preventDefault={addUser}>Join now!</a>
@@ -272,6 +272,7 @@
     }
 
     .invalid-feedback {
+        display: flex;
         box-shadow: 0 1px 3.5px rgb(185, 50, 238);
         background-color: rgb(185, 50, 238);
         color: rgb(240, 227, 240);
@@ -291,7 +292,7 @@
         visibility: hidden;
     }
 
-    .invalid-feedback:hover ~ .feedbackText {
+    .invalid-feedback:hover {
         transition-duration: 0.2s;
         cursor: pointer;
         visibility: visible;
@@ -314,7 +315,7 @@
 
         transform: translateY(-150%);  
         transform: translateX(50%);
-        left: 50%;
+        left: 0;
         top: 0;  
         height: auto;
         width: max-content;  

@@ -6,21 +6,38 @@ import FeedJob from "../../../components/feedJob.svelte";
 
     export let data;
 
-    $: width = 0;
+    $: innerWidth = 0;
 
     const user = data.userProfile;
     const jobs = user.jobs
-    $: current = ''
+    $: current = jobs[0]
 
     function printJob(job) {
         current = job
     }
 </script>
+<svelte:window bind:innerWidth />
 
 <div class="feed">
     <!-- <div class='LeftCol'> -->
         <!-- <SideProfile {user}/> -->
     <!-- </div> -->
+    {#if innerWidth < 600}
+        {#if current !== ''}
+            <div class="with-x">
+                <button on:click={() => {current = '' }}>X</button>
+                <DetailedFeedJob job={current}/>
+            </div>
+        {:else}
+            <div class="feed-job">
+            {#each jobs as job}
+                <div class="clicker" on:click={() => printJob(job)}>
+                    <FeedJob {job}  />
+                </div>
+            {/each}
+            </div>
+        {/if}
+    {:else}
     <div class='MiddleCol'>
         <div class="create-job">
             <div class="text">
@@ -44,10 +61,29 @@ import FeedJob from "../../../components/feedJob.svelte";
             <DetailedFeedJob job={current}/>
         {/if}
     </div>
+    {/if}
 </div>
 
 
 <style> 
+    .feed-job {
+        min-width:100%;
+    }
+    .with-x {
+        max-width:95.5%;
+        position:relative;
+    }
+    .with-x button {
+        position:absolute;
+        top:1%;
+        right:-.5%;
+        border-radius:20px;
+        border:none;
+        background-color: rgb(201, 201, 201);
+        width:30px;
+        height:30px;
+
+    }
     .create-job {
         padding:.5em;
         margin:.6em;
@@ -65,24 +101,9 @@ import FeedJob from "../../../components/feedJob.svelte";
         width: 95%;
     }
 
-    h1 {
-        margin-left: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-
     .feed {
         display:flex;
         flex-direction: row;
-    }
-
-    
-    
-    .LeftCol {
-        display: flex;
-        flex-direction: row;
-        width: 300px;
-        height: 50vh;
-        margin-right: 1rem;
     }
 
     .RightCol {
@@ -100,23 +121,8 @@ import FeedJob from "../../../components/feedJob.svelte";
     }
 
     @media (max-width : 950px) {
-        .RightCol {
-            width: 210px;
-        }
     }
 
 
-    @media (max-width: 600px) {
-        .feed {
-            display:flex;
-            flex-direction: column;
-        }
-
-        .LeftCol {
-            width: 100%;
-            height: fit-content;
-            flex-direction: column;
-        }
-    }
 </style>
 

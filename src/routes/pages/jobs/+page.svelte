@@ -8,6 +8,11 @@ import FeedJob from "../../../components/feedJob.svelte";
 
     $: innerWidth = 0;
 
+    $: setWidth = (innerWidth/2) + 29
+    $: {
+        if(setWidth > 635) setWidth = 635
+    }
+
     const user = data.userProfile;
     const jobs = user.jobs
     $: current = jobs[0]
@@ -58,7 +63,9 @@ import FeedJob from "../../../components/feedJob.svelte";
     </div>  
     <div class='RightCol'>
         {#if current !== ''}
-            <DetailedFeedJob job={current}/>
+            <div class="fixed-c" style="width:{setWidth}px">
+                <DetailedFeedJob job={current}/>
+            </div>
         {/if}
     </div>
     {/if}
@@ -66,6 +73,11 @@ import FeedJob from "../../../components/feedJob.svelte";
 
 
 <style> 
+    .fixed-c {
+        position:fixed;
+        height:100vh;
+        overflow:scroll;
+    }
     .feed-job {
         min-width:100%;
     }
@@ -109,9 +121,8 @@ import FeedJob from "../../../components/feedJob.svelte";
     .RightCol {
         display: flex;
         flex-direction: row;
-        width: 260px;
         margin-right: 5px;
-        height: 50vh;
+        height: 100vh;
         flex:4;
     }
     
@@ -124,5 +135,22 @@ import FeedJob from "../../../components/feedJob.svelte";
     }
 
 
+.fixed-c::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+}
+
+.fixed-c::-webkit-scrollbar-track {
+    display:none;
+}
+
+/* Handle (the part of the scrollbar you drag) */
+.fixed-c::-webkit-scrollbar-thumb {
+    background: #888; /* Handle color */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.fixed-c::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
 </style>
 

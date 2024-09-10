@@ -48,23 +48,6 @@
     background-color:white;
     overflow:scroll;
 }
-.detailed-job::-webkit-scrollbar {
-    width: 6px; /* Width of the scrollbar */
-}
-
-.detailed-job::-webkit-scrollbar-track {
-    display:none;
-}
-
-/* Handle (the part of the scrollbar you drag) */
-.detailed-job::-webkit-scrollbar-thumb {
-    background: #888; /* Handle color */
-    border-radius: 10px; /* Rounded corners */
-}
-
-.detailed-job::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-}
 
 .buttons {
     width:65%;

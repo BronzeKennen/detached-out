@@ -6,7 +6,7 @@ import FeedJob from "../../../components/feedJob.svelte";
 
     export let data;
 
-    $: width;
+    $: width = 0;
 
     const user = data.userProfile;
     const jobs = user.jobs
@@ -14,11 +14,6 @@ import FeedJob from "../../../components/feedJob.svelte";
 
     function printJob(job) {
         current = job
-    }
-
-    $: {
-        width = window.innerWidth;
-
     }
 </script>
 

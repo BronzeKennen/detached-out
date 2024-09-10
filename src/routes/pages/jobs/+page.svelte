@@ -14,11 +14,15 @@
         <!-- <SideProfile {user}/> -->
     <!-- </div> -->
     <div class='MiddleCol'>
-        <h1>Your job adverts</h1>
-        <NewJob />
+        <div class="create-job">
+            <div class="text">
+                <h2>Create a job Advert</h2>
+                <p>Looking to hire? Create a job advert here</p>
+            </div>
+            <NewJob />
+        </div>
         <!-- #if {user.adverts}  -->
         <div class="separator"></div>
-        <h1>Job adverts from other users</h1>
         {#each jobs as job}
             <FeedJob {job}/>
         {/each}
@@ -29,7 +33,16 @@
 </div>
 
 
-<style>
+<style> 
+    .create-job {
+        padding:.5em;
+        margin:.6em;
+        background-color:rgb(205, 233, 255);
+        border-radius:10px;
+    }
+    .text {
+        margin:1rem .55rem;
+    }
     .separator {
         border: none;
         border-top: 1px solid #ccc;

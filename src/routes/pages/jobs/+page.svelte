@@ -1,12 +1,25 @@
 <script>
-    import FeedJob from "../../../components/feedJob.svelte";
+    import { onMount } from "svelte";
+    import DetailedFeedJob from "../../../components/detailedFeedJob.svelte";
+import FeedJob from "../../../components/feedJob.svelte";
     import NewJob from "../../../components/newJob.svelte";
 
     export let data;
 
+    $: width;
+
     const user = data.userProfile;
     const jobs = user.jobs
+    $: current = ''
 
+    function printJob(job) {
+        current = job
+    }
+
+    $: {
+        width = window.innerWidth;
+
+    }
 </script>
 
 <div class="feed">
@@ -23,12 +36,18 @@
         </div>
         <!-- #if {user.adverts}  -->
         <div class="separator"></div>
+        <div class="feed-job">
         {#each jobs as job}
-            <FeedJob {job}/>
+            <div class="clicker" on:click={() => printJob(job)}>
+                <FeedJob {job}  />
+            </div>
         {/each}
+        </div>
     </div>  
     <div class='RightCol'>
-        <p>Extension</p>
+        {#if current !== ''}
+            <DetailedFeedJob job={current}/>
+        {/if}
     </div>
 </div>
 
@@ -78,7 +97,6 @@
         margin-right: 5px;
         height: 50vh;
         flex:4;
-        border:1px red solid;
     }
     
     .MiddleCol {
@@ -92,14 +110,6 @@
         }
     }
 
-    @media (max-width : 850px) {
-        .LeftCol {
-            width: 250px;
-        }
-        .RightCol {
-            display: none;
-        }
-    }
 
     @media (max-width: 600px) {
         .feed {

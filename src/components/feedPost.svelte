@@ -27,6 +27,14 @@
     images = JSON.parse(images)
     if(images)
     images = images.uploadedFiles
+
+    $: {
+        if(images) {
+            images = images;
+            console.log(images)
+        }
+    }
+
     let liked = false;
     let reposted = false;
     let commenter = false;

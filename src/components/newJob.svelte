@@ -1,6 +1,5 @@
 <script>
     import FeedJob from "./feedJob.svelte";
-    import feedJob from "./feedJob.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     // $: postBody =''
     export let pfp;
@@ -52,23 +51,6 @@
         desiredSkills = desiredSkills.filter(s => s !== skill); 
     }
 
-    // export let user;
-
-    // $: {
-    //     if(postButton) {
-    //         if(postBody === '') {
-    //             postButton.disabled = true;
-    //         } else {
-    //             postButton.disabled = false;
-    
-    //         }
-    //     }
-    // }
-
-    // function removeImage(index) {
-    //     images = images.filter((_, i) => i !== index);
-    // }
-
     function autoResize(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -80,55 +62,6 @@
         }
     }
 
-    // let images,requestImages;
-    // async function handleFileUpload(event) {
-    //     const postButton = document.getElementById('postButton');
-    //     postButton.disabled = true;
-    //     const files = event.target.files;
-    //     const formData = new FormData();
-    //     for(const file of files) {
-    //         formData.append('files',file);
-    //     }
-
-    //     const response = await fetch('/api/posts/upload', {
-    //         method: 'POST',
-    //         body: formData
-    //     });
-    //     images = await response.json();
-    //     if(response.ok) {
-    //         console.log('images uploaded succesfully')
-    //     } else {
-    //         console.log('error uploading image')
-    //     }
-    //     postButton.disabled = false;
-    //     requestImages = images;
-    //     images = images.uploadedFiles;
-    // }
-
-    // let createdPost = null;
-    // async function createPost() {
-    //     const resp = await fetch('/api/posts/newPost',{method :'POST',
-    //         body: JSON.stringify({
-    //             content: postBody,
-    //             images: requestImages
-    //         })
-    //     })
-    //     if(resp.ok) {
-    //         console.log('success')
-    //         let body = await resp.json();
-    //         body = body.post[0]
-    //         createdPost = {
-    //             Content: body.Content,
-    //             ImagesJson: body.ImagesJson,
-    //             PostId: body.PostId,
-    //             UserId: body.UserId,
-    //         }
-    //         postBody = '' 
-    //         images = null;
-    //     } else {
-    //         console.log('an error has occured');
-    //     }
-    // }
 
     let postJob = false;
 

@@ -12,7 +12,7 @@ export function getPostById(postId) {
 }
 
 export function getPostsByUserId(userId) {
-    const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ?')
+    const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ? ORDER BY CreatedAt DESC')
     const resp = stmt.all(userId)
     for(const line of resp) {
         line.Comments = getCommentsById(line.PostId)

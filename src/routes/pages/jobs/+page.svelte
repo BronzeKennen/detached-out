@@ -1,6 +1,4 @@
 <script>
-    import SideProfile from "../../../components/sideProfile.svelte";
-    import Connections from "../../../components/connections.svelte";
     import FeedJob from "../../../components/feedJob.svelte";
     import NewJob from "../../../components/newJob.svelte";
 
@@ -12,9 +10,9 @@
 </script>
 
 <div class="feed">
-    <div class='LeftCol'>
-        <SideProfile {user}/>
-    </div>
+    <!-- <div class='LeftCol'> -->
+        <!-- <SideProfile {user}/> -->
+    <!-- </div> -->
     <div class='MiddleCol'>
         <h1>Your job adverts</h1>
         <NewJob />
@@ -26,7 +24,7 @@
         {/each}
     </div>  
     <div class='RightCol'>
-        <Connections />
+        <p>Extension</p>
     </div>
 </div>
 
@@ -66,11 +64,13 @@
         width: 260px;
         margin-right: 5px;
         height: 50vh;
+        flex:4;
+        border:1px red solid;
     }
     
     .MiddleCol {
         flex-direction: column;
-        flex: 2;
+        flex: 3.5;
     }
 
     @media (max-width : 950px) {

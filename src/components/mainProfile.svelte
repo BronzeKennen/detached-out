@@ -1,8 +1,9 @@
 <script>
     import PrevJob from "./prevJob.svelte";
-    import Friend from "./friend.svelte";
     import { onMount } from "svelte";
     import SoftSkillsEdit from "./softSkillsEdit.svelte";
+    import FeedPost from "./feedPost.svelte";
+    import FeedJob from "./feedJob.svelte";
 
     export let profile;
 
@@ -499,9 +500,54 @@
             />
         {/each}
     {/if}
+    <div class="posts-jobs">
+        <div class="posts">
+            <h1>Your posts </h1>
+            {#each profile.posts as post} 
+            <span class="post">
+                <FeedPost
+                    user={profile}
+                    userId={profile.UserId}
+                    postId={post.PostId}
+                    poster={profile}
+                    likes={post.Likes}
+                    comments={post.Comments}
+                    reposts={post.RepostCount}
+                    images={post.ImagesJson}
+                    content={post.Content}
+                    created={post.CreatedAt}
+                />
+            </span>
+            {/each}
+        </div>
+        <div class="jobs">
+            <h1>Your job adverts</h1>
+            {#each profile.jobs as job}
+                <FeedJob job={job}/>
+            {/each}
+        </div>
+    </div>
 </div>
 
 <style>
+    .posts-jobs {
+        display:flex;
+    }
+    .posts,.jobs{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        flex:1;
+    }
+    .jobs {
+        height:100%;
+    }
+    .posts span {
+        width:100%;
+    }
+    .posts h1,.jobs h1 {
+        margin:2% 0;
+    }
     .top-profile {
         margin: 0.5rem;
         border-radius: 10%;

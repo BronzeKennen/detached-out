@@ -7,7 +7,9 @@ import {
     getAllSkills,
     getUserSkillsById,
     getSkillByName,
-    getSkillById
+    getSkillById,
+    getPostsByUserId,
+    getJobsByUserId
 } from '../../../../../getters.js';
 
 
@@ -35,7 +37,34 @@ export async function load({ locals, request }) {
             skill.name = getSkillById(skill.SkillId);
         }
 
+        let ownPosts = getPostsByUserId(id);
         const profile = await res.json();
+
+        let ownJobs = getJobsByUserId(id)
+        for (const job of ownJobs) {
+            const poster = getUserById(id);
+            job.Poster = {
+                UserId: poster.UserId,
+                username: poster.username,
+                fname: poster.fname,
+                lname: poster.lname,
+                biography: poster.biography,
+                education: poster.education,
+                current_company: getCompanyById(poster.current_company) ? getCompanyById(poster.current_company) : null,
+                job_title: getJobTitleById(poster.job_title) ?  getJobTitleById(poster.job_title) : null,
+                country_of_residence: poster.country_of_residence ? poster.country_of_residence : null,
+                state: poster.state ? poster.state : null,
+                profile_pic_url: poster.profile_pic_url,
+                date_of_birth: poster.date_of_birth ? poster.date_of_birth : null,
+                university: getUniversityById(poster.university) ? getUniversityById(poster.university) : null,
+                biography : poster.biography ? poster.biography : null,
+
+            }
+            job.skills = getUserSkillsById(job.AdvertId,"Job")
+            for(const skill of job.skills) {
+                skill.name = getSkillById(skill.SkillId);
+            }
+        }
 
 
             let userProfile = { //remove email password 
@@ -53,7 +82,9 @@ export async function load({ locals, request }) {
                 date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
                 biography: profile.biography ? profile.biography : null,
-                skills: skills
+                skills: skills,
+                posts:ownPosts,
+                jobs:ownJobs
             };
             return { userProfile }
         } catch (error) {

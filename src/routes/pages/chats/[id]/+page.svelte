@@ -10,6 +10,13 @@
 
     let inputContent = '';
 
+    function handleEnter(event) {
+        if (event.key === "Enter" && !event.shiftKey) { 
+            event.preventDefault();
+            sendMessage(); 
+        }
+    }
+    
     function autoResize(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -116,6 +123,7 @@
             id="textField"
             type="text"
             bind:value={inputContent}
+            on:keypress={handleEnter}
             />
             <button id="send" on:click={sendMessage} disabled={disabled}>
                 <i class="fa-solid fa-paper-plane" id="plane"></i>

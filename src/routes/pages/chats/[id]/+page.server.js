@@ -1,7 +1,12 @@
-import { getCompanyById,getJobTitleById,getUniversityById } from '../../../../../getters.js';
+import { getCompanyById,getJobTitleById,getUniversityById, getUserById } from '../../../../../getters.js';
 
 export async function load ({request,params,locals}) {
-    const loggedId = locals.user?.id;
+    let loggedId = locals.user?.id;
+    const loggedUser = getUserById(loggedId)
+    loggedId = {
+        loggedId : locals.user?.id,
+        profile_pic_url : loggedUser.profile_pic_url
+    }
     const recId = params.id
     const cookies = request.headers.get('cookie') || '';
 

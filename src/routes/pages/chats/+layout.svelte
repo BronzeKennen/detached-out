@@ -6,6 +6,9 @@
     let innerWidth = 0;
     let innerHeight = 0;
     let clicked = false;
+
+    export let data;
+    const bubbles = data.receivers;
     $: condition = 0;
 
     $: {
@@ -15,12 +18,11 @@
             condition = 1;
         }
     }
-    let users = ['Aris B.', 'JJ', 'Ham']; /* fetch people that have messaged */
 </script>
 
 <div class="feed">
     {#if condition === 1}
-        <PeopleCol/>
+        <PeopleCol users={bubbles}/>
     {/if}
     {#if condition === 0}
         <PeopleColToggle/>

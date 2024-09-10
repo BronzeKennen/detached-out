@@ -269,5 +269,5 @@ export function newJobAdvert(PosterId,body) {
 export  function saveMessageSent(senderId,recipientId,content) {
     const stmt = db.prepare('INSERT INTO chat_messages (SenderId,RecipientId,Content) VALUES (?,?,?)')
     const resp = stmt.run(senderId,recipientId,content);
-    return resp.changes > 0;
+    return resp;
 }

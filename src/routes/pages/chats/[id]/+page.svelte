@@ -1,12 +1,12 @@
 <script>
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import Message from "../../../../components/message.svelte";
     import ProfileIcon from "../../../../components/profileIcon.svelte";
 
 
     export let data;
     const userId = data.loggedId;
-    const profile = data.userProfile;
+    let profile = data.userProfile;
 
     let inputContent = '';
 
@@ -24,11 +24,8 @@
         }
     }
 
-    $: receivedMsgs = [];
-    $: sentMessages = [];
-    let ws;
-    onMount(() => {
-        ws = new WebSocket(`ws://localhost:5173/${userId}`);
+    function initializeWSS() {
+        ws = new WebSocket(`ws://localhost:5173/${userId.loggedId},${data.userProfile.UserId}`);
     
         ws.onopen = () => {
             console.log("Connected to WebSocket")
@@ -36,7 +33,7 @@
     
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            receivedMsgs = [...receivedMsgs,data]
+            messages = [data.message,...messages]
         }
     
         ws.onclose = () => {
@@ -46,16 +43,56 @@
         ws.onerror = (error) => {
             console.error('WebSocket error:', error);
         }
+
+    }
+
+    $: {
+        if(data.userProfile) {
+            profile = data.userProfile;
+            if(ws) {
+                ws.close();
+                messages= [];
+                initializeWSS();
+            }
+        }
+    }
+
+    let disabled = true;
+    $: messages = [];
+    $: {
+        if(inputContent === '') disabled = true;
+        else disabled = false
+    }
+
+    let ws;
+    onMount(() => {
+        initializeWSS();
+    })
+    onDestroy(() => {
+        if(ws) {
+            ws.close();
+            console.log("websocket connection closed")
+        }
     })
 
     const sendMessage = () => {
-        ws.send(JSON.stringify({message:inputContent}));
-        sentMessages = [...sentMessages,inputContent]
+        ws.send(JSON.stringify({
+            sender:userId.loggedId,
+            receiver:profile.UserId,
+            content:inputContent
+        }));
+        messages = [{
+            SenderId:userId.loggedId,
+            RecipientId:profile.UserId,
+            Content:inputContent,
+            DateCreated:null
+        },...messages]
         inputContent =''
     }
 
 
 </script>
+
     <div class="selectedChat">
         <div class="userInfo">
             <div class="test">
@@ -64,11 +101,12 @@
         </div>
         <div class="seperator"></div>
         <div class="messages">
-            {#each receivedMsgs as msg}
-                <Message type="received" message={msg.message}/>
-            {/each}
-            {#each sentMessages as msg}
-                <Message type="sent" message={msg}/>
+            {#each messages as msg}
+                {#if msg.SenderId === userId.loggedId}
+                    <Message type="sent" message={msg.Content} pfp={userId.profile_pic_url} created={msg.DateCreated}/>
+                {:else}
+                    <Message type="received" message={msg.Content} pfp={profile.profile_pic_url} created={msg.DateCreated} />
+                {/if}
             {/each}
             <!-- Messages Here -->
         </div>
@@ -77,10 +115,9 @@
             <textarea
             id="textField"
             type="text"
-            on:input={autoResize} 
             bind:value={inputContent}
             />
-            <button id="send" on:click={sendMessage}>
+            <button id="send" on:click={sendMessage} disabled={disabled}>
                 <i class="fa-solid fa-paper-plane" id="plane"></i>
             </button>
         </div>
@@ -104,6 +141,7 @@
         border-radius: 10px;
         padding-left: 1rem;
         padding-right: 1rem;
+        max-width:70%;
     }
 
     .userInfo {
@@ -124,11 +162,33 @@
     }
 
     .messages {
+        overflow:scroll;
         display: flex;
         flex-direction: column-reverse;
         height: 80%;
         padding: 1rem;
         gap: 1rem;
+    }
+
+    #textField::-webkit-scrollbar{
+        /* display:none; */
+    }
+    .messages::-webkit-scrollbar {
+        width: 6px; /* Width of the scrollbar */
+    }
+    
+    .messages::-webkit-scrollbar-track {
+        display:none;
+    }
+    
+    /* Handle (the part of the scrollbar you drag) */
+    .messages::-webkit-scrollbar-thumb {
+        background: #888; /* Handle color */
+        border-radius: 10px; /* Rounded corners */
+    }
+    
+    .messages::-webkit-scrollbar-thumb:hover {
+        background: #555; 
     }
 
     .newMessage {
@@ -141,6 +201,10 @@
         flex: 1;
     }
 
+    textarea {
+        resize:none;
+    }
+
     #textField {
         height: 100%;
         width: 100%;
@@ -150,7 +214,6 @@
         background-color: rgb(240, 240, 240);
         display: flex;
         position: relative;
-        resize: none;
         padding: .5rem;
         padding-left: 0.5;
         text-align: start;

@@ -3,6 +3,7 @@
     import DetailedFeedJob from "../../../components/detailedFeedJob.svelte";
     import FeedJob from "../../../components/feedJob.svelte";
     import NewJob from "../../../components/newJob.svelte";
+    import LoadJobs from "../../../components/loadJobs.svelte";
 
     export let data;
 
@@ -41,9 +42,7 @@
                         </a> 
                     </div>
             </div>
-            {#each jobs as job}
-                    <FeedJob {job}  />
-            {/each}
+            <LoadJobs profile={user}/>
             </div>
         {/if}
     {:else}
@@ -60,12 +59,8 @@
         <!-- #if {user.adverts}  -->
         <div class="separator"></div>
         <div class="feed-job">
-        {#each jobs as job}
-            <div class="clicker" on:click={() => printJob(job)}>
-                <FeedJob {job}  />
-            </div>
-        {/each}
         </div>
+            <LoadJobs profile={user} own={0}/>
     </div>  
     <div class='RightCol'>
         {#if current !== ''}

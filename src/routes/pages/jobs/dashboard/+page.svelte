@@ -14,7 +14,7 @@
 </div>
 <div class="wrapper">
     <h1 align="center">Your job adverts</h1>
-    <LoadJobs profile={profile}/>
+    <LoadJobs profile={profile} own={1}/>
 </div>
 <style>
     h1 {

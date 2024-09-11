@@ -5,7 +5,9 @@ import {
     getJobsByUserIdPaged, 
     getUserById,
     getSkillById,
-    getUserSkillsById    
+    getUserSkillsById,    
+    getAllJobsPaged,
+    getAllJobs
 } from '../../../../getters.js';
 import { newJobAdvert } from '../../../../setters.js';
 
@@ -32,7 +34,12 @@ export const GET = async({locals,request}) => {
     const own = parseInt(url.searchParams.get('own')) || 0; 
     id = parseInt(url.searchParams.get('id')) || locals.user?.id; 
     
-    const jobs = getJobsByUserIdPaged(id,page,limit);
+    let jobs;
+    if(own) 
+        jobs = getJobsByUserIdPaged(id,page,limit); 
+    else {
+        jobs = getAllJobsPaged(id,page,limit);
+    }
     for(const job of jobs) {
         const poster = getUserById(job.PosterId)
 

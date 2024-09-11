@@ -5,13 +5,14 @@
 
     let jobs = []
     export let profile;
+    export let own = 0;
 
     let isLoading;
     let allJobsLoaded = false;
     let page = 1;
 
     async function fetchPosts() {
-        const resp = await fetch(`/api/jobs?page=${page}&limit=5&own=1&id=${profile.UserId}`,{
+        const resp = await fetch(`/api/jobs?page=${page}&limit=5&own=${own}&id=${profile.UserId}`,{
             method:'GET'
         })
         if(resp.ok) {

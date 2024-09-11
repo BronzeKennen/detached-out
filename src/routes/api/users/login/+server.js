@@ -10,7 +10,7 @@ export async function POST({request}) {
 
 
     if (!user) {
-        return new Response(JSON.stringify({ message: 'Not found' }), {
+        return new Response(JSON.stringify({ message: 'Email or password is incorrect!' }), {
             status: 404,
             headers: { 'Content-Type': 'application/json' }
         });
@@ -28,7 +28,6 @@ export async function POST({request}) {
                 }
             });
         } else {
-            console.log('wrong password :(')
             return new Response(JSON.stringify({ message: 'Forbidden' }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }

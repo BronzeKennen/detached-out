@@ -1,6 +1,7 @@
 <script>
     import Logo from '../assets/logo.svg';
     import { onMount } from 'svelte';
+    import ErrorComp from './errorComp.svelte';
 
     onMount(async () => {
         await fetch('/api/users/clear-cookie');
@@ -10,6 +11,7 @@
     let innerHeight = 0;
     let email = ''
     let password = ''
+    let errorMessage = ''
 
     function handleEnter(event) {
         if (event.key === "Enter" && !event.shiftKey) { 
@@ -38,6 +40,8 @@
                 const userId = response.headers.get('User-Id');
                 window.location.href = `/pages/home/`
             } else {
+                const r = await response.json();
+                errorMessage = r.message
                 console.error("Email or password is incorrect")
                 window.location.href = '#'
             }
@@ -219,6 +223,9 @@
 
 <div class="container">
     <div class='signIn'>
+        {#if errorMessage !== ''}
+        <ErrorComp message={errorMessage}/>
+        {/if}
         <b><img src={Logo} alt="Logo" /></b>
         <div id="info">Welcome Back!</div>
         <input bind:value={email} type='email' placeholder="Email" on:keypress={handleEnter}/>

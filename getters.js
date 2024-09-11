@@ -1,6 +1,17 @@
 
 import db from './database.js'
 
+export function getJobsByUserIdPaged(userId,page,limit) {
+    const offset= page*limit - limit
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ? ORDER BY DateCreated DESC LIMIT ? OFFSET ?');
+    const resp = stmt.all(userId,limit,offset)
+    return resp;
+}
+export function getJobsByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ?');
+    return stmt.all(userId);
+}
+
 export function getPostsByUserIdPaged(userId,page,limit) {
     const offset = page*limit - limit
     const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ? ORDER BY CreatedAt DESC LIMIT ? OFFSET ?') 
@@ -185,10 +196,6 @@ export function getAllJobs() {
     return stmt.all();
 }
 
-export function getJobsByUserId(userId) {
-    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ?');
-    return stmt.all(userId);
-}
 
 export function getConversationBySender(senderId, receiverId) {
     const stmt = db.prepare('SELECT * FROM chat_messages WHERE (SenderId = ? AND RecipientId = ?) OR (SenderId = ? AND RecipientId = ?) ORDER BY DateCreated ASC');

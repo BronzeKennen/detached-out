@@ -137,28 +137,8 @@ export function updateWorkExperience(id,updatedata) {
         const stmt = db.prepare(query);
         result = stmt.run(compId,titleId,updatedata.from,updatedata.to,updatedata.private,id,updatedata.expId)
     }
-    //put logic to update instead of insert if needed
     return result.changes > 0;
 }
-
-// export async function updatePassword(updatedata) {
-    // const oldPass = updatedata.oldPass;
-    // const confirmPass = updatedata.confirmPass;
-    // const toChange = updatedata.newPass;
-    // if (toChange.localeCompare(confirmPass) !== 0) {
-        // return false;
-    // } else {
-        // const user = getUserById(updatedata.UserId);
-        // const users = getUsers();
-        // const test = await bcrypt.compare(oldPass,user.password)
-        // if(!test) return false;
-        // const hashedPassword = await bcrypt.hash(toChange, 10);
-        // const query = `UPDATE users SET password = ? WHERE UserId = ?`
-        // const stmt = db.prepare(query);
-        // const result = stmt.run(hashedPassword, updatedata.UserId);
-        // return result.changes > 0;
-    // }
-// }
 
 export async function updatePassword(updatedata) {
     const oldPass = updatedata.oldPass;
@@ -320,8 +300,8 @@ export function deleteUserSkill(UserId,SkillId,Type) {
 
 export function newJobAdvert(PosterId,body) {
     console.log(body)
-    const stmt = db.prepare('INSERT INTO job_adverts (PosterId,JobTitle,EnrollmentType,WorkplaceType,MonthlyWage,AdditionalInfo,Location) VALUES (?,?,?,?,?,?,?)')
-    const resp = stmt.run(PosterId,body.title,body.enrollmentType,body.workplaceType,body.monthlyWage,body.moreInfo,body.location);
+    const stmt = db.prepare('INSERT INTO job_adverts (PosterId,JobTitle,JobDescription,EnrollmentType,WorkplaceType,MonthlyWage,AdditionalInfo,Location) VALUES (?,?,?,?,?,?,?,?)')
+    const resp = stmt.run(PosterId,body.title,body.jobDescription,body.enrollmentType,body.workplaceType,body.monthlyWage,body.moreInfo,body.location);
     return resp;
 }
 

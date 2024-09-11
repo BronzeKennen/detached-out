@@ -7,7 +7,6 @@
     let created = job.DateCreated
     const poster = job.Poster
     let timePassed = '';
-
     let apply = false;
 
     function applyToJob() {

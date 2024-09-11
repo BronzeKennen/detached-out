@@ -25,7 +25,6 @@ export async function GET({locals,request,params}) {
                 }
             }
         }
-        //modify a new object
     }
 
     if(own) posts = getPostsByUserIdPaged(id,page,limit);

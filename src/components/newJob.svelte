@@ -74,6 +74,7 @@
             method:"POST",
             body: JSON.stringify({
                 title:title,
+                jobDescription:desc,
                 enrollmentType: enrollmentType,
                 location:location,
                 workplaceType:workplaceType,
@@ -110,9 +111,11 @@
         monthlyWage;
         moreInfo = '';
         desiredSkills = [];
+        desc = ''
         // createdJob = true;
     }
 
+    export let desc = ''
     export let title = '';
     export let enrollmentOptions = ['Full-time', 'Part-time'];
     export let enrollmentType = '';
@@ -144,7 +147,7 @@
                     id="job-desc"
                             type="text" 
                             placeholder=""
-                            bind:value={moreInfo}
+                            bind:value={desc}
                             on:input={autoResize} 
                 />
             </div>

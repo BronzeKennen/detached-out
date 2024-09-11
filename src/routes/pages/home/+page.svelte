@@ -26,7 +26,6 @@
                 fetchPosts();
             }
         }
-        isLoading = false;
     }
     let page = 2;
     async function fetchPosts() {
@@ -46,14 +45,15 @@
 
             }
         }
+        isLoading = false;
     }
 
     onMount(() => {
         window.addEventListener('scroll', checkScroll);
 
-        onDestroy(() => {
-            window.removeEventListener('scroll', checkScroll);
-        });
+    });
+    onDestroy(() => {
+        window.removeEventListener('scroll', checkScroll);
     });
 
 

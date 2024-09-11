@@ -5,7 +5,6 @@
     let posts = [];
     export let profile;
 
-    console.log(profile)
     let isLoading;
     let allPostsLoaded = false;
     let page = 1;
@@ -26,6 +25,7 @@
 
             }
         }
+        isLoading = false;
     }
     function checkScroll() {
         const scrollableHeight = document.documentElement.scrollHeight;
@@ -38,16 +38,17 @@
                 fetchPosts();
             }
         }
-        isLoading = false;
     }
     onMount(async () => {
+        if(typeof window !== 'undefined')
         window.addEventListener('scroll', checkScroll);
 
-        onDestroy(() => {
-            window.removeEventListener('scroll', checkScroll);
-        }); 
     });
 
+    onDestroy(() => {
+        if(typeof window !== 'undefined')
+            window.removeEventListener('scroll', checkScroll);
+    });
 </script>
 
 {#each posts as post} 

@@ -24,9 +24,6 @@
 <svelte:window bind:innerWidth />
 
 <div class="feed">
-    <!-- <div class='LeftCol'> -->
-        <!-- <SideProfile {user}/> -->
-    <!-- </div> -->
     {#if innerWidth < 600}
         {#if current !== ''}
             <div class="with-x">
@@ -35,10 +32,17 @@
             </div>
         {:else}
             <div class="feed-job">
+                <div class="create-job">
+                    <div class="text">
+                        <h2>Manage Job Applications</h2>
+                        <p>Go to Job Advert Dashboard</p>
+                        <a href="/pages/jobs/dashboard">
+                            <button class="under-text-button">Dashboard.</button>
+                        </a> 
+                    </div>
+            </div>
             {#each jobs as job}
-                <div class="clicker" on:click={() => printJob(job)}>
                     <FeedJob {job}  />
-                </div>
             {/each}
             </div>
         {/if}
@@ -46,10 +50,12 @@
     <div class='MiddleCol'>
         <div class="create-job">
             <div class="text">
-                <h2>Create a job Advert</h2>
-                <p>Looking to hire? Create a job advert here</p>
+                <h2>Manage Job Applications</h2>
+                <p>Go to Job Advert Dashboard</p>
             </div>
-            <NewJob />
+            <a href="/pages/jobs/dashboard">
+                <button class="under-text-button">Dashboard.</button>
+            </a> 
         </div>
         <!-- #if {user.adverts}  -->
         <div class="separator"></div>
@@ -152,5 +158,21 @@
 .fixed-c::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+    .under-text-button {
+        min-width:100px;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        height: 1.5rem;
+        box-sizing: border-box;
+        position: relative;
+        width:15%;
+        margin:0 .2rem;
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+
+    }
+
 </style>
 

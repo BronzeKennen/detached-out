@@ -5,7 +5,7 @@
     import { invalidate } from '$app/navigation'
     import ProfileIcon from "../../../components/profileIcon.svelte";
     import NewPost from "../../../components/newPost.svelte";
-    import { onMount } from "svelte";
+    import { onMount,onDestroy } from "svelte";
     let newuser = '';
 
     export let data;

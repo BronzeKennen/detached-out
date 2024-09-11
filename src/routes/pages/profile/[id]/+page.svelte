@@ -4,6 +4,7 @@
     import Friend from "../../../../components/friend.svelte";
     import { onMount } from 'svelte'
     import { friendStore } from '$lib/stores'
+    import SoftSkillsView from "../../../../components/softSkillsView.svelte";
 
     export let data;
     const profile = data.userProfile;
@@ -272,5 +273,9 @@
                 {/if}
             {/if}
         </div>
+    </div>
+    <div class="fieldTitle">Soft Skills</div>
+    <div class="mandFields">
+        <SoftSkillsView skills={profile.skills}/>
     </div>
 </div>

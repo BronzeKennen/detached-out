@@ -4,6 +4,7 @@
     import SoftSkillsEdit from "./softSkillsEdit.svelte";
     import FeedPost from "./feedPost.svelte";
     import FeedJob from "./feedJob.svelte";
+    import LoadPosts from "./loadPosts.svelte";
 
     export let profile;
 
@@ -21,6 +22,7 @@
 
     //copy of the profile to refer to any changes made
     let originalProfile = profile;
+    let pressed = 0;
 
     // ...
     let firstName = profile.fname;
@@ -71,48 +73,7 @@
 
     $: changedExperience = false;
     let workExperience;
-    let isLoading;
-    let allPostsLoaded = false;
-    let page = 2;
-    async function fetchPosts() {
-        const resp = await fetch(`/api/posts?page=${page}&limit=5&own=1`,{
-            method:'GET'
-        })
-        if(resp.ok) {
-            const data = await resp.json();
-            console.log(data)
-            if(data.body.length > 0) {
-                for(const newPost of data.body) {
-                    profile.posts = [...profile.posts,newPost]
-    
-                }
-            page += 1;
-            } else {
-                allPostsLoaded = true;
-
-            }
-        }
-    }
-    function checkScroll() {
-        const scrollableHeight = document.documentElement.scrollHeight;
-        const scrollTop = window.scrollY;
-        const windowHeight = window.innerHeight;
-
-        if (scrollableHeight - scrollTop <= windowHeight * 1.5) {
-            if (!isLoading) {
-                isLoading = true;
-                fetchPosts();
-            }
-        }
-        isLoading = false;
-    }
-    onMount(async () => {
-        window.addEventListener('scroll', checkScroll);
-
-        onDestroy(() => {
-            window.removeEventListener('scroll', checkScroll);
-        }); 
-    });
+  
 
 
     function autoResize(event) {
@@ -533,34 +494,27 @@
     {/if}
     <div class="posts-jobs">
         <div class="posts">
-            <h1>Your posts </h1>
-            {#each profile.posts as post} 
             <span class="post">
-                <FeedPost
-                    user={profile}
-                    userId={profile.UserId}
-                    postId={post.PostId}
-                    poster={profile}
-                    likes={post.Likes}
-                    comments={post.Comments}
-                    reposts={post.RepostCount}
-                    images={post.ImagesJson}
-                    content={post.Content}
-                    created={post.CreatedAt}
-                />
+            <h1>Your posts </h1>
+                <LoadPosts posts={profile.posts} profile={profile}/>
             </span>
-            {/each}
-        </div>
-        <div class="jobs">
-            <h1>Your job adverts</h1>
-            {#each profile.jobs as job}
-                <FeedJob job={job}/>
-            {/each}
         </div>
     </div>
 </div>
 
 <style>
+    .button-wrapper {
+        display:flex;
+        justify-content: center;
+    }
+    .choice-button {
+        width:15%;
+        height:30px;
+        margin:.5em;
+        background-color: rgb(230, 215, 255);
+        /* border:none; */
+        border-radius:10px;
+    }
     .posts-jobs {
         display:flex;
     }
@@ -574,7 +528,7 @@
         height:100%;
     }
     .posts span {
-        width:100%;
+        width:50%;
     }
     .posts h1,.jobs h1 {
         margin:2% 0;

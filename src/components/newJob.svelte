@@ -139,6 +139,16 @@
                 />
             </div>
             <div id="field">
+                <div class="fieldTitle">Job Description</div>
+                <textarea
+                    id="job-desc"
+                            type="text" 
+                            placeholder=""
+                            bind:value={moreInfo}
+                            on:input={autoResize} 
+                />
+            </div>
+            <div id="field">
                 <div class="fieldTitle">Location:</div>
                 <textarea required
                     id="title"
@@ -306,6 +316,22 @@
         box-shadow: 0 1px 5px rgb(147, 47, 214);
         transition-duration:.3s;
 
+    }
+    #job-desc {
+        min-height: 2rem;
+        min-height:200px;
+        border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: rgb(250, 240, 255);
+        min-width: 80%;
+        width: fit-content;
+        display: flex;
+        position: relative;
+        resize: none;
+        padding: .5rem;
+        padding-left: 0.5;
+        margin: auto 0.5rem;
     }
 
     #uploadButton {

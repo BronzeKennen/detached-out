@@ -1,4 +1,4 @@
-import { getFriends, getUniversityById } from '../../../../getters.js';
+import { getFriends, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
 import { getAllPosts, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
 
 
@@ -23,14 +23,20 @@ export async function load({ locals, request }) {
         const profile = await res.json();
         let friends = getFriends(profile.UserId)
         let connections = 0;
+        let posts = []
         for(const friend of friends) {
-            if (friend.Status === 'accepted')
+            if (friend.Status === 'accepted') {
                 connections++;
+                if(friend.Sender === id) {
+                    posts = [...posts,getPostsByUserIdPaged(friend.Recipient,1,5)]
+                } else {
+                    posts = [...posts,getPostsByUserIdPaged(friend.Sender,1,5)]
+                }
+            }
             //modify a new object
         }
 
-        let posts = getAllPosts();
-        for (const post of posts) {
+        for (const post of posts[1]) {
             const poster = getUserById(post.UserId);
             post.UserId = {
                 UserId: poster.UserId,
@@ -68,7 +74,7 @@ export async function load({ locals, request }) {
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
             biography : profile.biography ? profile.biography : null,
             connections: connections,
-            posts: posts
+            posts: posts[1]
         };
 
         return {userProfile}

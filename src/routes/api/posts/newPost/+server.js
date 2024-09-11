@@ -18,3 +18,8 @@ export async function POST({locals,request}) {
     }
 
 }
+
+export async function GET({locals,request,params}) {
+    const id = locals.user?.id;
+    console.log(params)
+}

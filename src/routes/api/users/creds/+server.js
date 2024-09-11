@@ -17,16 +17,16 @@ export const PATCH = async ({request}) => {
 
         if('oldPass' in updateData) {
             const res = await updatePassword(updateData);
-            if(!res) {
-                return new Response(JSON.stringify({message: 'Password doesn\'t match confirm password'}), {status: 401})
+            if(!res.success) {
+                return new Response(JSON.stringify({message: res.message}), {status: 401})
             } else {
                 return new Response(JSON.stringify({ message: 'User updated successfully' }), { status: 200 });
             }
-        }else {
+        } else {
             const res = updateUserCredentials(updateData);
-            
-            if(!res) {
-                return new Response(JSON.stringify({message: 'Password doesn\'t match confirm password'}), {status: 401})
+
+            if (!res.success) {
+                return new Response(JSON.stringify({ message: res.message }), { status: 400 })
             } else {
                 return new Response(JSON.stringify({ message: 'User updated successfully' }), { status: 200 });
             }

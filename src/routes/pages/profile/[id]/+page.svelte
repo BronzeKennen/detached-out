@@ -4,6 +4,8 @@
     import Friend from "../../../../components/friend.svelte";
     import { onMount } from 'svelte'
     import { friendStore } from '$lib/stores'
+    import SoftSkillsView from "../../../../components/softSkillsView.svelte";
+    import LoadPosts from "../../../../components/loadPosts.svelte";
 
     export let data;
     const profile = data.userProfile;
@@ -12,6 +14,7 @@
     let workExperience;
     let connectButton;
     let workExp = true;
+    console.log(profile)
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
             method: 'GET',
@@ -196,6 +199,16 @@
         opacity:90%;
         color:rgb(22, 155, 22);
     }
+    .posts {
+        width:100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .post {
+        width:60%;
+    }
 </style>
 
 <div class="top-profile">
@@ -215,6 +228,7 @@
        {:else}
        <p class="blank">This user has no biography.</p>
        {/if}
+       {#if profile.button !== 'own'}
         <div class="interaction-buttons">
             {#if profile.button === 'pending'}
                 <button id="addFriend" disabled=true><i class="fa-solid fa-plus"></i> Pending...</button>
@@ -225,6 +239,7 @@
             {/if}
             <button id="addFriend"><a href="/pages/chats/{id}"><i class="fa-solid fa-paper-plane"></i> Message</a> </button>
         </div>
+        {/if}
     </div>
     
 </div>
@@ -273,4 +288,19 @@
             {/if}
         </div>
     </div>
+    <div class="separator"></div>
+    <div class="fieldTitle">Soft Skills</div>
+    <div class="mandFields">
+        {#if !profile.skills.length}
+        <p>This user has not set their soft skills</p>
+        {/if}
+        <SoftSkillsView skills={profile.skills}/>
+    </div>
+    <div class="separator"></div>
+        <div class="fieldTitle">User Posts</div>
+        <div class="posts">
+            <div class="post">
+                <LoadPosts profile={profile}/>
+            </div>
+        </div>
 </div>

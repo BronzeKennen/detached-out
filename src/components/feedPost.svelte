@@ -24,9 +24,14 @@
 
     $: commentCount = comments.length;
     $: likeCount = likes.length;
-    images = JSON.parse(images)
-    if(images)
-    images = images.uploadedFiles
+    $: images = JSON.parse(images)
+    $: {
+        if(images) {
+            images = images.uploadedFiles
+        }
+    }
+
+
     let liked = false;
     let reposted = false;
     let commenter = false;

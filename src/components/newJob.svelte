@@ -1,6 +1,5 @@
 <script>
     import FeedJob from "./feedJob.svelte";
-    import feedJob from "./feedJob.svelte";
     import ProfileIcon from "./profileIcon.svelte";
     // $: postBody =''
     export let pfp;
@@ -52,23 +51,6 @@
         desiredSkills = desiredSkills.filter(s => s !== skill); 
     }
 
-    // export let user;
-
-    // $: {
-    //     if(postButton) {
-    //         if(postBody === '') {
-    //             postButton.disabled = true;
-    //         } else {
-    //             postButton.disabled = false;
-    
-    //         }
-    //     }
-    // }
-
-    // function removeImage(index) {
-    //     images = images.filter((_, i) => i !== index);
-    // }
-
     function autoResize(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -80,55 +62,6 @@
         }
     }
 
-    // let images,requestImages;
-    // async function handleFileUpload(event) {
-    //     const postButton = document.getElementById('postButton');
-    //     postButton.disabled = true;
-    //     const files = event.target.files;
-    //     const formData = new FormData();
-    //     for(const file of files) {
-    //         formData.append('files',file);
-    //     }
-
-    //     const response = await fetch('/api/posts/upload', {
-    //         method: 'POST',
-    //         body: formData
-    //     });
-    //     images = await response.json();
-    //     if(response.ok) {
-    //         console.log('images uploaded succesfully')
-    //     } else {
-    //         console.log('error uploading image')
-    //     }
-    //     postButton.disabled = false;
-    //     requestImages = images;
-    //     images = images.uploadedFiles;
-    // }
-
-    // let createdPost = null;
-    // async function createPost() {
-    //     const resp = await fetch('/api/posts/newPost',{method :'POST',
-    //         body: JSON.stringify({
-    //             content: postBody,
-    //             images: requestImages
-    //         })
-    //     })
-    //     if(resp.ok) {
-    //         console.log('success')
-    //         let body = await resp.json();
-    //         body = body.post[0]
-    //         createdPost = {
-    //             Content: body.Content,
-    //             ImagesJson: body.ImagesJson,
-    //             PostId: body.PostId,
-    //             UserId: body.UserId,
-    //         }
-    //         postBody = '' 
-    //         images = null;
-    //     } else {
-    //         console.log('an error has occured');
-    //     }
-    // }
 
     let postJob = false;
 
@@ -203,6 +136,16 @@
                     type="text" 
                     placeholder=""
                     bind:value={title}
+                />
+            </div>
+            <div id="field">
+                <div class="fieldTitle">Job Description</div>
+                <textarea
+                    id="job-desc"
+                            type="text" 
+                            placeholder=""
+                            bind:value={moreInfo}
+                            on:input={autoResize} 
                 />
             </div>
             <div id="field">
@@ -373,6 +316,22 @@
         box-shadow: 0 1px 5px rgb(147, 47, 214);
         transition-duration:.3s;
 
+    }
+    #job-desc {
+        min-height: 2rem;
+        min-height:200px;
+        border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: rgb(250, 240, 255);
+        min-width: 80%;
+        width: fit-content;
+        display: flex;
+        position: relative;
+        resize: none;
+        padding: .5rem;
+        padding-left: 0.5;
+        margin: auto 0.5rem;
     }
 
     #uploadButton {

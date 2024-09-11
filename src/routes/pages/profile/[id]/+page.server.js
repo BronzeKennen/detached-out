@@ -4,7 +4,9 @@ import {
     getFriendShipStatus,
     getUniversityById,
     getCompanyById,
-    getJobTitleById
+    getJobTitleById,
+    getUserSkillsById,
+    getSkillById
 } from '../../../../../getters.js';
 
 
@@ -16,7 +18,15 @@ export async function load({locals,params,request}) {
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';
 
-    const friendStatus = getFriendShipStatus(loggedId,id)
+    let friendStatus
+    if(loggedId === parseInt(id)) {
+        friendStatus = {
+            Status: 'own'
+        } 
+
+    } 
+    else friendStatus = getFriendShipStatus(loggedId,id)
+
     let buttonStatus = 'unlocked';
 
     if(friendStatus) buttonStatus = friendStatus.Status
@@ -38,6 +48,10 @@ export async function load({locals,params,request}) {
 
         const profile = await res.json();
 
+        let skills = getUserSkillsById(profile.UserId,'User')
+        for(const skill of skills) {
+            skill.name = getSkillById(skill.SkillId);
+        }
 
             let userProfile = { //remove email password 
                 UserId: profile.UserId,
@@ -54,7 +68,8 @@ export async function load({locals,params,request}) {
                 date_of_birth: profile.date_of_birth ? profile.date_of_birth : null,
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
                 biography: profile.biography ? profile.biography : null,
-                button:buttonStatus
+                button:buttonStatus,
+                skills:skills
             };
             return { userProfile }
         } catch (error) {

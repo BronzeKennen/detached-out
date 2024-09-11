@@ -1,8 +1,10 @@
 <script>
     import PrevJob from "./prevJob.svelte";
-    import Friend from "./friend.svelte";
-    import { onMount } from "svelte";
+    import { onMount,onDestroy } from "svelte";
     import SoftSkillsEdit from "./softSkillsEdit.svelte";
+    import FeedPost from "./feedPost.svelte";
+    import FeedJob from "./feedJob.svelte";
+    import LoadPosts from "./loadPosts.svelte";
 
     export let profile;
 
@@ -20,6 +22,7 @@
 
     //copy of the profile to refer to any changes made
     let originalProfile = profile;
+    let pressed = 0;
 
     // ...
     let firstName = profile.fname;
@@ -70,20 +73,8 @@
 
     $: changedExperience = false;
     let workExperience;
-    onMount(async () => {
-        const response = await fetch(`/api/workexp?id=${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        if (response.ok) {
-            workExperience = await response.json();
-            console.log("Successfully fetched work experience");
-        } else {
-            console.log("ITS A BOMB");
-        }
-    });
+  
+
 
     function autoResize(event) {
         const textarea = event.target;
@@ -211,6 +202,8 @@
             console.log("An error has occured");
         }
     };
+
+
 </script>
 
 <div class="top-profile">
@@ -499,9 +492,47 @@
             />
         {/each}
     {/if}
+    <div class="posts-jobs">
+        <div class="posts">
+            <span class="post">
+            <h1>Your posts </h1>
+                <LoadPosts profile={profile}/>
+            </span>
+        </div>
+    </div>
 </div>
 
 <style>
+    .button-wrapper {
+        display:flex;
+        justify-content: center;
+    }
+    .choice-button {
+        width:15%;
+        height:30px;
+        margin:.5em;
+        background-color: rgb(230, 215, 255);
+        /* border:none; */
+        border-radius:10px;
+    }
+    .posts-jobs {
+        display:flex;
+    }
+    .posts,.jobs{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        flex:1;
+    }
+    .jobs {
+        height:100%;
+    }
+    .posts span {
+        width:50%;
+    }
+    .posts h1,.jobs h1 {
+        margin:2% 0;
+    }
     .top-profile {
         margin: 0.5rem;
         border-radius: 10%;

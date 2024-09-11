@@ -84,6 +84,8 @@
             newPosts = [createdPost,...newPosts];
             postBody = '' 
             images = [];
+            requestImages = undefined;
+            postButton.disabled = true;
         } else {
             console.log('an error has occured');
         }
@@ -138,11 +140,11 @@
             postId={post.PostId} 
             poster={user} 
             reposts={0}
-            commentCount={0}
             likes={[]} 
             comments={[]}
             images={post.ImagesJson}
             content={post.Content}
+            created={null}
         />
     </div>
 {/each}

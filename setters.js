@@ -1,6 +1,7 @@
 
 import { getCompanyByName,getJobTitleByName,getSkillByName,getUniversityByName,getUserById,getUsers } from "./getters.js";
 import db from  './database.js'
+import bcrypt from 'bcryptjs'
 
 export function newLike(userId,postId,type) {
     let stmt;
@@ -69,15 +70,38 @@ export function rejectFriendRequest(idSender,idRecipient) {
 }
 
 export function updateUserCredentials(updatedata) {
-    let query = `UPDATE users SET email = ? WHERE UserId = ?`
-    let stmt = db.prepare(query);
-    let res = stmt.run(updatedata.email,updatedata.UserId);
-    if (res.changes === 0) return 2;
-    query = `UPDATE users SET username = ? WHERE UserId = ?`
-    stmt = db.prepare(query);
-    res = stmt.run(updatedata.username,updatedata.UserId);
-    return res.changes > 0;
+     let res;
+    
+    try {
+        let query = `UPDATE users SET email = ? WHERE UserId = ?`;
+        let stmt = db.prepare(query);
+        res = stmt.run(updatedata.email, updatedata.UserId);
+    } catch (err) {
+        console.error("Error updating email:", err);
+        return {
+            success: false,
+            message: "Email is already in use",
+            error: err
+        };
+    }
 
+    try {
+        let query = `UPDATE users SET username = ? WHERE UserId = ?`;
+        let stmt = db.prepare(query);
+        res = stmt.run(updatedata.username, updatedata.UserId);
+    } catch (err) {
+        console.error("Error updating username:", err);
+        return {
+            success: false,
+            message: "Username is already in use",
+            error: err
+        };
+    }
+
+    return {
+        success: res.changes > 0,
+        message: res.changes > 0 ? "User updated successfully" : "No changes made"
+    };
 }
 
 export function updateWorkExperience(id,updatedata) {
@@ -117,22 +141,57 @@ export function updateWorkExperience(id,updatedata) {
     return result.changes > 0;
 }
 
+// export async function updatePassword(updatedata) {
+    // const oldPass = updatedata.oldPass;
+    // const confirmPass = updatedata.confirmPass;
+    // const toChange = updatedata.newPass;
+    // if (toChange.localeCompare(confirmPass) !== 0) {
+        // return false;
+    // } else {
+        // const user = getUserById(updatedata.UserId);
+        // const users = getUsers();
+        // const test = await bcrypt.compare(oldPass,user.password)
+        // if(!test) return false;
+        // const hashedPassword = await bcrypt.hash(toChange, 10);
+        // const query = `UPDATE users SET password = ? WHERE UserId = ?`
+        // const stmt = db.prepare(query);
+        // const result = stmt.run(hashedPassword, updatedata.UserId);
+        // return result.changes > 0;
+    // }
+// }
+
 export async function updatePassword(updatedata) {
     const oldPass = updatedata.oldPass;
     const confirmPass = updatedata.confirmPass;
     const toChange = updatedata.newPass;
-    if (toChange.localeCompare(confirmPass) !== 0) {
-        return false;
-    } else {
+    
+    try {
+        if (toChange.localeCompare(confirmPass) !== 0) {
+            throw new Error("New password and confirmation password do not match.");
+        }
+
         const user = getUserById(updatedata.UserId);
-        const users = getUsers();
-        const test = await bcrypt.compare(oldPass,user.password)
-        if(!test) return false;
+        if (!user) throw new Error("User not found.");
+
+        const isValidPassword = await bcrypt.compare(oldPass, user.password);
+        if (!isValidPassword) {
+            throw new Error("Old password is incorrect.");
+        }
+
         const hashedPassword = await bcrypt.hash(toChange, 10);
-        const query = `UPDATE users SET password = ? WHERE UserId = ?`
+
+        const query = `UPDATE users SET password = ? WHERE UserId = ?`;
         const stmt = db.prepare(query);
         const result = stmt.run(hashedPassword, updatedata.UserId);
-        return result.changes > 0;
+
+        if (result.changes > 0) {
+            return { success: true, message: "Password updated successfully." };
+        } else {
+            throw new Error("Failed to update password.");
+        }
+    } catch (error) {
+        console.error(error.message);
+        return { success: false, message: error.message };
     }
 }
 

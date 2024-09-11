@@ -288,6 +288,7 @@
             {/if}
         </div>
     </div>
+    <div class="separator"></div>
     <div class="fieldTitle">Soft Skills</div>
     <div class="mandFields">
         {#if !profile.skills.length}

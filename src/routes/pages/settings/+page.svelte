@@ -1,4 +1,6 @@
 <script>
+    import ErrorComp from "../../../components/errorComp.svelte";
+
     export let data;
     const user = data.userProfile;
     const orgUser = user;
@@ -13,8 +15,9 @@
     $: changed = (email === orgUser.email) && (username === orgUser.username)
     let password = '';
     let curPassword = '';
-    $: alreadyInUse = false;
+    $: error = false;
 
+    let errorMessage = ''
 
     const saveChanges = (async () => {
         alreadyInUse = false;
@@ -34,7 +37,8 @@
             orgUser.email = email;
             orgUser.username = username;
         } else {
-            console.log(response)
+            let r = await response.json();
+            errorMessage = r.message;
             alreadyInUse =true;
         }
     })
@@ -55,7 +59,9 @@
         if(response.ok) {
             console.log('success!')
         } else {
-            console.log('an error has occured')
+            let r = await response.json()
+            errorMessage = r.message;
+            error = true;
         }
 
     })
@@ -71,8 +77,11 @@
 <div class="complete">
     <div class="details">
         <div class="fieldTitle">User Settings</div>
+        {#if error} 
+            <ErrorComp message={errorMessage}/>            
+        {/if}
         <div class="mandFields">
-            <h3>Change username {#if alreadyInUse} Email or usename already in use {/if}</h3>
+            <h3>Change username </h3>
             <input
                 id="textField"
                 type="text" 

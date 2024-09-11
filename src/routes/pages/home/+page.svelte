@@ -35,7 +35,6 @@
         })
         if(resp.ok) {
             const data = await resp.json();
-            console.log(data)
             if(data.body.length > 0) {
                 for(const newPost of data.body) {
                     user.posts = [...user.posts,newPost]

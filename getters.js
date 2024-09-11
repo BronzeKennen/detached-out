@@ -1,8 +1,20 @@
 
 import db from './database.js'
 
+export function getJobsByUserIdPaged(userId,page,limit) {
+    const offset = (page-1)*limit - limit;
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ? ORDER BY DateCreated DESC LIMIT ? OFFSET ?');
+    const resp = stmt.all(userId,limit,offset)
+    console.log(page,limit)
+    return resp;
+}
+export function getJobsByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ?');
+    return stmt.all(userId);
+}
+
 export function getPostsByUserIdPaged(userId,page,limit) {
-    const offset = page*limit - limit
+    const offset = (page-1)*limit - limit;
     const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ? ORDER BY CreatedAt DESC LIMIT ? OFFSET ?') 
     const resp = stmt.all(userId,limit,offset)
     for (const line of resp) {
@@ -184,11 +196,12 @@ export function getAllJobs() {
     const stmt = db.prepare('SELECT * FROM job_adverts ORDER BY DateCreated DESC');
     return stmt.all();
 }
-
-export function getJobsByUserId(userId) {
-    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ?');
-    return stmt.all(userId);
+export function getAllJobsPaged(id,page,limit) {
+    const offset = (page-1)*limit - limit;
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId != ? ORDER BY DateCreated DESC LIMIT ? OFFSET ?');
+    return stmt.all(id,limit,offset);
 }
+
 
 export function getConversationBySender(senderId, receiverId) {
     const stmt = db.prepare('SELECT * FROM chat_messages WHERE (SenderId = ? AND RecipientId = ?) OR (SenderId = ? AND RecipientId = ?) ORDER BY DateCreated ASC');

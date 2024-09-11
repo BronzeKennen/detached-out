@@ -20,11 +20,25 @@
             major: "",
         };
 
+    onMount(async () => {
+        const response = await fetch(`/api/workexp?id=${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (response.ok) {
+            workExperience = await response.json();
+            console.log("Successfully fetched work experience");
+        } else {
+            console.log("ITS A BOMB");
+        }
+    })
+
     //copy of the profile to refer to any changes made
     let originalProfile = profile;
     let pressed = 0;
 
-    // ...
     let firstName = profile.fname;
     let lastName = profile.lname;
     let currJobTitle = profile.job_title.JobTitle;
@@ -114,6 +128,7 @@
             EndDate: "",
             Private: false,
         };
+        console.log(workExperience)
         workExperience.body = [...workExperience.body, newJob];
         changedExperience = true;
     }

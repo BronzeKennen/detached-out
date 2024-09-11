@@ -4,31 +4,43 @@
     import FeedJob from "../../../components/feedJob.svelte";
     import NewJob from "../../../components/newJob.svelte";
     import LoadJobs from "../../../components/loadJobs.svelte";
+    import {jobStore,current} from '$lib/stores.js'
+
+
 
     export let data;
+    const user = data.userProfile
 
-    $: innerWidth = 0;
+    let jobs = [];
+    let innerWidth = 0;
 
-    $: setWidth = (innerWidth/2) + 29
+        
+
+
+    $: setWidth = (innerWidth / 2) + 29;
     $: {
-        if(setWidth > 635) setWidth = 635
+        if (setWidth > 635) setWidth = 635;
     }
 
-    const user = data.userProfile;
-    const jobs = user.jobs
-    $: current = jobs[0]
+    $: {
+        const storeValue = $jobStore;
+        if(storeValue.length) {
+            jobs = storeValue;
+            if($current === '')
+                current.set(jobs[0]) 
 
-    function printJob(job) {
-        current = job
+        }
+
     }
+ 
 </script>
 <svelte:window bind:innerWidth />
 
 <div class="feed">
     {#if innerWidth < 600}
-        {#if current !== ''}
+        {#if $current !== ''}
             <div class="with-x">
-                <button on:click={() => {current = '' }}>X</button>
+                <button on:click={() => {current.set('')}}>X</button>
                 <DetailedFeedJob job={current}/>
             </div>
         {:else}
@@ -63,9 +75,9 @@
             <LoadJobs profile={user} own={0}/>
     </div>  
     <div class='RightCol'>
-        {#if current !== ''}
+        {#if $current !== ''}
             <div class="fixed-c" style="width:{setWidth}px">
-                <DetailedFeedJob job={current}/>
+                <DetailedFeedJob job={$current}/>
             </div>
         {/if}
     </div>

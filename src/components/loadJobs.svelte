@@ -2,10 +2,28 @@
 <script>
     import { onMount ,onDestroy} from "svelte";
     import FeedJob from "./feedJob.svelte";
+    import {jobStore,current} from '$lib/stores.js'
 
-    let jobs = []
+
+    if(!$jobStore) jobStore.set([])
+    let jobs = $jobStore;
     export let profile;
     export let own = 0;
+    $: {
+        console.log($current)
+    }
+
+    // $: {
+        // const storeValue = $jobStore;
+// 
+        // if(storeValue.length === 0) {
+            // jobStore.set(data.jobs)
+        // } else {
+            // jobs = storeValue;
+        // }
+// 
+    // }
+
 
     let isLoading;
     let allJobsLoaded = false;
@@ -20,6 +38,7 @@
             if(data.jobs.length > 0) {
                 for(const newJob of data.jobs) {
                     jobs = [...jobs,newJob]
+                    jobStore.set(jobs)
     
                 }
             page += 1;
@@ -57,8 +76,10 @@
             window.removeEventListener('scroll', checkScroll);
     });
 </script>
-{#each jobs as job}
-    <FeedJob job={job} id={profile.UserId}/>
+{#each $jobStore as job}
+    <div class="clicker" on:click={() => current.set(job)}>
+    <FeedJob job={job}/>
+        </div>
 {/each}
 <style>
 

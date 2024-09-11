@@ -49,11 +49,13 @@
     }
 
     onMount(() => {
+        if(typeof window !== 'undefined')
         window.addEventListener('scroll', checkScroll);
 
     });
     onDestroy(() => {
-        window.removeEventListener('scroll', checkScroll);
+        if(typeof window !== 'undefined')
+            window.removeEventListener('scroll', checkScroll);
     });
 
 

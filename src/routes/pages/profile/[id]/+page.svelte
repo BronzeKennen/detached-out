@@ -13,6 +13,7 @@
     let workExperience;
     let connectButton;
     let workExp = true;
+    console.log(profile)
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
             method: 'GET',
@@ -216,6 +217,7 @@
        {:else}
        <p class="blank">This user has no biography.</p>
        {/if}
+       {#if profile.button !== 'own'}
         <div class="interaction-buttons">
             {#if profile.button === 'pending'}
                 <button id="addFriend" disabled=true><i class="fa-solid fa-plus"></i> Pending...</button>
@@ -226,6 +228,7 @@
             {/if}
             <button id="addFriend"><a href="/pages/chats/{id}"><i class="fa-solid fa-paper-plane"></i> Message</a> </button>
         </div>
+        {/if}
     </div>
     
 </div>

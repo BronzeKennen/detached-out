@@ -18,7 +18,15 @@ export async function load({locals,params,request}) {
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';
 
-    const friendStatus = getFriendShipStatus(loggedId,id)
+    let friendStatus
+    if(loggedId === parseInt(id)) {
+        friendStatus = {
+            Status: 'own'
+        } 
+
+    } 
+    else friendStatus = getFriendShipStatus(loggedId,id)
+
     let buttonStatus = 'unlocked';
 
     if(friendStatus) buttonStatus = friendStatus.Status

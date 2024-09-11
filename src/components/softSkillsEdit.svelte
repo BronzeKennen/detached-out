@@ -99,13 +99,13 @@
     
 
     onMount(() => {
-        if(document) {
+        if(typeof document !== 'undefined') {
             document.addEventListener('click', handleOutsideClick);
         }
     });
 
     onDestroy(() => {
-        if(document) {
+        if(typeof document !== 'undefined') {
             document.removeEventListener('click', handleOutsideClick);
         }
     });

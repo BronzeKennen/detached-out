@@ -1,14 +1,11 @@
 import {
     getUniversityById,
     getUserById,
-    getFriends,
     getCompanyById,
     getJobTitleById,
-    getAllSkills,
     getUserSkillsById,
-    getSkillByName,
     getSkillById,
-    getPostsByUserId,
+    getPostsByUserIdPaged,
     getJobsByUserId
 } from '../../../../../getters.js';
 
@@ -37,7 +34,7 @@ export async function load({ locals, request }) {
             skill.name = getSkillById(skill.SkillId);
         }
 
-        let ownPosts = getPostsByUserId(id);
+        let ownPosts = getPostsByUserIdPaged(id,1,5);
         const profile = await res.json();
 
         let ownJobs = getJobsByUserId(id)

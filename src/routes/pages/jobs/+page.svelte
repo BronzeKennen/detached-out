@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import DetailedFeedJob from "../../../components/detailedFeedJob.svelte";
-import FeedJob from "../../../components/feedJob.svelte";
+    import FeedJob from "../../../components/feedJob.svelte";
     import NewJob from "../../../components/newJob.svelte";
 
     export let data;

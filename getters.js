@@ -1,6 +1,17 @@
 
 import db from './database.js'
 
+export function getPostsByUserIdPaged(userId,page,limit) {
+    const offset = page*limit - limit
+    const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ? ORDER BY CreatedAt DESC LIMIT ? OFFSET ?') 
+    const resp = stmt.all(userId,limit,offset)
+    for (const line of resp) {
+        line.Comments = getCommentsById(line.PostId)
+        line.Likes = getLikesById(line.PostId, 'post')
+    }
+    return resp;
+}
+
 export function getPostById(postId) {
     const stmt = db.prepare('SELECT * FROM posts WHERE PostId = ?')
     const resp = stmt.all(postId);

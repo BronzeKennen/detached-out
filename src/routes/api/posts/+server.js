@@ -1,9 +1,35 @@
-import { getAllPosts, getUserById } from "../../../../getters"
+import { getCompanyById,getJobTitleById,getUniversityById,getFriends, getPostsByUserIdPaged, getUserById } from "../../../../getters"
 
 
-export const GET = async () => {
-    let posts = getAllPosts();
-    for( const post of posts) {
+export async function GET({locals,request,params}) {
+    const id = locals.user?.id;
+    const url = new URL(request.url)
+
+    const page = parseInt(url.searchParams.get('page')) || 1; // Default to page 1 if not provided
+    const limit = parseInt(url.searchParams.get('limit')) || 5; // Default to limit 5 if not provided
+    const own = parseInt(url.searchParams.get('own')) || 0; // Default to limit 5 if not provided
+
+    let friends = getFriends(id)
+    let connections = 0;
+    let posts = []
+    for(const friend of friends) {
+        if (friend.Status === 'accepted') {
+            connections++;
+            if(!own) {
+                if(friend.Sender === id) {
+                    posts = [...posts,getPostsByUserIdPaged(friend.Recipient,page,limit)]
+                } else {
+                    posts = [...posts,getPostsByUserIdPaged(friend.Sender,page,limit)]
+                }
+            }
+        }
+        //modify a new object
+    }
+
+    if(own) posts = getPostsByUserIdPaged(id,page,limit);
+    else posts = posts[1]
+
+    for (const post of posts) {
         const poster = getUserById(post.UserId);
         post.UserId = {
             UserId: poster.UserId,
@@ -24,5 +50,6 @@ export const GET = async () => {
 
         }
     }
-    return {posts}
+    return new Response(JSON.stringify({status:200,body:posts}))
+
 }

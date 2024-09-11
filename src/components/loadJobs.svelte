@@ -58,7 +58,7 @@
     });
 </script>
 {#each jobs as job}
-    <FeedJob job={job}/>
+    <FeedJob job={job} id={profile.UserId}/>
 {/each}
 <style>
 

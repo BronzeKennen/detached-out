@@ -4,6 +4,7 @@
     import ProfileIcon from "./profileIcon.svelte";
 
     export let job;
+    export let id;
     let created = job.DateCreated
     const poster = job.Poster
     let timePassed = '';
@@ -59,7 +60,9 @@
             </div>
             <p>{job.AdditionalInfo}</p>
         </div>
-        <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button>
+        {#if id !== poster.UserId}
+            <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button>
+        {/if}
     </div>
     
 <style>

@@ -14,6 +14,7 @@
     let jobs = [];
     let innerWidth = 0;
 
+
         
 
 
@@ -29,7 +30,7 @@
             if($current === '')
                 current.set(jobs[0]) 
 
-        }
+        } 
 
     }
  
@@ -41,7 +42,7 @@
         {#if $current !== ''}
             <div class="with-x">
                 <button on:click={() => {current.set('')}}>X</button>
-                <DetailedFeedJob job={current}/>
+                <DetailedFeedJob job={$current}/>
             </div>
         {:else}
             <div class="feed-job">

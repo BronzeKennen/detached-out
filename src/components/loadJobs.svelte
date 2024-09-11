@@ -5,13 +5,11 @@
     import {jobStore,current} from '$lib/stores.js'
 
 
-    if(!$jobStore) jobStore.set([])
+    if(!$jobStore.length) jobStore.set([])
     let jobs = $jobStore;
     export let profile;
     export let own = 0;
-    $: {
-        console.log($current)
-    }
+
 
     // $: {
         // const storeValue = $jobStore;

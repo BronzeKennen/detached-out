@@ -5,6 +5,7 @@
     import { onMount } from 'svelte'
     import { friendStore } from '$lib/stores'
     import SoftSkillsView from "../../../../components/softSkillsView.svelte";
+    import LoadPosts from "../../../../components/loadPosts.svelte";
 
     export let data;
     const profile = data.userProfile;
@@ -198,6 +199,16 @@
         opacity:90%;
         color:rgb(22, 155, 22);
     }
+    .posts {
+        width:100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .post {
+        width:60%;
+    }
 </style>
 
 <div class="top-profile">
@@ -279,6 +290,16 @@
     </div>
     <div class="fieldTitle">Soft Skills</div>
     <div class="mandFields">
+        {#if !profile.skills.length}
+        <p>This user has not set their soft skills</p>
+        {/if}
         <SoftSkillsView skills={profile.skills}/>
     </div>
+    <div class="separator"></div>
+        <div class="fieldTitle">User Posts</div>
+        <div class="posts">
+            <div class="post">
+                <LoadPosts profile={profile}/>
+            </div>
+        </div>
 </div>

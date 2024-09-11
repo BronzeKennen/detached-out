@@ -2,19 +2,19 @@
 <script>
     import FeedPost from "./feedPost.svelte";
     import { onMount ,onDestroy} from "svelte";
-    export let posts;
+    let posts = [];
     export let profile;
 
+    console.log(profile)
     let isLoading;
     let allPostsLoaded = false;
-    let page = 2;
+    let page = 1;
     async function fetchPosts() {
-        const resp = await fetch(`/api/posts?page=${page}&limit=5&own=1`,{
+        const resp = await fetch(`/api/posts?page=${page}&limit=5&own=1&id=${profile.UserId}`,{
             method:'GET'
         })
         if(resp.ok) {
             const data = await resp.json();
-            console.log(data)
             if(data.body.length > 0) {
                 for(const newPost of data.body) {
                     posts = [...posts,newPost]

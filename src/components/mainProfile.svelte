@@ -496,7 +496,7 @@
         <div class="posts">
             <span class="post">
             <h1>Your posts </h1>
-                <LoadPosts posts={profile.posts} profile={profile}/>
+                <LoadPosts profile={profile}/>
             </span>
         </div>
     </div>

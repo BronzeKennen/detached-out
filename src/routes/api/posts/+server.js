@@ -2,12 +2,14 @@ import { getCompanyById,getJobTitleById,getUniversityById,getFriends, getPostsBy
 
 
 export async function GET({locals,request,params}) {
-    const id = locals.user?.id;
+    let id;
     const url = new URL(request.url)
 
-    const page = parseInt(url.searchParams.get('page')) || 1; // Default to page 1 if not provided
-    const limit = parseInt(url.searchParams.get('limit')) || 5; // Default to limit 5 if not provided
-    const own = parseInt(url.searchParams.get('own')) || 0; // Default to limit 5 if not provided
+    const page = parseInt(url.searchParams.get('page')) || 1; 
+    const limit = parseInt(url.searchParams.get('limit')) || 5;
+    const own = parseInt(url.searchParams.get('own')) || 0; 
+    id = parseInt(url.searchParams.get('id')) || locals.user?.id; 
+
 
     let friends = getFriends(id)
     let connections = 0;

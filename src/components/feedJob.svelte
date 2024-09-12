@@ -1,4 +1,5 @@
 <script>
+    import {fade} from 'svelte/transition'
     import { onDestroy } from "svelte";
     import { onMount } from "svelte";
     import ProfileIcon from "./profileIcon.svelte";
@@ -41,7 +42,7 @@
     }
 </script>
 
-    <div class="feed-post">
+    <div class="feed-post" transition:fade={{duration:200}}>
         <div class="stats">
             <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed"> {timePassed} <i class="fa-regular fa-clock"></i></div>
@@ -58,11 +59,15 @@
                     {/each}
                 </div>
             </div>
-            <p>{job.AdditionalInfo}</p>
         </div>
-        {#if id !== poster.UserId}
-            <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button>
+        {#if job.applications}
+            {#each job.applications as application}
+            <p>{application.Message}</p>
+            {/each}
         {/if}
+        <!-- {#if id !== poster.UserId} -->
+            <!-- <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button> -->
+        <!-- {/if} -->
     </div>
     
 <style>

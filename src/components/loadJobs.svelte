@@ -5,7 +5,7 @@
     import {jobStore,current} from '$lib/stores.js'
 
 
-    if(!$jobStore.length) jobStore.set([])
+    jobStore.set([])
     let jobs = $jobStore;
     export let profile;
     export let own = 0;
@@ -13,7 +13,7 @@
 
     let isLoading;
     let allJobsLoaded = false;
-    let page = 1;
+    let page = 2;
 
     async function fetchPosts() {
         const resp = await fetch(`/api/jobs?page=${page}&limit=5&own=${own}&id=${profile.UserId}`,{
@@ -23,6 +23,13 @@
             const data = await resp.json();
             if(data.jobs.length > 0) {
                 for(const newJob of data.jobs) {
+                    if(own) {
+                        const applications = await fetch(`/api/jobs/applications?advertId=${newJob.AdvertId}`)
+                        const data = await applications.json();
+                        newJob.applications = data.applications
+                    } else {
+                        newJob.applications = []
+                    }
                     jobs = [...jobs,newJob]
                     jobStore.set(jobs)
     
@@ -65,7 +72,7 @@
 {#each $jobStore as job}
     <div class="clicker" on:click={() => current.set(job)}>
     <FeedJob job={job}/>
-        </div>
+    </div>
 {/each}
 <style>
 

@@ -1,8 +1,6 @@
 <script>
-    import { onMount } from "svelte";
+    import {fade} from 'svelte/transition'
     import DetailedFeedJob from "../../../components/detailedFeedJob.svelte";
-    import FeedJob from "../../../components/feedJob.svelte";
-    import NewJob from "../../../components/newJob.svelte";
     import LoadJobs from "../../../components/loadJobs.svelte";
     import {jobStore,current} from '$lib/stores.js'
 
@@ -27,16 +25,15 @@
         const storeValue = $jobStore;
         if(storeValue.length) {
             jobs = storeValue;
-            if($current === '')
+            if($current === '' || $current.PosterId === user.UserId)
                 current.set(jobs[0]) 
 
         } 
 
     }
 
+
     const resetCurrent = () => {
-        console.log('1')
-        // console.log($current)
         current.set(null)
     }
  
@@ -66,7 +63,7 @@
         {/if}
     {:else}
     <div class='MiddleCol'>
-        <div class="create-job">
+        <div class="create-job" transition:fade={{duration:200}}>
             <div class="text">
                 <h2>Manage Job Applications</h2>
                 <p>Go to Job Advert Dashboard</p>

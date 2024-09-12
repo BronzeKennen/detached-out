@@ -7,8 +7,11 @@
         selectedProfile.set(user)
         profile = $selectedProfile
     }
+    const defaultPfp = '/defaultpfp.png'
 
     console.log($selectedProfile);
+    let pfp = $selectedProfile.profile_pic_url
+    if(!pfp) pfp =defaultPfp
 </script>
 
 
@@ -94,11 +97,7 @@
 <div class="side-profile">
     <div class="background" style="background-color: {$selectedProfile.background_color}">
     </div>
-    {#if user.profile_pic_url}
-    <div class="pfp" style={`background-image: url('${user.profile_pic_url}')`}></div>
-    {:else}
-    <div class="pfp"></div>
-    {/if}
+    <div class="pfp" style={`background-image: url('${pfp}')`}></div>
     <div class="details">
         {#if user.university}
         <div class='info'>{user.university.university_name} • {user.university.major} </div>

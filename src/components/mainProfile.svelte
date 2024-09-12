@@ -8,6 +8,8 @@
 
     export let profile;
 
+    const defaultPfp = '/defaultpfp.png'
+
     //if someone hasn't set these, set a dummy object!
     if (profile.current_company === null)
         profile.current_company = { CompanyId: null, company_name: "" };
@@ -56,6 +58,7 @@
     let eduFrom = profile.university.StartDate;
     let eduTo = profile.university.EndDate;
     let pfp = profile.profile_pic_url
+    if(!pfp) pfp = defaultPfp;
 
     let softSkills = [];
     for(const skill of profile.skills) {

@@ -1,5 +1,5 @@
 import { sendJobApplicationByAdvertId } from '../../../../../setters.js';
-import { getAllApplications, getJobApplicationsByAdvertId } from '../../../../../getters.js';
+import { getUniversityById,getAllApplications, getJobApplicationsByAdvertId, getUserById } from '../../../../../getters.js';
 
 
 export const GET = async ({request,locals}) => {
@@ -9,6 +9,15 @@ export const GET = async ({request,locals}) => {
     const advertId = parseInt(url.searchParams.get('advertId'));
 
     let applications = getJobApplicationsByAdvertId(advertId)
+    for(const application of applications) {
+        const fetched = getUserById(application.ApplicantId)
+        application.Applicant = {
+            UserId : fetched.UserId,
+            username: fetched.username,
+            profile_pic_url: fetched.profile_pic_url,
+            university: getUniversityById(fetched.university) ? getUniversityById(fetched.university) : null,
+        }
+    }
     return new Response(JSON.stringify({applications:applications}))
 
     

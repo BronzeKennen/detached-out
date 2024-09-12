@@ -60,17 +60,33 @@
                 </div>
             </div>
         </div>
-        {#if job.applications}
-            {#each job.applications as application}
-            <p>{application.Message}</p>
-            {/each}
-        {/if}
+        <div class="applications-received">
+            {#if job.applications}
+                {#each job.applications as application}
+                <div class="applicant">
+                    <p>{application.Applicant.username}</p>
+                </div>
+                {/each}
+            {/if}
+        </div>
         <!-- {#if id !== poster.UserId} -->
             <!-- <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button> -->
         <!-- {/if} -->
     </div>
     
 <style>
+    .applications-received {
+        /* border:1px red solid; */
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        width:100%;
+    }
+    .applicant {
+        margin:.5rem;
+        border-radius:5px;
+        background-color:#f2eaf3;
+        padding:.5rem;
+    }
     .feed-post {
         align-self: flex-start;
         background-color: white;

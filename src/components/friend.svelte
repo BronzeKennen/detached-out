@@ -33,14 +33,13 @@
         })
 
         if(resp.ok) {
-            console.log('success')
             friendStore.update(friends => {
                 const updatedFriends = [...friends]; 
                 updatedFriends.splice(index, 1); 
                 return updatedFriends; 
             });
         } else {
-            console.log('what du heeeellll oh my god no wayayayayaay');
+            console.log('An error occured while deleting friend');
         }
 
     }
@@ -64,7 +63,7 @@
                 return [...friends]; // Return a new array to trigger reactivity
             });
         } else {
-            console.log('uuuu what du heeeellll')
+            console.log('An error has occured while accepting friend request')
         }
     }
 
@@ -86,7 +85,7 @@
                 return [...friends]; // Return a new array to trigger reactivity
             });
         } else {
-            console.log('uuuu what du heeeellll')
+            console.log('An error has occured while rejecting friend request')
         }
 
     }
@@ -94,7 +93,7 @@
 
 </script>
 <div class={classes}>
-    <div class="background">
+    <div class="background" style="background-color:{user.background_color}">
         {#if !addButtons}
         <button class="unfriendButton" on:click={deleteFriend}><i class="fa-solid fa-xmark"></i></button>
         {/if}

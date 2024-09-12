@@ -80,6 +80,7 @@ export async function load({ locals, request }) {
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
                 biography: profile.biography ? profile.biography : null,
                 skills: skills,
+                background_color: profile.BackgroundColor,
                 posts:[],
                 jobs:ownJobs
             };

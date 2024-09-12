@@ -212,7 +212,7 @@
 </style>
 
 <div class="top-profile">
-    <div class="background"></div>
+    <div class="background" style="background-color:{profile.background_color}"></div>
     {#if pfp}
     <div class="pfp" style={`background-image:url(${pfp});`}></div>
     {:else}

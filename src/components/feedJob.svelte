@@ -60,15 +60,16 @@
                 </div>
             </div>
         </div>
+        {#if job.applications.length}
+        <h4>Users that applied</h4>
         <div class="applications-received">
-            {#if job.applications}
                 {#each job.applications as application}
                 <div class="applicant">
                     <p>{application.Applicant.username}</p>
                 </div>
                 {/each}
-            {/if}
         </div>
+        {/if}
         <!-- {#if id !== poster.UserId} -->
             <!-- <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button> -->
         <!-- {/if} -->
@@ -76,7 +77,6 @@
     
 <style>
     .applications-received {
-        /* border:1px red solid; */
         display:grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         width:100%;

@@ -69,7 +69,8 @@ export async function load({locals,params,request}) {
                 university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
                 biography: profile.biography ? profile.biography : null,
                 button:buttonStatus,
-                skills:skills
+                skills:skills,
+                background_color: profile.BackgroundColor
             };
             return { userProfile }
         } catch (error) {

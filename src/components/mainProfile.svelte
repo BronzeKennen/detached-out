@@ -87,7 +87,14 @@
 
     $: changedExperience = false;
     let workExperience;
+
+    let selectedColor;
+    if(!profile.background_color)
+        selectedColor = "#eed3e8"
+    else
+        selectedColor =  profile.background_color
   
+    let ogBGColor = selectedColor;
 
 
     function autoResize(event) {
@@ -156,6 +163,21 @@
         }
     };
 
+    const changeBGColor = async () => {
+        const resp = await fetch('/api/users/background',{
+            method:'POST',
+            body :JSON.stringify({
+                color:selectedColor
+            })
+        })
+        if(resp.ok) {
+            console.log("success")
+        } else {
+            console.log("An error occured")
+        }
+        ogBGColor = selectedColor
+    }
+
     const saveChanges = async (type) => {
         let body;
         if (type === "mand") {
@@ -218,11 +240,16 @@
         }
     };
 
+    function activatePicker() {
+        document.getElementById("picker").click();
+    }
+
 
 </script>
 
 <div class="top-profile">
-    <div class="background"></div>
+    <div style="background-color:{selectedColor}" class="background" on:click={activatePicker}></div>
+    <input type="color" class="picker" id="picker" bind:value={selectedColor}> 
     {#if pfp}
     <div class="pfp" style={`background-image: url('${pfp}');`}>
         <div class="pfphover">
@@ -239,6 +266,12 @@
                 <h4>Change Profile Picture</h4>
             </div>
         </div>
+    {/if}
+    {#if selectedColor !== ogBGColor}
+    <div class="color-picker-buttons">
+        <button class="save-button" on:click={changeBGColor}>Save Changes</button>
+        <button class="save-button" on:click={() => selectedColor = ogBGColor}>Reset</button>
+    </div>
     {/if}
     <div class="nameJob">
         <div class="name">{firstName} {lastName}</div>
@@ -518,17 +551,17 @@
 </div>
 
 <style>
-    .button-wrapper {
-        display:flex;
-        justify-content: center;
+    .color-picker-buttons {
+        position:absolute;
+        margin:1rem;
     }
-    .choice-button {
-        width:15%;
-        height:30px;
-        margin:.5em;
-        background-color: rgb(230, 215, 255);
-        /* border:none; */
-        border-radius:10px;
+    .color-picker-buttons button {
+        box-shadow: 0px 2px 8px rgb(127, 111, 219);
+        background-color: rgb(193, 176, 221);
+        border:none;
+        padding:.5em;
+        border-radius:5px;
+        
     }
     .posts-jobs {
         display:flex;
@@ -538,9 +571,6 @@
         flex-direction: column;
         align-items: center;
         flex:1;
-    }
-    .jobs {
-        height:100%;
     }
     .posts span {
         width:50%;
@@ -560,12 +590,16 @@
     }
 
     .background {
-        border-radius: 25px;
+        border-radius: 9px;
         height: 45vh;
         background-color: beige;
         width: 100%;
         position: relative;
     }
+    .picker {
+        display:none;
+    }
+
 
     #uploadButton {
         display: none;

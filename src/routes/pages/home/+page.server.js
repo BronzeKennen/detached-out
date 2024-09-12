@@ -77,7 +77,8 @@ export async function load({ locals, request }) {
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
             biography : profile.biography ? profile.biography : null,
             connections: connections,
-            posts: posts
+            posts: posts,
+            background_color: profile.BackgroundColor
         };
 
         return {userProfile}

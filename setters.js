@@ -316,3 +316,9 @@ export function sendJobApplicationByAdvertId(applicantId,advertId,message) {
     const resp = stmt.run(applicantId,advertId,message);
     return resp.changes > 0;
 }
+
+export function setBackgroundColorById(id,color) {
+    const stmt = db.prepare('UPDATE users SET BackgroundColor = ? WHERE UserId = ?;');
+    const resp = stmt.run(color,id)
+    return resp.changes > 0;
+}

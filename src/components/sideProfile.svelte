@@ -8,7 +8,7 @@
         profile = $selectedProfile
     }
 
-    console.log('vite pls');
+    console.log($selectedProfile);
 </script>
 
 
@@ -92,7 +92,7 @@
     }
 </style>
 <div class="side-profile">
-    <div class="background">
+    <div class="background" style="background-color: {$selectedProfile.background_color}">
     </div>
     {#if user.profile_pic_url}
     <div class="pfp" style={`background-image: url('${user.profile_pic_url}')`}></div>

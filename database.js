@@ -25,6 +25,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (university) REFERENCES Universities(UniversityId)
 )`);
 
+
 db.exec(`CREATE TABLE IF NOT EXISTS notifications (
     NotificationId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserFrom INTEGER NOT NULL,

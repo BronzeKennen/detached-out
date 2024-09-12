@@ -33,15 +33,21 @@
         } 
 
     }
+
+    const resetCurrent = () => {
+        console.log('1')
+        // console.log($current)
+        current.set(null)
+    }
  
 </script>
 <svelte:window bind:innerWidth />
 
 <div class="feed">
     {#if innerWidth < 600}
-        {#if $current !== ''}
+        {#if $current !== '' && $current !== null}
             <div class="with-x">
-                <button on:click={() => {current.set('')}}>X</button>
+                <button on:click={resetCurrent}>X</button>
                 <DetailedFeedJob job={$current}/>
             </div>
         {:else}
@@ -96,7 +102,7 @@
         min-width:100%;
     }
     .with-x {
-        max-width:95.5%;
+        min-width:95.5%;
         position:relative;
     }
     .with-x button {

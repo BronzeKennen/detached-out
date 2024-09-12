@@ -11,18 +11,6 @@
     export let own = 0;
 
 
-    // $: {
-        // const storeValue = $jobStore;
-// 
-        // if(storeValue.length === 0) {
-            // jobStore.set(data.jobs)
-        // } else {
-            // jobs = storeValue;
-        // }
-// 
-    // }
-
-
     let isLoading;
     let allJobsLoaded = false;
     let page = 1;

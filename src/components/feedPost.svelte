@@ -31,6 +31,12 @@
         }
     }
 
+    const linkify = (text) => {
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlPattern ,'<a  href="$& target="_blank>$&</a>')
+    }
+
+    $: htmlContent = linkify(content);
 
     let liked = false;
     let reposted = false;
@@ -186,7 +192,8 @@
             <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
         </div>
         <div class="post">
-            <p>{content}</p>
+            <!-- <p>{content}</p> -->
+            <div>{@html htmlContent}</div>
             
             <div class="image-slider">
                 

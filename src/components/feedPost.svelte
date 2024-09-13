@@ -196,7 +196,7 @@
         </div>
         <div class="post">
             <!-- <p>{content}</p> -->
-            <div>{@html htmlContent}</div>
+            <p>{@html htmlContent}</p>
             
             <div class="image-slider">
                 

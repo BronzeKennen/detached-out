@@ -20,7 +20,10 @@
     $: ogLikes = likes.length;
 
 
-    const posterPfp = user.profile_pic_url;
+    const defaultPfp = '/defaultpfp.png'
+    let posterPfp = user.profile_pic_url;
+    if(!posterPfp) posterPfp = defaultPfp
+
 
     $: commentCount = comments.length;
     $: likeCount = likes.length;
@@ -31,6 +34,12 @@
         }
     }
 
+    const linkify = (text) => {
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlPattern ,'<a  href="$& target="_blank>$&</a>')
+    }
+
+    $: htmlContent = linkify(content);
 
     let liked = false;
     let reposted = false;
@@ -186,7 +195,8 @@
             <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
         </div>
         <div class="post">
-            <p>{content}</p>
+            <!-- <p>{content}</p> -->
+            <p>{@html htmlContent}</p>
             
             <div class="image-slider">
                 
@@ -231,11 +241,7 @@
                     {/each}
                 </div>
             <div class="comment-box">
-                {#if posterPfp}
-                    <div id="pfp" style={`background-image: url('${posterPfp}')`}></div>
-                {:else}
-                   <span id="pfp"></span>
-                {/if}
+                <div id="pfp" style={`background-image: url('${posterPfp}')`}></div>
                 
                 <textarea
                     id="commentbox"

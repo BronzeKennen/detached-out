@@ -1,4 +1,5 @@
 <script>
+    import {fade} from 'svelte/transition'
     import { onDestroy } from "svelte";
     import { onMount } from "svelte";
     import ProfileIcon from "./profileIcon.svelte";
@@ -41,7 +42,7 @@
     }
 </script>
 
-    <div class="feed-post">
+    <div class="feed-post" transition:fade={{duration:200}}>
         <div class="stats">
             <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed"> {timePassed} <i class="fa-regular fa-clock"></i></div>
@@ -58,14 +59,34 @@
                     {/each}
                 </div>
             </div>
-            <p>{job.AdditionalInfo}</p>
         </div>
-        {#if id !== poster.UserId}
-            <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button>
+        {#if job.applications.length}
+        <h4>Users that applied</h4>
+        <div class="applications-received">
+                {#each job.applications as application}
+                <div class="applicant">
+                    <p>{application.Applicant.username}</p>
+                </div>
+                {/each}
+        </div>
         {/if}
+        <!-- {#if id !== poster.UserId} -->
+            <!-- <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button> -->
+        <!-- {/if} -->
     </div>
     
 <style>
+    .applications-received {
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        width:100%;
+    }
+    .applicant {
+        margin:.5rem;
+        border-radius:5px;
+        background-color:#f2eaf3;
+        padding:.5rem;
+    }
     .feed-post {
         align-self: flex-start;
         background-color: white;

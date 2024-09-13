@@ -25,6 +25,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (university) REFERENCES Universities(UniversityId)
 )`);
 
+
 db.exec(`CREATE TABLE IF NOT EXISTS notifications (
     NotificationId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserFrom INTEGER NOT NULL,
@@ -154,6 +155,16 @@ db.exec(`CREATE TABLE IF NOT EXISTS chat_messages (
     FOREIGN KEY (SenderId) REFERENCES users(UserId),
     FOREIGN KEY (RecipientId) REFERENCES users(UserId)
 );`)
+
+db.exec(`CREATE TABLE IF NOT EXISTS job_applications (
+    ApplicationId INTEGER PRIMARY KEY AUTOINCREMENT,
+    ApplicantId INTEGER NOT NULL,
+    AdvertId INTEGER NOT NULL,
+    DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Message TEXT NOT NULL,
+    FOREIGN KEY (ApplicantId) REFERENCES users(UserId),
+    FOREIGN KEY (AdvertID) REFERENCES job_adverts(AdvertId) 
+)`)
 
 db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),

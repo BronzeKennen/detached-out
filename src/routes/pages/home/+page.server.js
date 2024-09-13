@@ -36,7 +36,10 @@ export async function load({ locals, request }) {
             //modify a new object
         }
 
-        for (const post of posts[1]) {
+        if(posts.length > 0)
+            posts = posts[1]
+        else posts = [];
+        for (const post of posts) {
             const poster = getUserById(post.UserId);
             post.UserId = {
                 UserId: poster.UserId,
@@ -74,7 +77,8 @@ export async function load({ locals, request }) {
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
             biography : profile.biography ? profile.biography : null,
             connections: connections,
-            posts: posts[1]
+            posts: posts,
+            background_color: profile.BackgroundColor
         };
 
         return {userProfile}

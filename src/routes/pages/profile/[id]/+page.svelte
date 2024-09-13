@@ -11,6 +11,7 @@
     const profile = data.userProfile;
 
 
+
     let workExperience;
     let connectButton;
     let workExp = true;
@@ -40,6 +41,7 @@
 
     //copy of the profile to refer to any changes made
 
+    const defaultPfp = '/defaultpfp.png'
 
     // ... 
     let firstName = profile.fname;
@@ -59,6 +61,10 @@
     let uniFrom = profile.university.StartDate;
     let uniTo = profile.university.EndDate;
     let pfp = profile.profile_pic_url;
+    if(!pfp) pfp = defaultPfp
+
+    let bgColor = profile.background_color
+    if(!bgColor) bgColor = "#eed3e8"
 
     const followRequest = (async () => {
         const resp = await fetch('/api/notifications/sendFriendRequest', { 
@@ -212,12 +218,8 @@
 </style>
 
 <div class="top-profile">
-    <div class="background"></div>
-    {#if pfp}
+    <div class="background" style="background-color:{bgColor}"></div>
     <div class="pfp" style={`background-image:url(${pfp});`}></div>
-    {:else}
-    <div class="pfp"></div>
-    {/if}
     <div class="nameJob">
         <div class='name'>{firstName} {lastName} {#if profile.button === 'accepted'} <span class="accepted">Connected</span>{/if}
             {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}

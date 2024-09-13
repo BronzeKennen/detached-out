@@ -28,14 +28,14 @@ export async function POST({request}) {
                 }
             });
         } else {
-            return new Response(JSON.stringify({ message: 'Forbidden' }), {
+            return new Response(JSON.stringify({ message: 'Email or password is incorrect' }), {
                 status: 401,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
 
     } catch (err) {
-        return new Response(JSON.stringify({ message: 'Forbidden' }), {
+        return new Response(JSON.stringify({ message: 'Email or password is incorrect' }), {
             status: 401,
             headers: { 'Content-Type': 'application/json' }
         });

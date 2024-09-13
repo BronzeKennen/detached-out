@@ -228,3 +228,16 @@ export function getChatBubbles(senderId) {
                             `)
     return stmt.all(senderId, senderId);
 }
+
+
+export function getJobApplicationsByAdvertId(advertId) {
+    const stmt = db.prepare('SELECT * FROM job_applications WHERE AdvertId = ?');
+    const resp = stmt.all(advertId);
+    return resp;
+}
+
+export function getAllApplications() {
+    const stmt = db.prepare('SELECT * FROM job_applications')
+    const resp = stmt.all();
+    return resp;
+}

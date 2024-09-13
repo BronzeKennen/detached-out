@@ -1,8 +1,6 @@
 <script>
-    import { onMount } from "svelte";
+    import {fade} from 'svelte/transition'
     import DetailedFeedJob from "../../../components/detailedFeedJob.svelte";
-    import FeedJob from "../../../components/feedJob.svelte";
-    import NewJob from "../../../components/newJob.svelte";
     import LoadJobs from "../../../components/loadJobs.svelte";
     import {jobStore,current} from '$lib/stores.js'
 
@@ -27,11 +25,16 @@
         const storeValue = $jobStore;
         if(storeValue.length) {
             jobs = storeValue;
-            if($current === '')
+            if($current === '' || $current.PosterId === user.UserId)
                 current.set(jobs[0]) 
 
         } 
 
+    }
+
+
+    const resetCurrent = () => {
+        current.set(null)
     }
  
 </script>
@@ -39,9 +42,9 @@
 
 <div class="feed">
     {#if innerWidth < 600}
-        {#if $current !== ''}
+        {#if $current !== '' && $current !== null}
             <div class="with-x">
-                <button on:click={() => {current.set('')}}>X</button>
+                <button on:click={resetCurrent}>X</button>
                 <DetailedFeedJob job={$current}/>
             </div>
         {:else}
@@ -60,7 +63,7 @@
         {/if}
     {:else}
     <div class='MiddleCol'>
-        <div class="create-job">
+        <div class="create-job" transition:fade={{duration:200}}>
             <div class="text">
                 <h2>Manage Job Applications</h2>
                 <p>Go to Job Advert Dashboard</p>
@@ -96,7 +99,7 @@
         min-width:100%;
     }
     .with-x {
-        max-width:95.5%;
+        min-width:95.5%;
         position:relative;
     }
     .with-x button {

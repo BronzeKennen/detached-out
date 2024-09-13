@@ -6,6 +6,10 @@
     export let edu;
 
     export let pfp;
+    
+
+    const defaultPfp = '/defaultpfp.png'
+    if(!pfp) pfp = defaultPfp
 
     let resp;
     

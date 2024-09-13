@@ -7,7 +7,7 @@
 
     let isLoading;
     let allPostsLoaded = false;
-    let page = 1;
+    let page = 2;
     async function fetchPosts() {
         const resp = await fetch(`/api/posts?page=${page}&limit=5&own=1&id=${profile.UserId}`,{
             method:'GET'

@@ -310,3 +310,15 @@ export  function saveMessageSent(senderId,recipientId,content) {
     const resp = stmt.run(senderId,recipientId,content);
     return resp;
 }
+
+export function sendJobApplicationByAdvertId(applicantId,advertId,message) {
+    const stmt = db.prepare('INSERT INTO job_applications (ApplicantId,AdvertId,Message) VALUES (?,?,?)');
+    const resp = stmt.run(applicantId,advertId,message);
+    return resp.changes > 0;
+}
+
+export function setBackgroundColorById(id,color) {
+    const stmt = db.prepare('UPDATE users SET BackgroundColor = ? WHERE UserId = ?;');
+    const resp = stmt.run(color,id)
+    return resp.changes > 0;
+}

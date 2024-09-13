@@ -9,9 +9,13 @@
     let classes = 'friend-profile'
     let addButtons = false;
     user = profile.Sender;
+    let pfp = user.profile_pic_url
+    const defaultPfp = '/defaultpfp.png'
     $: {
         if(profile.Sender.UserId === id) {
             user = profile.Recipient
+            pfp = user.profile_pic_url
+            if(!pfp) pfp = defaultPfp
         } else {
             if(profile.Status === 'pending'){
                 addButtons = true;
@@ -33,14 +37,13 @@
         })
 
         if(resp.ok) {
-            console.log('success')
             friendStore.update(friends => {
                 const updatedFriends = [...friends]; 
                 updatedFriends.splice(index, 1); 
                 return updatedFriends; 
             });
         } else {
-            console.log('what du heeeellll oh my god no wayayayayaay');
+            console.log('An error occured while deleting friend');
         }
 
     }
@@ -64,7 +67,7 @@
                 return [...friends]; // Return a new array to trigger reactivity
             });
         } else {
-            console.log('uuuu what du heeeellll')
+            console.log('An error has occured while accepting friend request')
         }
     }
 
@@ -86,7 +89,7 @@
                 return [...friends]; // Return a new array to trigger reactivity
             });
         } else {
-            console.log('uuuu what du heeeellll')
+            console.log('An error has occured while rejecting friend request')
         }
 
     }
@@ -94,16 +97,12 @@
 
 </script>
 <div class={classes}>
-    <div class="background">
+    <div class="background" style="background-color:{user.background_color}">
         {#if !addButtons}
         <button class="unfriendButton" on:click={deleteFriend}><i class="fa-solid fa-xmark"></i></button>
         {/if}
     </div>
-    {#if user.profile_pic_url}
-        <div class="pfp" style={`background-image: url('${user.profile_pic_url}')`}></div>
-    {:else}
-        <div class="pfp"></div>
-    {/if}
+    <div class="pfp" style={`background-image: url('${pfp}')`}></div>
     <div class="details">
         {#if user.job_title}
         <p>{user.job_title.JobTitle}</p>

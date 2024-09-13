@@ -8,7 +8,6 @@
     let users = [];
     let newuser = '';
     export let data;
-    console.log(data.userProfile.notifications)
 
     const notifications = data.userProfile.notifications;
 
@@ -23,6 +22,7 @@
                 pending++;
         })
     }
+
 
 
 </script>

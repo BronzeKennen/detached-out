@@ -11,14 +11,12 @@ import {
 export async function load({ locals, request }) {
     const id = locals.user?.id;
 
-    // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';
 
     try {
-        // Include the JWT cookie in the fetch request headers
         const res = await fetch(`http://localhost:5173/api/users/${id}`, {
             headers: {
-                'cookie': cookies // Pass the token in Authorization header
+                'cookie': cookies 
             }
         });
 
@@ -66,7 +64,8 @@ export async function load({ locals, request }) {
             university: getUniversityById(profile.university) ? getUniversityById(profile.university) : null,
             friends: friends,
             notifications: notifs,
-            connections: connections
+            connections: connections,
+            background_color:profile.BackgroundColor
 
         };
         return {userProfile}

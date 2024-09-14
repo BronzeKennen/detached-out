@@ -543,6 +543,7 @@
             />
         {/each}
     {/if}
+    <div class="separator"></div>
     <div class="posts-jobs">
         <div class="posts">
             <span class="post">

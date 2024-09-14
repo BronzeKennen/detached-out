@@ -9,7 +9,6 @@
     }
     const defaultPfp = '/defaultpfp.png'
 
-    console.log($selectedProfile);
     let pfp = $selectedProfile.profile_pic_url
     if(!pfp) pfp =defaultPfp
 </script>

@@ -33,7 +33,7 @@
         <NewJob />
     </div>
     <h1 align="center">Your job adverts</h1>
-        <LoadJobs profile={profile} own={1}/>
+        <LoadJobs profile={profile} own={1} id={profile.UserId}/>
     </div>
     <div class='RightCol'>
         {#if applications.length}

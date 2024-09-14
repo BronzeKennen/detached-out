@@ -6,6 +6,7 @@
 
     import Comment from "./comment.svelte";
     import ProfileIcon from "./profileIcon.svelte";
+    import ErrorComp from "./errorComp.svelte";
     export let comments;
     export let likes;
     export let reposts = 0;
@@ -44,8 +45,19 @@
     }
 
 
+    let postButton;
 
     $: htmlContent = linkify(content);
+
+    $: {
+        if(postButton) {
+            if(content === '') {
+                postButton.disabled = true;
+            } else {
+                postButton.disabled = false;
+            }
+        }
+    }
 
     let liked = false;
     let reposted = false;
@@ -212,6 +224,7 @@
             ogContent = content
             editing = false;
         } else {
+            console.log(resp)
             console.log("An error has occured")
         }
 
@@ -259,7 +272,7 @@
                     bind:value={content}
                     on:input={autoResize} 
                 />
-                <button id="postButton" class="under-text-button" on:click={saveChanges}>Save</button>
+                <button bind:this={postButton}  id="postButton" class="under-text-button" on:click={saveChanges}>Save</button>
             {/if}
             
             <div class="image-slider">
@@ -326,49 +339,49 @@
     {/if} 
 <style>
 
-.delete-button {
-    background-color: rgb(235, 169, 235);
-    border:none;
-    margin:0 .2rem;
-    border-radius:10px;
-    padding:.3em;
-}
-.discard-button-top {
-    background-color: rgb(235, 169, 235);
-    border-radius:20px;
-    border:none;
-    width:25px;
-    height:25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right:.5em;
-
-}
-.edit-button {
-    border:none;
-    background-color: none;
-    cursor:pointer;
-    margin-left:1em;
-    margin-right:.5em;
-}
-.image-slider {
-    position: relative;
-    width: 100%; 
-    max-width: 600px; 
-    height: auto; 
-    margin: 0 auto; 
-    overflow: hidden; 
-    background-color: #f0f0f0; 
-}
-
-.post-image {
-    width: 100%; 
-    height: auto; 
-    display: block; 
-    object-fit: cover;
-    border-radius: 10px;
-}
+    .delete-button {
+        background-color: rgb(235, 169, 235);
+        border:none;
+        margin:0 .2rem;
+        border-radius:10px;
+        padding:.3em;
+    }
+    .discard-button-top {
+        background-color: rgb(235, 169, 235);
+        border-radius:20px;
+        border:none;
+        width:25px;
+        height:25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right:.5em;
+    
+    }
+    .edit-button {
+        border:none;
+        background-color: none;
+        cursor:pointer;
+        margin-left:1em;
+        margin-right:.5em;
+    }
+    .image-slider {
+        position: relative;
+        width: 100%; 
+        max-width: 600px; 
+        height: auto; 
+        margin: 0 auto; 
+        overflow: hidden; 
+        background-color: #f0f0f0; 
+    }
+    
+    .post-image {
+        width: 100%; 
+        height: auto; 
+        display: block; 
+        object-fit: cover;
+        border-radius: 10px;
+    }
 
 
     #postBody {

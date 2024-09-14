@@ -62,7 +62,7 @@
 <div class="details">
 <h2>{job.JobTitle}</h2>
 <div class="spaced">
-    <p>{job.EnrollmentType}  </p>
+    <p>{job.EnrollmentType}</p>
     <p>•</p>
     <p>{job.WorkplaceType}</p>
     <p>•</p>
@@ -90,18 +90,18 @@
         <button id="tomfoolery" on:click={() => {showApplyDiv = false}}>X</button>
     </div>
     <textarea transition:fade={{duration:100}}
-    id="postBody"
-    type="text" 
-    placeholder="Type your message here..."
-    bind:value={applicationBody}
-    on:input={autoResize} 
-    on:keypress={handleEnter}
+        id="postBody"
+        type="text" 
+        placeholder="Type your message here..."
+        bind:value={applicationBody}
+        on:input={autoResize} 
+        on:keypress={handleEnter}
     />
     {#if applicationBody !== ''}
     <button transition:fade={{delay:50 ,duration:200}} class="send-button" on:click={sendApplication}>Send</button>
     {/if}
 </div>
-{:else if applicationStatus !== 2}
+    {:else if applicationStatus !== 2}
     <div class="status-message" transition:fade={{delay:201, duration:200}}>
         {#if applicationStatus === 0}
         <p>Application sent successfully</p>

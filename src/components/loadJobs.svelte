@@ -10,6 +10,8 @@
     export let profile;
     export let own = 0;
 
+    export let id;
+
 
     let isLoading;
     let allJobsLoaded = false;
@@ -71,7 +73,7 @@
 </script>
 {#each $jobStore as job}
     <div class="clicker" on:click={() => current.set(job)}>
-    <FeedJob job={job}/>
+        <FeedJob job={job} id={id}/>
     </div>
 {/each}
 <style>

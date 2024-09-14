@@ -5,7 +5,7 @@ export const PATCH = async ({request}) => {
     const content = data.newContent;
     const resp = editPostContent(id,content);
     if(resp) {
-        return new Response({status:201, message:"Success"})
+        return new Response({status:200, message:"Success"})
     } else {
         return new Response({status:500, message:"Internal Server Error"})
     }

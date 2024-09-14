@@ -32,6 +32,18 @@ export function newPost(UserId,postData) {
 
 }
 
+export function editPostContent(postId,content) {
+    const stmt = db.prepare('UPDATE posts SET Content = ? WHERE PostId =?');
+    const resp = stmt.run(content,postId);
+    return resp.changes > 0;
+}
+
+export function deletePostById(postId) {
+    const stmt = db.prepare('DELETE FROM posts WHERE PostId = ?')
+    const resp = stmt.run(postId)
+    return resp.changes > 0;
+}
+
 
 export function addNewSkills(UserId,skills,type) {
     for (const skill of skills) {

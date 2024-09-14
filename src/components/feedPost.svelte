@@ -17,6 +17,10 @@
     export let user;
     export let created;
 
+
+    let ogContent = content;
+    let editing;
+
     $: ogLikes = likes.length;
 
 
@@ -39,6 +43,8 @@
         return text.replace(urlPattern ,'<a  href="$& target="_blank>$&</a>')
     }
 
+
+
     $: htmlContent = linkify(content);
 
     let liked = false;
@@ -46,6 +52,7 @@
     let commenter = false;
     let comment =''
     let slider=null;
+    let deleted = false;
 
     let timePassed = '';
 
@@ -187,17 +194,73 @@
         }
     }
 
-</script>
+    function editPost() {
+        editing = true;
+    }
 
+    async function saveChanges() {
+        const resp = await fetch('/api/posts/edit',{
+            method:'PATCH',
+            body: JSON.stringify({
+                postId:postId,
+                newContent:content
+            })
+        })
+
+        if(resp.ok) {
+            console.log("success")
+            ogContent = content
+            editing = false;
+        } else {
+            console.log("An error has occured")
+        }
+
+    }
+
+    async function deletePost() {
+        const resp = await fetch(`/api/posts/delete?postId=${postId}`, {
+            method:'DELETE',
+        })
+        if(resp.ok) {
+            console.log("success")
+            editing = false;
+            deleted = true;
+        } else {
+            console.log("An error occured")
+        }
+
+    }
+
+</script>
+    {#if !deleted}
     <div class="feed-post">
         <div class="stats">
             <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
-            <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
-            <button id="timePassed" class="edit-button">Edit</button>
+            <div id="timePassed">
+                <div >{timePassed} <i class="fa-regular fa-clock"></i></div>
+                {#if poster.UserId === userId}
+                    {#if !editing}
+                        <button class="edit-button" on:click={editPost}>Edit</button>
+                    {:else}
+                        <button class="delete-button" on:click={deletePost}>Delete Post</button>
+                        <button class="discard-button-top" on:click={() => {editing = false;  content = ogContent}}>X</button>
+                    {/if}
+                {/if}
+            </div>
         </div>
         <div class="post">
-            <!-- <p>{content}</p> -->
-            <p>{@html htmlContent}</p>
+            {#if !editing}
+                <p>{@html htmlContent}</p>
+            {:else}
+                <textarea
+                    id="postBody"
+                    type="text" 
+                    placeholder="Write something..."
+                    bind:value={content}
+                    on:input={autoResize} 
+                />
+                <button id="postButton" class="under-text-button" on:click={saveChanges}>Save</button>
+            {/if}
             
             <div class="image-slider">
                 
@@ -212,11 +275,11 @@
             </div>
         </div>
         <div class="likes-buttons">
+            {#if !editing}
             <div class="reactions">
                 <span>{likeCount} Likes</span>
                 <span>
                     <span>{commentCount} Comments</span>
-                    <span>{reposts} Reposts</span>
                 </span>
             </div>
             <div class="buttons">
@@ -229,6 +292,7 @@
                     <b>Comment</b>
                 </span>
             </div>
+            {/if}
             {#if commenter}
                 <div class="commentsBackground">
                     {#each comments as comment}
@@ -259,16 +323,36 @@
         {/if}
     </div>
     </div>
-    
+    {/if} 
 <style>
 
-    .edit-button {
-        right:0px !important;
-        border:none;
-        background-color: none;
-        cursor:pointer;
-    }
-    .image-slider {
+.delete-button {
+    background-color: rgb(235, 169, 235);
+    border:none;
+    margin:0 .2rem;
+    border-radius:10px;
+    padding:.3em;
+}
+.discard-button-top {
+    background-color: rgb(235, 169, 235);
+    border-radius:20px;
+    border:none;
+    width:25px;
+    height:25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right:.5em;
+
+}
+.edit-button {
+    border:none;
+    background-color: none;
+    cursor:pointer;
+    margin-left:1em;
+    margin-right:.5em;
+}
+.image-slider {
     position: relative;
     width: 100%; 
     max-width: 600px; 
@@ -286,6 +370,59 @@
     border-radius: 10px;
 }
 
+
+    #postBody {
+        min-height: 50px;
+        height: 100%;
+        border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: rgb(250, 240, 255);
+        width: 100%;
+        display: flex;
+        position: relative;
+        resize: none;
+        padding: .5rem;
+    }
+
+    #postBody:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+    }
+
+    #postBody:hover {
+        animation-duration: 0.5s;
+        box-shadow: 0px 0px 5px rgba(75, 17, 113, 1.452);
+    }
+    #postButton {
+        margin-top:1%;
+        margin-left: 85%;
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+    }
+
+    #postButton:disabled {
+        opacity:70%;
+    }
+
+    #postButton:hover {
+        cursor: pointer;
+        box-shadow:0 2px 10px rgb(185, 50, 238);
+        transition-duration: .25s; 
+    }
+
+    .under-text-button {
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        height: 1.5rem;
+        box-sizing: border-box;
+        position: relative;
+        width:15%;
+        margin:0 .2rem;
+
+    }
 .buttons-a {
     position: absolute;
     top: 50%; 
@@ -329,10 +466,14 @@
     }
 
     #timePassed {
-        width: fit-content;
+        margin-top:.3em;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         position: absolute;
         top: 0;
-        right: 25px;
+        right: 0;
         font-size: small;
     }
 

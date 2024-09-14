@@ -193,6 +193,7 @@
         <div class="stats">
             <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed">{timePassed} <i class="fa-regular fa-clock"></i></div>
+            <button id="timePassed" class="edit-button">Edit</button>
         </div>
         <div class="post">
             <!-- <p>{content}</p> -->
@@ -260,6 +261,13 @@
     </div>
     
 <style>
+
+    .edit-button {
+        right:0px !important;
+        border:none;
+        background-color: none;
+        cursor:pointer;
+    }
     .image-slider {
     position: relative;
     width: 100%; 
@@ -324,7 +332,7 @@
         width: fit-content;
         position: absolute;
         top: 0;
-        right: 0;
+        right: 25px;
         font-size: small;
     }
 

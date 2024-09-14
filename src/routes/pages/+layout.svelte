@@ -87,6 +87,11 @@
     text-decoration: none;
 }
 
+.logo {
+    border:none;
+    background-color: none;
+}
+
 .navBar i {
     padding: 0 0.3rem 0 0;
     font-size: 140%;
@@ -185,7 +190,7 @@
 
 {#if clicked}
 <nav class='sideBar'>
-    <b><img src={Logo} alt="Logo" /></b>
+    <b><button on:click={() => window.location = '/pages/home'}><img src={Logo} alt="Logo" /></button></b>
     <ul>
         <li>
             <a on:click={handleClick} href=''>
@@ -241,7 +246,7 @@
 
 <Container>
 <nav class='navBar'>
-    <b><img src={Logo} alt="Logo" /></b>
+    <b><button on:click={() => window.location = '/pages/home'}><img src={Logo} alt="Logo" /></button></b>
     <ul>
         <li>
             <a href='/pages/home/'>

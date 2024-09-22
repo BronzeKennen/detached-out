@@ -2,6 +2,7 @@
     import { onMount, onDestroy } from 'svelte';
 
     let clicked = false;
+    export let users;
 
     const handleClick = () => {
         clicked = !clicked;
@@ -122,6 +123,13 @@
         min-height: 50px;
         background-color: cyan;
         border-radius: 50%;
+        background-size: cover; /* Ensures the image covers the element */
+        background-position: center; /* Centers the image within the element */
+        background-repeat: no-repeat;
+    }
+    a {
+        text-decoration: none;
+        color:inherit;
     }
 
     .seperator {
@@ -143,14 +151,13 @@
         <button id="inboxClose" on:click={handleClick}><i class="fa-solid fa-x"></i></button>
     </div>
     <div class="seperator"></div>
-    <div class="userContainer">
-        <div id="pfp"></div>
-        <div id="name">MrHaminator</div>
-    </div>
-    <div class="seperator"></div>
-    <div class="userContainer">
-        <div id="pfp"></div>
-        <div id="name">MrHaminator</div>
-    </div>
-    <div class="seperator"></div>
+    {#each users as user}
+    <a href="/pages/chats/{user.UserId}">
+        <div class="userContainer">
+            <div id="pfp" style={`background-image: url(${user.profile_pic_url})`}></div>
+            <div id="name">{user.username}</div>
+        </div>
+        <div class="seperator"></div>
+    </a>
+    {/each}
 </span>

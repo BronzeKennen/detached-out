@@ -25,7 +25,7 @@
         <PeopleCol users={bubbles}/>
     {/if}
     {#if condition === 0}
-        <PeopleColToggle/>
+        <PeopleColToggle users={bubbles}/>
     {/if}
 
     <slot/>

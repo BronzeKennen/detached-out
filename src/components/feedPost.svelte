@@ -44,6 +44,12 @@
         return text.replace(urlPattern ,'<a  href="$& target="_blank>$&</a>')
     }
 
+    function isVideo(url) {
+        const videoExtensions = ['mp4', 'mov', 'avi', 'mkv'];
+        const extension = url.split('.').pop();
+        return videoExtensions.includes(extension);
+    }
+
 
     let postButton;
 
@@ -278,12 +284,16 @@
             <div class="image-slider">
                 
                 {#if images}
+                    {#if isVideo(images[slider])}
+                    <video src={images[slider]} class="post-image" controls></video>
+                    {:else}
                     <img src={images[slider]} class="post-image">
+                    {/if}
                     <div class="buttons-a">
                         <button id="left" on:click={handleLeft} disabled={slider === 0}> {'<'}</button>
                         <button id="right" on:click={handleRight} disabled={slider === images.length - 1}> {'>'}</button>
                     </div>
-                    {/if}
+                {/if}
             <!-- <img src="https://res.cloudinary.com/dsyxmtqbu/image/upload/v1724873933/wjxxl74rtlxdbrmkcivq.png" class="post-image"> -->
             </div>
         </div>

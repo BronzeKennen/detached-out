@@ -152,12 +152,12 @@
     </div>
     <div class="seperator"></div>
     {#each users as user}
-    <a href="/pages/chats/{user.UserId}">
-        <div class="userContainer">
-            <div id="pfp" style={`background-image: url(${user.profile_pic_url})`}></div>
-            <div id="name">{user.username}</div>
-        </div>
-        <div class="seperator"></div>
-    </a>
+        <a href="/pages/chats/{user.UserId}">
+            <div class="userContainer">
+                <div id="pfp" style={`background-image: url(${user.profile_pic_url})`}></div>
+                <div id="name">{user.username}</div>
+            </div>
+            <div class="seperator"></div>
+        </a>
     {/each}
 </span>

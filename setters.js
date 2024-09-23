@@ -2,6 +2,21 @@
 import { getCompanyByName,getJobTitleByName,getSkillByName,getUniversityByName,getUserById,getUsers } from "./getters.js";
 import db from  './database.js'
 import bcrypt from 'bcryptjs'
+import { SqliteError } from 'better-sqlite3';
+
+export function newImpresion(userId,postId) {
+    const stmt = db.prepare('INSERT INTO impressions (UserId,PostId) VALUES (?,?)');
+    try {
+        const exp = stmt.run(userId,postId);
+    } catch (error) {
+        if(error instanceof SqliteError) {
+            if(error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+                console.log("Unique constraint failed, ignoring...");
+                return {success : true}
+            }
+        }
+    }
+}
 
 export function newLike(userId,postId,type) {
     let stmt;

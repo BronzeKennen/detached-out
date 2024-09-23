@@ -1,11 +1,15 @@
 
 import db from './database.js'
 
+export function getImpressionsByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM impressions WHERE UserId = ?');
+    return stmt.all(userId);
+}
+
 export function getJobsByUserIdPaged(userId,page,limit) {
     const offset = (page-1)*limit - limit;
     const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ? ORDER BY DateCreated DESC LIMIT ? OFFSET ?');
     const resp = stmt.all(userId,limit,offset)
-    console.log(page,limit)
     return resp;
 }
 export function getJobsByUserId(userId) {

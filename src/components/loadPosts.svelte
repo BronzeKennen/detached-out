@@ -52,16 +52,18 @@
 </script>
 
 {#each posts as post} 
-    <FeedPost
-        user={profile}
-        userId={profile.UserId}
-        postId={post.PostId}
-        poster={profile}
-        likes={post.Likes}
-        comments={post.Comments}
-        reposts={post.RepostCount}
-        images={post.ImagesJson}
-        content={post.Content}
-        created={post.CreatedAt}
-    />
+    <div on:click={() => window.location = `/pages/posts/${post.PostId}`}>
+        <FeedPost
+            user={profile}
+            userId={profile.UserId}
+            postId={post.PostId}
+            poster={profile}
+            likes={post.Likes}
+            comments={post.Comments}
+            reposts={post.RepostCount}
+            images={post.ImagesJson}
+            content={post.Content}
+            created={post.CreatedAt}
+        />
+    </div>
 {/each}

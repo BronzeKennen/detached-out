@@ -253,7 +253,7 @@
 </script>
     {#if !deleted}
     <div class="feed-post">
-        <div class="stats">
+        <div class="stats" on:click={() => window.location = `/pages/posts/${postId}`} >
             <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed">
                 <div >{timePassed} <i class="fa-regular fa-clock"></i></div>

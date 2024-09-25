@@ -3,13 +3,26 @@ import {
     getUserById,
     getCompanyById,
     getJobTitleById,
-    getUniversityById
+    getUniversityById,
+    getImpressionsByUserId
 } from '../../../../../getters.js';
+import { newImpresion } from '../../../../../setters.js';
+
+
 
 export const load = async ({locals,params,request}) => {
 
+
+    
     const id = locals.user?.id;
     const postId = params.id;
+
+    const impression = newImpresion(id,postId);
+    if(!impression) {
+        console.log("Failed to add impression.")
+    }
+
+
 
     let temp = getPostById(postId)
     if(!temp.length) return null

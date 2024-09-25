@@ -166,6 +166,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_applications (
     FOREIGN KEY (AdvertID) REFERENCES job_adverts(AdvertId) 
 )`)
 
+db.exec(`CREATE TABLE IF NOT EXISTS impressions (
+    ImpressionId INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId INTEGER NOT NULL,
+    PostId INTEGER NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES users(UserId),
+    FOREIGN KEY (PostId) REFERENCES posts(PostId),
+    UNIQUE (UserId,PostId)
+)`)
+
 db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),
     ('Leadership'),

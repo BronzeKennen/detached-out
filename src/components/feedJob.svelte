@@ -6,6 +6,7 @@
 
     export let job;
     export let id;
+    export let selected = false;
     let created = job.DateCreated
     const poster = job.Poster
     let timePassed = '';
@@ -115,7 +116,7 @@
     let workplaceOptions = ['On-Site', 'Hybrid', 'Remote'];
 </script>
 
-<div class="feed-post" transition:fade={{duration:200}}>
+<div class="feed-post {selected ? 'selected' : ''}" transition:fade={{duration:200}}>
     <div class="stats">
         <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             {#if poster.UserId === id}
@@ -138,9 +139,9 @@
                     />
                     </div>
                     <div id="field">
-                        <div class="fieldTitle">Job Description</div>
+                        <div class="fieldTitle">Job Description:</div>
                         <textarea
-                            id="job-desc"
+                            id="jobDesc"
                             type="text" 
                             placeholder=""
                             bind:value={job.JobDescription}
@@ -247,11 +248,16 @@
     
 <style>
 
-    #moreInfo,#title,#job-desc{
+    #moreInfo,#title,#jobDesc{
         background-color: rgb(255, 236, 255);
         border-radius:10px;
         border:none;
     }
+
+    #moreInfo:focus,#title:focus,#jobDesc:focus {
+        border: none;
+    }
+
      #deleteSkill {
         cursor: pointer;
         background: none;
@@ -401,7 +407,7 @@
     }
     .edit-button {
         border:none;
-        background-color: none;
+        background-color: white;
         cursor:pointer;
         margin-left:1em;
         margin-right:.5em;
@@ -412,6 +418,11 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+    }
+
+    .selected {
+        border: 1px solid rgba(185, 50, 238, 0.5);
+        box-shadow: 0 2px 5px rgba(185, 50, 238, 0.5);
     }
 
     .fieldTitle {

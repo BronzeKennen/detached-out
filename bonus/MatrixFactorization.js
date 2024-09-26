@@ -1,3 +1,7 @@
+// import getAllPosts from './../getters.js'
+// import getUsers from './../getters.js'
+// import getAllJobs from './../getters.js'
+
 class MatrixFactorization {
     constructor(R, K, h) {
         // Set values
@@ -41,6 +45,18 @@ class MatrixFactorization {
         }
     }
 
+    predict() {
+        let predictedMatrix = Array.from({ length: this.nUsers }, () => Array(this.nItems).fill(0));
+
+        // Perform matrix multiplication: V * F
+        for (let i = 0; i < this.nUsers; i++) {
+            for (let j = 0; j < this.nItems; j++) {
+                predictedMatrix[i][j] = this.dotProduct(this.V[i], this.getCol(this.F, j));
+            }
+        }
+        return predictedMatrix;
+    }
+
     getNonZero() {
         let nonZeroEntries = [];
         for (let i = 0; i < this.nUsers; i++) {
@@ -60,4 +76,38 @@ class MatrixFactorization {
     dotProduct(vec1, vec2) {
         return vec1.reduce((sum, val, index) => sum + val * vec2[index], 0);
     }
-}
+
+
+    getStartingMatrixes() {
+        // let users = getUsers();
+        // let posts = getAllPosts();
+        // let adverts = getAllJobs();
+
+        // USERS X JOBS ( 0 for nothing, 1 for view, 2 for apply)
+        // let rMatrix = [
+        //     [0, 0, 2, 1, 1]
+        //     [1, 0, 1, 0, 2]
+        //     [2, 2, 2, 2, 0]
+        //     [1, 0, 1, 2, 0]
+        //     [1, 0, 0, 2, 2]
+        // ]
+
+    }
+};
+
+let rMatrix = [
+    [0, 0, 2, 1, 1],
+    [1, 0, 1, 0, 2],
+    [2, 2, 2, 2, 0],
+    [1, 0, 1, 2, 0],
+    [1, 0, 0, 2, 2],
+];
+
+let attempt = new MatrixFactorization(rMatrix, 2, 0.01);
+attempt.train();
+let predictedMat = attempt.predict();
+console.log(predictedMat[0]);
+console.log(predictedMat[1]);
+console.log(predictedMat[2]);
+console.log(predictedMat[3]);
+console.log(predictedMat[4]);

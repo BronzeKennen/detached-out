@@ -96,18 +96,26 @@ class MatrixFactorization {
 };
 
 let rMatrix = [
-    [0, 0, 2, 1, 1],
-    [1, 0, 1, 0, 2],
-    [2, 2, 2, 2, 0],
-    [1, 0, 1, 2, 0],
-    [1, 0, 0, 2, 2],
+    [1, 2, 0, 0, 1],
+    [1, 2, 0, 2, 1],
+    [0, 2, 2, 0, 1],
+    [1, 0, 0, 0, 1],
+    [1, 2, 1, 1, 2],
 ];
 
 let attempt = new MatrixFactorization(rMatrix, 2, 0.01);
 attempt.train();
 let predictedMat = attempt.predict();
-console.log(predictedMat[0]);
 console.log(predictedMat[1]);
-console.log(predictedMat[2]);
-console.log(predictedMat[3]);
-console.log(predictedMat[4]);
+let sortedRow = [...predictedMat[1]].sort();
+console.log(sortedRow);
+
+/*  0 for nothing, 1 for like, 2 for like+comment,  (+1 if in network). kati tetoio prepei na einai to input tou algorithmou.
+    kai sth synexeia ta kanoume ena sort kserw gw kai ta vazoume me th seira sto timeline. Isws prepei na markaroume kai 
+    to an ta exei dei wste na mhn vgazei ta idia? isws dhladh +1 an den to exei ksanadei ever. idk.
+        X  | post1 | post2 | post3 | post4 | post5 | 
+     user1 |   1   |   1   |   0   |   3   |   2   |
+     user2 |   0   |   0   |   0   |   0   |   0   |
+     user3 |   1   |   3   |   0   |   1   |   2   |
+     user4 |   3   |   1   |   0   |   1   |   2   |
+*/

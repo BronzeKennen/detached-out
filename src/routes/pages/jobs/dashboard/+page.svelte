@@ -37,17 +37,25 @@
     </div>
     <div class='RightCol'>
         {#if applications.length}
-        {#each applications as application}
-            <div class="fixed-c" style="width:{setWidth}px">
+        <div class="fixed-c" style="width:{setWidth}px">
+            <h1> Applications </h1>
+            {#each applications as application}
                 <ShowApplication applications={application}/>
-            </div>
-        {/each}
+            {/each}
+        </div>
         {/if}
     </div>
 </div>
 <style>
     h1 {
         margin:1rem;
+    }
+
+    .RightCol {
+        display: flex;
+        margin-right: 5px;
+        height: 100vh;
+        flex:4;
     }
 
     .create-job {
@@ -57,9 +65,13 @@
         border-radius:10px;
     }
     .fixed-c {
+        background-color: white;
+        border-radius: 10px;
         position:fixed;
-        height:100vh;
+        height:92vh;
         overflow:scroll;
+        overflow-x: hidden;
+        flex-direction: column;
     }
     .wrapper {
         display:flex;

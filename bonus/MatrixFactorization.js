@@ -1,6 +1,6 @@
-// import getAllPosts from './../getters.js'
-// import getUsers from './../getters.js'
-// import getAllJobs from './../getters.js'
+// import getAllPosts from '../getters.js'
+import {getAllJobs, getAllPosts, getPostById, getUserById, getUsers} from '../getters.js'
+// import getAllJobs from '../getters.js'
 
 class MatrixFactorization {
     constructor(R, K, h) {
@@ -77,22 +77,6 @@ class MatrixFactorization {
         return vec1.reduce((sum, val, index) => sum + val * vec2[index], 0);
     }
 
-
-    getStartingMatrixes() {
-        // let users = getUsers();
-        // let posts = getAllPosts();
-        // let adverts = getAllJobs();
-
-        // USERS X JOBS ( 0 for nothing, 1 for view, 2 for apply)
-        // let rMatrix = [
-        //     [0, 0, 2, 1, 1]
-        //     [1, 0, 1, 0, 2]
-        //     [2, 2, 2, 2, 0]
-        //     [1, 0, 1, 2, 0]
-        //     [1, 0, 0, 2, 2]
-        // ]
-
-    }
 };
 
 let rMatrix = [
@@ -103,19 +87,74 @@ let rMatrix = [
     [1, 2, 1, 1, 2],
 ];
 
-let attempt = new MatrixFactorization(rMatrix, 2, 0.01);
-attempt.train();
-let predictedMat = attempt.predict();
-console.log(predictedMat[1]);
-let sortedRow = [...predictedMat[1]].sort();
-console.log(sortedRow);
+// let attempt = new MatrixFactorization(rMatrix, 2, 0.01);
+// attempt.train();
+// let predictedMat = attempt.predict();
+// console.log(predictedMat[1]);
+// let sortedRow = [...predictedMat[1]].sort();
+// console.log(sortedRow);
 
-/*  0 for nothing, 1 for like, 2 for like+comment,  (+1 if in network). kati tetoio prepei na einai to input tou algorithmou.
-    kai sth synexeia ta kanoume ena sort kserw gw kai ta vazoume me th seira sto timeline. Isws prepei na markaroume kai 
-    to an ta exei dei wste na mhn vgazei ta idia? isws dhladh +1 an den to exei ksanadei ever. idk.
-        X  | post1 | post2 | post3 | post4 | post5 | 
-     user1 |   1   |   1   |   0   |   3   |   2   |
-     user2 |   0   |   0   |   0   |   0   |   0   |
-     user3 |   1   |   3   |   0   |   1   |   2   |
-     user4 |   3   |   1   |   0   |   1   |   2   |
-*/
+
+// Initialize matrixes
+const nUsers = getUsers();
+const nPosts = getAllPosts(); 
+const nJobAdverts = getAllJobs();
+
+const usersPostsTable = [];
+for (let userID = 0; userID < nUsers.length; userID++) {
+    let currentUser = getUserById(userID);
+    const row = [];
+    for (let postID = 0; postID < nPosts.length; postID++) {
+        let currentPost = getPostById(postID);
+        let score = 0;
+        if(isConnected(currentUser.UserId, currentPost.UserId)) {
+            score += 1;
+        }
+        if(userLikesPost(currentUser.UserId, currentPost.PostId)) {
+            score += 1;
+            if(userCommentsPost(currentUser.UserId, currentPost.UserId)) { 
+                score += 1;                                                
+            }
+        }
+        row.push(score);
+    }
+    usersPostsTable.push(row);
+}
+
+let userPostsFact = new MatrixFactorization(usersPostsTable, 2, 0.01);
+userPostsFact.train();
+let predictedUsersPosts = userPostsFact.predict();
+
+
+
+
+
+
+
+const usersJobsTable = [];
+for (let userID = 0; userID < nUsers.length; userID++) {
+    let currentUser = getUserById(userID);
+    const row = [];
+    for (let jobID = 0; jobID < nJobAdverts.length; jobID++) {
+        let currentJob = getPostById(postID);
+        let score = 0;
+        if(isConnected(currentUser.UserId, currentJob.PosterId)) {
+            score += 1;
+        }
+        if(userAppliedJob(currentUser.UserId, currentJob.AdvertId)) {
+            score += 1;
+        }
+        row.push(score);
+    }
+    usersJobsTable.push(row);
+}
+
+let userJobsFact = new MatrixFactorization(usersJobsTable, 2, 0.01);
+userJobsFact.train();
+let predictedUsersJobs = userJobsFact.predict();
+
+
+
+
+console.log("Users x Posts Table:", usersPostsTable);
+console.log("Users x Job Adverts Table:", usersJobsTable);

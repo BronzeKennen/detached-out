@@ -49,7 +49,7 @@
     }
 
     const deleteJob = () => {
-
+        
     }
 
      const skillsOptions = [

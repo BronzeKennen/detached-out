@@ -70,6 +70,16 @@ db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
     FOREIGN KEY (CompanyId) REFERENCES Companies(CompanyId)   
 )`);
 
+db.exec(`CREATE TABLE IF NOT EXISTS comments (
+    CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    PostId INTEGER NOT NULL,
+    UserFrom INTEGER NOT NULL,
+    Content TEXT NOT NULL,
+    Reply INTEGER,
+    FOREIGN KEY(Reply) REFERENCES comments(CommentId)
+    FOREIGN KEY(PostId) REFERENCES posts(PostId),
+    FOREIGN KEY(UserFrom) REFERENCES users(UserId)
+)`);
 // 
 db.exec(`CREATE TABLE IF NOT EXISTS posts (
     PostId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -81,19 +91,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     Content TEXT,
     ImagesJson TEXT,
     FOREIGN KEY(UserId) REFERENCES users(UserId)
-    FOREIGN KEY(Comments) REFERENCES comments(CommentId)
 )`);
 
-db.exec(`CREATE TABLE IF NOT EXISTS comments (
-    CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
-    PostId INTEGER NOT NULL,
-    UserFrom INTEGER NOT NULL,
-    Content TEXT NOT NULL,
-    Reply INTEGER,
-    FOREIGN KEY(Reply) REFERENCES comments(CommentId)
-    FOREIGN KEY(PostId) REFERENCES posts(PostId),
-    FOREIGN KEY(UserFrom) REFERENCES users(UserId)
-)`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS friends (
     FriendId INTEGER PRIMARY KEY AUTOINCREMENT,

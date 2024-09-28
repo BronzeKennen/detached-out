@@ -259,10 +259,10 @@
                 <div >{timePassed} <i class="fa-regular fa-clock"></i></div>
                 {#if poster.UserId === userId}
                     {#if !editing}
-                        <button class="edit-button" on:click={editPost}>Edit</button>
+                        <button class="edit-button" on:click={() => {event.stopPropagation(); editPost();}}>Edit</button>
                     {:else}
-                        <button class="delete-button" on:click={deletePost}>Delete Post</button>
-                        <button class="discard-button-top" on:click={() => {editing = false;  content = ogContent}}>X</button>
+                        <button class="delete-button" on:click={() => {event.stopPropagation(); deletePost();}}>Delete Post</button>
+                        <button class="discard-button-top" on:click={() => {event.stopPropagation(); editing = false;  content = ogContent}}>X</button>
                     {/if}
                 {/if}
             </div>
@@ -277,8 +277,9 @@
                     placeholder="Write something..."
                     bind:value={content}
                     on:input={autoResize} 
+                    on:click={() => event.stopPropagation()}
                 />
-                <button bind:this={postButton}  id="postButton" class="under-text-button" on:click={saveChanges}>Save</button>
+                <button bind:this={postButton}  id="postButton" class="under-text-button" on:click={() => {event.stopPropagation(); saveChanges();}}>Save</button>
             {/if}
             
             <div class="image-slider">

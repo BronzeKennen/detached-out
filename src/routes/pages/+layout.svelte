@@ -218,7 +218,7 @@
             </a>
         </li>
         <li>
-            <a href='..'>
+            <a href='/'>
                 <i class="fa-solid fa-circle-user"></i>
                 <span>Logout</span>
             </a>
@@ -344,7 +344,7 @@
         </li>
         {/if}
         <li>
-            <a href='..'>
+            <a href='/'>
                 <i class="fa-solid fa-circle-user"></i>
                 {#if condition < 3}
                 <span>Logout</span>

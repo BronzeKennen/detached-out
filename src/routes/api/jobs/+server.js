@@ -9,7 +9,7 @@ import {
     getAllJobsPaged,
     getAllJobs
 } from '../../../../getters.js';
-import { newJobAdvert } from '../../../../setters.js';
+import { deleteJobByJobId, newJobAdvert, updateJobAdvertById } from '../../../../setters.js';
 
 export const POST = async ({locals,request}) => {
     const id = locals.user?.id;
@@ -69,4 +69,41 @@ export const GET = async({locals,request}) => {
     if(jobs) {
         return new Response(JSON.stringify({jobs}))
     }
+}
+
+export const DELETE = async ({request}) => {
+
+    const data = await request.json();
+    const toDelete = data.jobId;
+
+    const resp = deleteJobByJobId(toDelete);
+
+    if(resp) {
+        return new Response(JSON.stringify({status:201,message:"Success"}));
+    } else {
+        return new Response(JSON.stringify({status:500,message:"An error occured deleting post"}));
+    }
+
+}
+
+export const PATCH = async ({request}) => {
+    const data = await request.json();
+
+    const resp = updateJobAdvertById(
+        data.jobId,
+        data.JobTitle,
+        data.Location,
+        data.EnrollmentType,
+        data.WorkplaceType,
+        data.JobDescription,
+        data.MonthlyWage,
+        data.AdditionalInfo
+    )
+
+    if(resp) {
+        return new Response(JSON.stringify({status:201,message:"Success"}))
+    } else {
+        return new Response(JSON.stringify({status:500,message:"An error occured attempting to edit"}))
+    }
+
 }

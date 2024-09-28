@@ -4,6 +4,12 @@ import db from  './database.js'
 import bcrypt from 'bcryptjs'
 import { SqliteError } from 'better-sqlite3';
 
+
+export function deleteJobByJobId(jobId) {
+    const stmt = db.prepare('DELETE FROM job_adverts WHERE AdvertId = ?')
+    return stmt.run(jobId);    
+}
+
 export function newImpresion(userId,postId) {
     const stmt = db.prepare('INSERT INTO impressions (UserId,PostId) VALUES (?,?)');
     try {
@@ -39,6 +45,19 @@ export function changeProfilePicture(UserId,url) {
     return stmt.run(url,UserId)
 
 }
+
+export function updateJobAdvertById(jobId,title,location,enrollment,workplace,description,wage,additional) {
+    const stmt = db.prepare('UPDATE job_adverts SET JobTitle = ?,Location = ?,EnrollmentType = ?,WorkplaceType = ?,JobDescription = ?,MonthlyWage = ?,AdditionalInfo = ? WHERE AdvertId = ?');
+    console.log(additional)
+    return stmt.run(title,location,enrollment,workplace,description,wage,additional,jobId);
+}
+// jobId:job.AdvertId,
+// JobTitle: job.JobTitle,
+// JobDescription: job.JobDescription,
+// EnrollmentType: job.EnrollmentType,
+// Location: job.Location,
+// MonthlyWage: job.MonthlyWage,
+// WorkplaceType: job.WorkplaceType
 
 export function newPost(UserId,postData) {
     const imagesForDb = JSON.stringify(postData.images)

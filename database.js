@@ -162,8 +162,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_applications (
     DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
     Message TEXT NOT NULL,
     FOREIGN KEY (ApplicantId) REFERENCES users(UserId),
-    FOREIGN KEY (AdvertID) REFERENCES job_adverts(AdvertId) 
+    FOREIGN KEY (AdvertId) REFERENCES job_adverts(AdvertId) ON DELETE CASCADE,
+    UNIQUE (ApplicantId,AdvertId)
 )`)
+
+
 
 db.exec(`CREATE TABLE IF NOT EXISTS impressions (
     ImpressionId INTEGER PRIMARY KEY AUTOINCREMENT,

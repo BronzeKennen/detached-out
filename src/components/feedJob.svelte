@@ -47,9 +47,49 @@
     const editJob = () => {
         editing = true;
     }
+    const saveChanges = async () => {
+        const resp = await fetch('/api/jobs', {
+            method:'PATCH',
+            body: JSON.stringify({
+                jobId:job.AdvertId,
+                JobTitle: job.JobTitle,
+                JobDescription: job.JobDescription,
+                EnrollmentType: job.EnrollmentType,
+                Location: job.Location,
+                MonthlyWage: job.MonthlyWage,
+                WorkplaceType: job.WorkplaceType,
+                AdditionalInfo: job.AdditionalInfo
+            })
+        })
+        if(resp.ok) {
+            console.log("Success")
+            ogTitle = job.JobTitle;
+            ogDesc = job.JobDescription
+            ogEnrollment = job.EnrollmentType
+            ogLocation = job.Location
+            ogWage = job.MonthlyWage
+            ogWorkplace = job.WorkplaceType
+            ogAdditional = job.AdditionalInfo
+            editing = false;
 
-    const deleteJob = () => {
+        } else {
+            console.log("An error has occured")
+        }
+    }
+
+    const deleteJob = async () => {
+        const resp  = await fetch('/api/jobs',{
+            method:'DELETE',
+            body:JSON.stringify({
+                jobId:job.AdvertId
+            })
+        })
         
+        if(resp.ok) {
+            console.log("success")
+        } else {
+            console.log("An error occured");
+        }
     }
 
      const skillsOptions = [
@@ -81,10 +121,11 @@
         'Time prioritization', 'Virtual collaboration', 'Work-life balance'
     ]; 
 
-    let desiredSkills = job.skills;
-    for(let i = 0; i< desiredSkills.length; i++){
-        desiredSkills[i] = desiredSkills[i].name.SkillName
+    let skills = job.skills;
+    for(let i = 0; i< skills.length; i++){
+        skills[i] = skills[i].name.SkillName
     }
+    $:desiredSkills = skills
 
     function updateSkills(event) {
         const skill = event.target.value; 
@@ -97,13 +138,13 @@
         desiredSkills = desiredSkills.filter(s => s !== skill); 
     }
 
-    console.log(job)
     let ogTitle = job.JobTitle;
     let ogDesc = job.JobDescription
     let ogEnrollment = job.EnrollmentType
     let ogLocation = job.Location
     let ogWage = job.MonthlyWage
     let ogWorkplace = job.WorkplaceType
+    let ogAdditional = job.AdditionalInfo
 
     function quitEditing() {
         editing = false;
@@ -113,6 +154,7 @@
         job.Location = ogLocation;
         job.MonthlyWage = ogWage
         job.WorkplaceType = ogWorkplace
+        job.AdditionalInfo = ogAdditional
 
     }
     
@@ -220,15 +262,18 @@
                             {/each}
                         </div>
                     {/if}
-                    <div id="field">
-                        <div class="fieldTitle">Additional Info:</div>
-                        <textarea
-                            id="moreInfo"
-                            type="text" 
-                            placeholder=""
-                            bind:value={moreInfo}
-                            on:input={autoResize} 
-                        />
+                    <div id="field" class="with-save">
+                        <span style="display:flex;flex-direction:row;">
+                            <div class="fieldTitle">Additional Info:</div>
+                            <textarea
+                                id="moreInfo"
+                                type="text" 
+                                placeholder=""
+                                bind:value={job.AdditionalInfo}
+                                on:input={autoResize} 
+                            />
+                        </span>
+                        <button class="save-button" on:click={saveChanges}>Save</button>
                     </div>
 
                 {/if}
@@ -242,10 +287,13 @@
             <div id="basicInfo">• Monthly wage: {job.MonthlyWage}€</div>
             <div id="basicInfo">• Desired Skills:
                 <div class="desiredSkills">
-                    {#each job.skills as skill}
+                    {#each desiredSkills as skill}
                         <div class="skill">{skill}</div>
                     {/each}
                 </div>
+            </div>
+            <div id="basicInfo">
+                • Additional Info: {job.AdditionalInfo}
             </div>
         </div>
         {#if job.applications.length}
@@ -266,6 +314,17 @@
     
 <style>
 
+    .with-save {
+        display:flex;
+        justify-content: space-between;
+    }
+    .save-button {
+        border-radius:7px;
+        border:none;
+        width:40%;
+        margin:.3rem;
+        background-color: rgb(235, 169, 235);
+    }
     #moreInfo,#title,#jobDesc{
         background-color: rgb(255, 236, 255);
         border-radius:10px;
@@ -329,11 +388,15 @@
     }
     
     #timePassed {
+        display:flex;
         width: fit-content;
         position: absolute;
         top: 0;
         right: 0;
         font-size: small;
+    }
+    #timePassed i {
+        margin:.25rem;
     }
 
     .stats {

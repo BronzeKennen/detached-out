@@ -73,17 +73,14 @@ export async function load({ locals, request }) {
             if (friend.Status === 'accepted') {
                 connections++;
                 if(friend.Sender === id) {
-                    posts = [...posts,getPostsByUserIdPaged(friend.Recipient,1,5)]
+                    posts = [...posts,...getPostsByUserIdPaged(friend.Recipient,1,5)]
                 } else {
-                    posts = [...posts,getPostsByUserIdPaged(friend.Sender,1,5)]
+                    posts = [...posts,...getPostsByUserIdPaged(friend.Sender,1,5)]
                 }
             }
             //modify a new object
         }
 
-        if(posts.length > 0)
-            posts = posts[1]
-        else posts = [];
         for (const post of posts) {
             const poster = getUserById(post.UserId);
             post.UserId = {

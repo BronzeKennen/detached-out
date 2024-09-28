@@ -111,6 +111,8 @@
 }
 
 .sideBar {
+    overflow-y:scroll;
+    overflow-x:hidden;
     background-color: #F3E9E9;
     position: fixed;
     top: 0;
@@ -122,6 +124,23 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+}
+.sideBar::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+}
+
+.sideBar::-webkit-scrollbar-track {
+    display:none;
+}
+
+/* Handle (the part of the scrollbar you drag) */
+.sideBar::-webkit-scrollbar-thumb {
+    background: #888; /* Handle color */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.sideBar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 
 .sideBar ul {
@@ -196,6 +215,12 @@
             <a on:click={handleClick} href=''>
                 <i class="fa-solide fa-x"></i>
                 <span>Close</span>
+            </a>
+        </li>
+        <li>
+            <a href='/'>
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Logout</span>
             </a>
         </li>
         <li>
@@ -318,6 +343,14 @@
             </a>
         </li>
         {/if}
+        <li>
+            <a href='/'>
+                <i class="fa-solid fa-circle-user"></i>
+                {#if condition < 3}
+                <span>Logout</span>
+                {/if}
+            </a>
+        </li>
         <li><a href=''><button on:click={handleClick}><i class="fa-solid fa-bars"></i></button></a></li>
     </ul>
 </nav>

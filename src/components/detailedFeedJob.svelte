@@ -106,7 +106,7 @@
         {#if applicationStatus === 0}
         <p>Application sent successfully</p>
         {:else if applicationStatus === 1}
-        <p>An error occured while sending application. Please try again later</p>
+        <p>An error occured while sending application. This could occur if you have already applied before. If that's not the case please try again later</p>
         {/if}
     </div>
 

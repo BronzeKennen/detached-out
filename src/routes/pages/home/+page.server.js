@@ -1,10 +1,12 @@
-import { getFriends, getPostById, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
+import { getAllJobImpressions, getFriends, getPostById, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
 import { getAllPosts, getCompanyById,getUserById,getJobTitleById,getImpressionsByPostId } from '/getters.js' 
 import { calculatePostScores } from '../../../../factorization-funcs.js';
 import { MatrixFactorization } from '../../../../bonus/MatrixFactorization.js';
 
 
 export async function load({ locals, request }) {
+
+
     const id = locals.user?.id;
     let table = [];
     table = calculatePostScores(table);
@@ -40,10 +42,7 @@ export async function load({ locals, request }) {
             }
         }
     }
-    // console.log(sortedPosts.length);
-    // console.log(postsToRemove);
     sortedPosts = sortedPosts.filter(postID => !postsToRemove.includes(postID));
-    console.log(sortedPosts);
 
 
 

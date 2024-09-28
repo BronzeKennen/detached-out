@@ -10,8 +10,25 @@ export function deleteJobByJobId(jobId) {
     return stmt.run(jobId);    
 }
 
+export function newJobImpression(userId,advertId) {
+    const stmt = db.prepare('INSERT INTO job_impressions (UserId,AdvertId) VALUES (?,?)');
+    try {
+        const exp = stmt.run(userId,advertId);
+    } catch(error) {
+        if(error instanceof SqliteError) {
+            if(error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+                console.log("Unique constraint failed, ignoring...");
+                return {success : true}
+            }
+        } else {
+            return {success : false}
+        }
+    }
+    return {success:true}
+}
+
 export function newImpresion(userId,postId) {
-    const stmt = db.prepare('INSERT INTO s (UserId,PostId) VALUES (?,?)');
+    const stmt = db.prepare('INSERT INTO impressions (UserId,PostId) VALUES (?,?)');
     try {
         const exp = stmt.run(userId,postId);
     } catch (error) {

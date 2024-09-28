@@ -19,6 +19,21 @@
     let allJobsLoaded = false;
     let page = 2;
 
+    async function createJobImpression() {
+        const resp = await fetch('/api/jobs/impression',{
+            method: 'POST',
+            body: JSON.stringify({
+                advertId: $current.AdvertId
+            })
+        })
+        if(resp.ok) {
+            console.log("Success")
+        } else {
+            console.log("An error has occured")
+        }
+        
+    }
+
     async function fetchPosts() {
         const resp = await fetch(`/api/jobs?page=${page}&limit=5&own=${own}&id=${profile.UserId}`,{
             method:'GET'
@@ -74,7 +89,7 @@
     });
 </script>
 {#each $jobStore as job}
-    <div class="clicker" on:click={() => {selectedJob.set(job); current.set(job)}}>
+    <div class="clicker" on:click={() => {selectedJob.set(job); current.set(job); createJobImpression()}}>
         <FeedJob job={job} id={id} selected={job === $selectedJob ? true : false}/>
     </div>
 {/each}

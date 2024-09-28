@@ -21,6 +21,16 @@ export function getJobsByUserId(userId) {
     return stmt.all(userId);
 }
 
+export function getJobImpressionsByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM job_impressions WHERE UserId = ?');
+    return stmt.all(userId);
+}
+
+export function getAllJobImpressions() {
+    const stmt = db.prepare('SELECT * FROM job_impressions');
+    return stmt.all();
+}
+
 export function getPostsByUserIdPaged(userId,page,limit) {
     const offset = (page-1)*limit - limit;
     const stmt = db.prepare('SELECT * FROM posts WHERE UserId = ? ORDER BY CreatedAt DESC LIMIT ? OFFSET ?') 

@@ -156,7 +156,7 @@
     let ogWage = job.MonthlyWage
     let ogWorkplace = job.WorkplaceType
     let ogAdditional = job.AdditionalInfo
-    let ogSkills = desiredSkills
+    $: ogSkills = desiredSkills
 
     function quitEditing() {
         editing = false;

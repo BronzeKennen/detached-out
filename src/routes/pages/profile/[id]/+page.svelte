@@ -15,7 +15,6 @@
     let workExperience;
     let connectButton;
     let workExp = true;
-    console.log(profile)
     onMount(async () => {
         const response = await fetch(`/api/workexp?id=${id}`, {
             method: 'GET',
@@ -221,9 +220,10 @@
     <div class="background" style="background-color:{bgColor}"></div>
     <div class="pfp" style={`background-image:url(${pfp});`}></div>
     <div class="nameJob">
-        <div class='name'>{firstName} {lastName} {#if profile.button === 'accepted'} <span class="accepted">Connected</span>{/if}
-            {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}
+        <div class='name'>
+            {firstName} {lastName} {#if currCompany} @ {currCompany}, {#if currJobTitle} {currJobTitle} {/if} {/if}
         </div>
+        {#if profile.button === 'accepted'} <span class="accepted">Connected</span>{/if}
         <br>
        {#if bio}
        <p>{bio}</p>

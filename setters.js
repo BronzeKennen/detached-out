@@ -11,7 +11,7 @@ export function deleteJobByJobId(jobId) {
 }
 
 export function newImpresion(userId,postId) {
-    const stmt = db.prepare('INSERT INTO impressions (UserId,PostId) VALUES (?,?)');
+    const stmt = db.prepare('INSERT INTO s (UserId,PostId) VALUES (?,?)');
     try {
         const exp = stmt.run(userId,postId);
     } catch (error) {
@@ -20,8 +20,11 @@ export function newImpresion(userId,postId) {
                 console.log("Unique constraint failed, ignoring...");
                 return {success : true}
             }
+        } else {
+            return {success : false}
         }
     }
+    return {success : true}
 }
 
 export function newLike(userId,postId,type) {

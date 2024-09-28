@@ -11,6 +11,7 @@
     user = profile.Sender;
     let pfp = user.profile_pic_url
     const defaultPfp = '/defaultpfp.png'
+    if(!pfp) pfp = defaultPfp
     $: {
         if(profile.Sender.UserId === id) {
             user = profile.Recipient
@@ -104,28 +105,43 @@
     </div>
     <div class="pfp" style={`background-image: url('${pfp}')`}></div>
     <div class="details">
-        {#if user.job_title}
-        <p>{user.job_title.JobTitle}</p>
-        {/if}
-        {#if user.current_company}
-        <p>{user.current_company.company_name}</p>
-        {/if}
-        <h4><a href="/pages/profile/{user.UserId}">{user.username}</a> </h4>
-        {#if profile.Status === 'pending' && !addButtons}
-        <h6 style="color: orange;">{profile.Status}</h6>
-        {/if}
-        {#if addButtons}
-        <div class="buttons">
-            <button class="accept" on:click={acceptFriendRequest}><h6>ACCEPT</h6></button>
-            <button class="reject" on:click={rejectFriendRequest}><h6>DECLINE</h6></button>
-        </div>
-        {/if}
-         <!-- those are for testing purposes they will be removed -->
+        <div class="info-box">
+            {#if !user.job_title && !user.current_company}
+                <p>This user hasn't set their profile</p>
 
+            {/if}
+            {#if user.job_title}
+            <p>{user.job_title.JobTitle}</p>
+            {/if}
+            {#if user.current_company}
+            <p>{user.current_company.company_name}</p>
+            {/if}
+            <h2 id="username"><a href="/pages/profile/{user.UserId}">{user.username}</a> </h2>
+            {#if profile.Status === 'pending' && !addButtons}
+            <h6 style="color: orange;">{profile.Status}</h6>
+            {/if}
+            {#if addButtons}
+            <div class="buttons">
+                <button class="accept" on:click={acceptFriendRequest}><h6>ACCEPT</h6></button>
+                <button class="reject" on:click={rejectFriendRequest}><h6>DECLINE</h6></button>
+            </div>
+            {/if}
+        </div>
     </div>
 </div>
 
 <style>
+    .info-box {
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        width:50%;
+        flex-direction: column;
+    }
+    #username {
+        top:100px;
+        position:absolute;
+    }
     a {
         text-decoration: none;
 
@@ -148,7 +164,7 @@
         margin:.2rem;
         padding:.2rem;
         border-radius:5px;
-        box-shadow: 0px 1px 10px rgb(202, 21, 178);
+        box-shadow: 0px 1px 10px rgb(29, 29, 29);
     }
     .accept {
         background-color: lime;
@@ -169,7 +185,7 @@
         border-top-right-radius:10px;
         height:55px;
         background-color: rgb(224, 182, 215);
-        box-shadow: 0 1.5px 10px rgb(174, 0, 255);
+        box-shadow: 0 1.5px 10px rgb(49, 49, 49);
     }
     .pfp {
         position:absolute;
@@ -191,10 +207,10 @@
         align-items: center;
         border-bottom-left-radius:10px;
         border-bottom-right-radius:10px;
-        box-shadow: 0 4.5px 9px rgb(174, 0, 255);
+        box-shadow: 0 4.5px 9px rgb(34, 34, 34);
         background-color:rgb(255, 255, 255);
         min-height:130px;
-        padding-bottom: 2px;
+        padding-bottom: 8%;
     }
     .details p {
         font-size:12px;

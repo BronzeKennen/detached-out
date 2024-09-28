@@ -11,6 +11,7 @@
         if($current) {
             applications = $current.applications;
         }
+        console.log($current)
             
     }
 

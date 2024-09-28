@@ -24,7 +24,7 @@
         width: 300px;
     }
     .background {
-        box-shadow: 0 1.5px 5px rgb(185, 50, 238);
+        box-shadow: 0 1.5px 5px rgb(0, 0, 0);
         border-top-left-radius:10px;
         border-top-right-radius:10px;
         height:75px;
@@ -38,7 +38,7 @@
         top:75px;
         left:50%;
         border-radius:50%;
-        border:4px rgb(212, 0, 255) solid;
+        border:4px rgb(0, 0, 0) solid;
         background-color:aqua;
         transform: translate(-50%, -50%);
         background-size: cover; /* Ensures the image covers the element */
@@ -46,7 +46,7 @@
         background-repeat: no-repeat;
     }
     .details {
-        box-shadow: 0 4.5px 5px rgb(185, 50, 238);
+        box-shadow: 0 4.5px 5px rgb(0, 0, 0);
         display: flex;
         flex-direction: column-reverse;
         align-items: start;

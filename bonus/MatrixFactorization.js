@@ -36,7 +36,7 @@ export class MatrixFactorization {
                     this.F[l][j] += this.h * 2 * error_ij * this.V[i][l];
                 }
 
-                totalSqError = error_ij ** 2;
+                totalSqError += error_ij ** 2;
             }
         
             RMSE = Math.sqrt(totalSqError / nonZeroEntries.length);

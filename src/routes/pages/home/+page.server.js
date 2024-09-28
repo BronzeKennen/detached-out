@@ -1,15 +1,54 @@
-import { getFriends, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
-import { getAllPosts, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
-// import { fetchRecommended } from '../../../../factorization-funcs.js';
+import { getFriends, getPostById, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
+import { getAllPosts, getCompanyById,getUserById,getJobTitleById,getImpressionsByPostId } from '/getters.js' 
+import { calculatePostScores } from '../../../../factorization-funcs.js';
+import { MatrixFactorization } from '../../../../bonus/MatrixFactorization.js';
 
 
 export async function load({ locals, request }) {
     const id = locals.user?.id;
-    // const table = fetchRecommended();
-    // console.log("Users x Posts Table:", table);
-    // let userPostsFact = new MatrixFactorization(usersPostsTable, 2, 0.01);
-    // userPostsFact.train();
-    // let predictedUsersPosts = userPostsFact.predict();
+    let table = [];
+    table = calculatePostScores(table);
+    const cTable = table;
+    // console.log("Users x Posts Table:", cTable);
+    let userPostsFact = new MatrixFactorization(cTable, 2, 0.01);
+    userPostsFact.train();
+    let predictedUsersPosts = userPostsFact.predict();
+    // console.log("Users x Posts Prediction Table:", predictedUsersPosts);
+    
+    // Get the recommended posts for this user.
+    let userPredictedPosts = predictedUsersPosts[id];
+    let sortedPosts = userPredictedPosts
+    .map((score, index) => ({ id: index, score }))  
+    .sort((a, b) => b.score - a.score)              
+    .map(item => item.id);                          
+    console.log(sortedPosts);
+    let postsToRemove = []
+    for(let postID of sortedPosts) {
+        let currentPost = getPostById(postID);
+        if(!currentPost[0]) {
+            postsToRemove.push(postID);
+            continue;
+        }
+        if(currentPost[0].UserId === id) {
+            postsToRemove.push(postID);
+        }
+        let impressions = getImpressionsByPostId(postID);
+        for(const impression of impressions) {
+            if(impression.UserId === id) {
+                postsToRemove.push(postID);
+                continue;
+            }
+        }
+    }
+    // console.log(sortedPosts.length);
+    // console.log(postsToRemove);
+    sortedPosts = sortedPosts.filter(postID => !postsToRemove.includes(postID));
+    console.log(sortedPosts);
+
+
+
+
+
 
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';

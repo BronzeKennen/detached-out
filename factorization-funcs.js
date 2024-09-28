@@ -3,47 +3,46 @@ import { getUsers,getAllPosts,getAllJobs, getUserById, getPostById, getLikesById
 
 
 const nUsers = getUsers();
-const nPosts = getAllPosts(); 
+console.log("nUsers:", nUsers.length);
+const nPosts = getAllPosts();
+console.log("nPosts:", nPosts.length);
 const nJobAdverts = getAllJobs();
 let usersPostsTable = [];
-usersPostsTable = fetchRecommended(usersPostsTable)
+usersPostsTable = calculatePostScores(usersPostsTable);
 let userPostsFact = new MatrixFactorization(usersPostsTable, 2, 0.01);
 userPostsFact.train();
 let predictedUsersPosts = userPostsFact.predict();
 
-export function fetchRecommended(table) {
-    for (let userID = 1; userID < nUsers.length; userID++) {
+export function calculatePostScores(table) {
+    for (let userID = 1; userID <= nUsers.length; userID++) {
         let currentUser = getUserById(userID);
         const row = [];
-        // let post = getPostById(10)
-        // console.log(post[0].PostId)
         for (let postID = 0; postID < nPosts.length; postID++) {
             let currentPost = getPostById(postID);
             let score = 0;
             if(currentPost.length) {
-                let likes = getLikesById(currentPost[0].PostId,'post')
+                let likes = getLikesById(currentPost[0].PostId,'post');
                 if(likes.length) {
                     for(const like of likes) {
-                        if(like.SenderId === userID) {
-                            score += 2;
+                        if(like.SenderId === currentUser.UserId) {
+                            score += 1;
                             break;
                         }
                     }
                 }
-                let comments = getCommentsById(currentPost[0].PostId,'post')
+                let comments = getCommentsById(currentPost[0].PostId,'post');
                 if(comments.length) {
-                    let comments = getCommentsById(currentPost[0].PostId,'post');
                     for(const comment of comments) {
-                        if(comment.UserFrom.UserId === userID) {
-                            score += 3;
+                        if(comment.UserFrom.UserId === currentUser.UserId) {
+                            score += 1;
                             break;
                         }
                     }
                 }
                 let impressions = getImpressionsByPostId(postID);
                 for(const impression of impressions) {
-                    if(impression.UserId === userID) {
-                        score+=1;
+                    if(impression.UserId === currentUser.UserId) {
+                        score += 1;
                         break;
                     }
                 }

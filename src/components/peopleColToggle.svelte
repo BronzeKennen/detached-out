@@ -39,7 +39,7 @@
 
     #inboxOpen {
         height: 2rem;
-        width: 100%;
+        width: 50%;
         margin-top: auto;
         margin-bottom: auto;
         border-top-right-radius: 10px;

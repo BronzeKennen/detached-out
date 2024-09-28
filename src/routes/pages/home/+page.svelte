@@ -59,6 +59,14 @@
     });
 
 
+    let recent = true;
+    let recommended = false;
+
+    function toggleRecommened() {
+        recent = !recent;
+        recommended = !recommended;
+    }
+
 </script>
 
 <style>
@@ -126,20 +134,28 @@
     </div>
     <div class='MiddleCol'>
         <NewPost user={user} pfp={user.profile_pic_url}/>
-        {#each user.posts as post}
-            <FeedPost
-                user={user}
-                userId={user.UserId}
-                postId={post.PostId}
-                poster={post.UserId}
-                likes={post.Likes}
-                comments={post.Comments}
-                reposts={post.RepostCount}
-                images={post.ImagesJson}
-                content={post.Content}
-                created={post.CreatedAt}
-            />
-        {/each}
+        <button on:click={toggleRecommened}>VIEWING {recent ? 'RECENT' : 'RECOMMENDED'} POSTS</button>
+        {#if recent}
+            {#each user.posts as post}
+                <FeedPost
+                    user={user}
+                    userId={user.UserId}
+                    postId={post.PostId}
+                    poster={post.UserId}
+                    likes={post.Likes}
+                    comments={post.Comments}
+                    reposts={post.RepostCount}
+                    images={post.ImagesJson}
+                    content={post.Content}
+                    created={post.CreatedAt}
+                />
+            {/each}
+        {/if}
+        {#if recommended}
+            {#each user.posts as post}
+                
+            {/each}
+        {/if}
     </div>  
     <div class='RightCol'>
         <Connections />

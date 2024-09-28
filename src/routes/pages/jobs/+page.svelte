@@ -16,9 +16,9 @@
         
 
 
-    $: setWidth = (innerWidth / 2) + 29;
+    $: setWidth = (innerWidth / 2) + 40;
     $: {
-        if (setWidth > 635) setWidth = 635;
+        if (setWidth > 645) setWidth = 645;
     }
 
     $: {

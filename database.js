@@ -166,8 +166,6 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_applications (
     UNIQUE (ApplicantId,AdvertId)
 )`)
 
-
-
 db.exec(`CREATE TABLE IF NOT EXISTS impressions (
     ImpressionId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,

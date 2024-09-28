@@ -7,11 +7,28 @@
         await fetch('/api/users/clear-cookie');
     })
 
+    let backgroundColor = 'black';
+    let textColor = 'purple';
+
     let innerWidth = 0;
     let innerHeight = 0;
     let email = ''
     let password = ''
     let errorMessage = ''
+
+    const colors = ['red', 'purple', 'black', 'white'];
+    function getRandomColor() {
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    setInterval(() => {
+        backgroundColor = getRandomColor();
+        textColor = getRandomColor();
+        while(textColor === backgroundColor) {
+            textColor = getRandomColor();
+        }
+    }, 500);
+
 
     function handleEnter(event) {
         if (event.key === "Enter" && !event.shiftKey) { 
@@ -58,6 +75,26 @@
 
 
 <style>
+    
+    .logo-container {
+        max-width:1200px;
+        height:90vh;
+        display:flex;
+        justify-content: center;
+    }
+    .huge-logo {
+        display:flex;
+        flex-direction: row;
+    }
+    .huge-logo img {
+        width:100%;
+        height:8%;
+    }
+    .logo-container h1 {
+        background-color:black;
+        color:purple;
+        height:8%;
+    }
     .container {
         max-width: 1200px;
         height: 90vh;
@@ -217,10 +254,16 @@
             font-size: 0.8rem;
         }
     }
+
 </style>
 
 
-
+<div class="logo-container">
+    <div class="huge-logo">
+        <h1 style="background-color: {backgroundColor}; color:{textColor}">Detached</h1> 
+        <img src={Logo} alt="Logo" />
+    </div>
+</div>
 <div class="container">
     <div class='signIn'>
         {#if errorMessage !== ''}

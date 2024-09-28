@@ -3,23 +3,25 @@
     import LoadJobs from "../../../../components/loadJobs.svelte";
     import ShowApplication from "../../../../components/showApplication.svelte"
     import {current} from '$lib/stores.js'
+    import { writable } from "svelte/store";
 
     let innerWidth = 0;
 
-    let applications = []
+    let applications = [];
+    
     $: {
         if($current) {
             applications = $current.applications;
         }
-            
+        
     }
 
     export let data;
     const profile = data.userProfile
 
-    $: setWidth = (innerWidth / 2) + 29;
+    $: setWidth = (innerWidth / 2);
     $: {
-        if (setWidth > 635) setWidth = 635;
+        if (setWidth > 600) setWidth = 600;
     }
 </script>
 <svelte:window bind:innerWidth />
@@ -36,17 +38,28 @@
         <LoadJobs profile={profile} own={1} id={profile.UserId}/>
     </div>
     <div class='RightCol'>
-        {#if applications.length}
+        {#if !$current}
+        <div class="fixed-c" id="noapps" style="width:{setWidth}px">
+            <h1>Select an advert to view applications.</h1>
+        </div>
+        {:else if applications.length}
         <div class="fixed-c" style="width:{setWidth}px">
             <h1> Applications </h1>
             {#each applications as application}
                 <ShowApplication applications={application}/>
             {/each}
         </div>
+        {:else if applications.length === 0}
+            <div class="fixed-c" id="noapps" style="width:{setWidth}px">
+                <h1>No applicants yet.</h1>
+            </div>
         {/if}
     </div>
 </div>
 <style>
+    #noapps {
+        overflow: hidden;
+    }
     h1 {
         margin:1rem;
     }
@@ -72,6 +85,7 @@
         overflow:scroll;
         overflow-x: hidden;
         flex-direction: column;
+        width: 60%;
     }
     .wrapper {
         display:flex;

@@ -265,6 +265,10 @@
         color: rgba(155, 17, 113, 1.452);
     }
     @media (max-width:900px) {
+        .selectedChat {
+            width: 100%;
+            max-width: 100%;
+        }
         .userInfo {
             height: 10%;
         }

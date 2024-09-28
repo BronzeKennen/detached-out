@@ -2,7 +2,7 @@
 import {getAllJobs, getAllPosts, getPostById, getUserById, getUsers} from '../getters.js'
 // import getAllJobs from '../getters.js'
 
-class MatrixFactorization {
+export class MatrixFactorization {
     constructor(R, K, h) {
         // Set values
         this.R = R;
@@ -86,75 +86,3 @@ let rMatrix = [
     [1, 0, 0, 0, 1],
     [1, 2, 1, 1, 2],
 ];
-
-// let attempt = new MatrixFactorization(rMatrix, 2, 0.01);
-// attempt.train();
-// let predictedMat = attempt.predict();
-// console.log(predictedMat[1]);
-// let sortedRow = [...predictedMat[1]].sort();
-// console.log(sortedRow);
-
-
-// Initialize matrixes
-const nUsers = getUsers();
-const nPosts = getAllPosts(); 
-const nJobAdverts = getAllJobs();
-
-const usersPostsTable = [];
-for (let userID = 0; userID < nUsers.length; userID++) {
-    let currentUser = getUserById(userID);
-    const row = [];
-    for (let postID = 0; postID < nPosts.length; postID++) {
-        let currentPost = getPostById(postID);
-        let score = 0;
-        if(isConnected(currentUser.UserId, currentPost.UserId)) {
-            score += 1;
-        }
-        if(userLikesPost(currentUser.UserId, currentPost.PostId)) {
-            score += 1;
-            if(userCommentsPost(currentUser.UserId, currentPost.UserId)) { 
-                score += 1;                                                
-            }
-        }
-        row.push(score);
-    }
-    usersPostsTable.push(row);
-}
-
-let userPostsFact = new MatrixFactorization(usersPostsTable, 2, 0.01);
-userPostsFact.train();
-let predictedUsersPosts = userPostsFact.predict();
-
-
-
-
-
-
-
-const usersJobsTable = [];
-for (let userID = 0; userID < nUsers.length; userID++) {
-    let currentUser = getUserById(userID);
-    const row = [];
-    for (let jobID = 0; jobID < nJobAdverts.length; jobID++) {
-        let currentJob = getPostById(postID);
-        let score = 0;
-        if(isConnected(currentUser.UserId, currentJob.PosterId)) {
-            score += 1;
-        }
-        if(userAppliedJob(currentUser.UserId, currentJob.AdvertId)) {
-            score += 1;
-        }
-        row.push(score);
-    }
-    usersJobsTable.push(row);
-}
-
-let userJobsFact = new MatrixFactorization(usersJobsTable, 2, 0.01);
-userJobsFact.train();
-let predictedUsersJobs = userJobsFact.predict();
-
-
-
-
-console.log("Users x Posts Table:", usersPostsTable);
-console.log("Users x Job Adverts Table:", usersJobsTable);

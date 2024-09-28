@@ -91,6 +91,7 @@
         height:8%;
     }
     .logo-container h1 {
+        transition: background-color 0.2s ease, color 0.2s ease; /* Add smooth transition */
         background-color:black;
         color:purple;
         height:8%;
@@ -254,6 +255,7 @@
             font-size: 0.8rem;
         }
     }
+
 
 </style>
 

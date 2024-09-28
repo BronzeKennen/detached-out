@@ -1,9 +1,15 @@
 import { getFriends, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
 import { getAllPosts, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
+import { fetchRecommended } from '../../../../factorization-funcs.js';
 
 
 export async function load({ locals, request }) {
     const id = locals.user?.id;
+    // const table = fetchRecommended();
+    // console.log("Users x Posts Table:", table);
+    // let userPostsFact = new MatrixFactorization(usersPostsTable, 2, 0.01);
+    // userPostsFact.train();
+    // let predictedUsersPosts = userPostsFact.predict();
 
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';

@@ -85,7 +85,6 @@
     for(let i = 0; i< desiredSkills.length; i++){
         desiredSkills[i] = desiredSkills[i].name.SkillName
     }
-    console.log(desiredSkills)
 
     function updateSkills(event) {
         const skill = event.target.value; 
@@ -96,6 +95,25 @@
 
     function deleteSkill(skill) {
         desiredSkills = desiredSkills.filter(s => s !== skill); 
+    }
+
+    console.log(job)
+    let ogTitle = job.JobTitle;
+    let ogDesc = job.JobDescription
+    let ogEnrollment = job.EnrollmentType
+    let ogLocation = job.Location
+    let ogWage = job.MonthlyWage
+    let ogWorkplace = job.WorkplaceType
+
+    function quitEditing() {
+        editing = false;
+        job.JobTitle = ogTitle;
+        job.JobDescription = ogDesc;
+        job.Enrollment = ogEnrollment;
+        job.Location = ogLocation;
+        job.MonthlyWage = ogWage
+        job.WorkplaceType = ogWorkplace
+
     }
     
     function autoResize(event) {
@@ -127,7 +145,7 @@
                 {:else}
                     <div id="timePassed"> {timePassed} <i class="fa-regular fa-clock"></i>
                         <button class="delete-button" on:click={deleteJob}>Delete Post</button>
-                        <button class="discard-button-top" on:click={() => {editing = false}}>X</button>
+                        <button class="discard-button-top" on:click={quitEditing}>X</button>
                     </div>
                     <div id="field">
                     <div class="fieldTitle">Title:</div>

@@ -5,6 +5,10 @@ export function getImpressionsByUserId(userId) {
     const stmt = db.prepare('SELECT * FROM impressions WHERE UserId = ?');
     return stmt.all(userId);
 }
+export function getImpressionsByPostId(postId) {
+    const stmt = db.prepare('SELECT * FROM impressions WHERE PostId = ?');
+    return stmt.all(postId);
+}
 
 export function getJobsByUserIdPaged(userId,page,limit) {
     const offset = (page-1)*limit - limit;

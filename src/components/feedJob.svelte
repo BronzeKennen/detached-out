@@ -70,6 +70,17 @@
             ogWage = job.MonthlyWage
             ogWorkplace = job.WorkplaceType
             ogAdditional = job.AdditionalInfo
+            const skillResp = await fetch('/api/skills', {
+                method:"POST",
+                body: JSON.stringify({
+                    type:"Job",
+                    newSkills: desiredSkills,
+                    id: job.AdvertId
+                })
+            })
+            if(skillResp.ok) {
+                console.log('success')
+            }
             editing = false;
 
         } else {
@@ -145,6 +156,7 @@
     let ogWage = job.MonthlyWage
     let ogWorkplace = job.WorkplaceType
     let ogAdditional = job.AdditionalInfo
+    let ogSkills = desiredSkills
 
     function quitEditing() {
         editing = false;
@@ -155,7 +167,7 @@
         job.MonthlyWage = ogWage
         job.WorkplaceType = ogWorkplace
         job.AdditionalInfo = ogAdditional
-
+        desiredSkills = ogSkills
     }
     
     function autoResize(event) {

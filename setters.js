@@ -82,7 +82,7 @@ export function deletePostById(postId) {
 export function addNewSkills(UserId,skills,type) {
     for (const skill of skills) {
         let skillId = getSkillByName(skill);
-        const stmt = db.prepare('INSERT INTO user_skills (ObjectId,SkillId,Type) VALUES (?,?,?)');
+        const stmt = db.prepare('INSERT OR IGNORE INTO user_skills (ObjectId,SkillId,Type) VALUES (?,?,?)');
         const resp = stmt.run(UserId,skillId.SkillId,type);
     }
 }

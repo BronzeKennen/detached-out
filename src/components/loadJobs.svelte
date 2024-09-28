@@ -3,12 +3,14 @@
     import { onMount ,onDestroy} from "svelte";
     import FeedJob from "./feedJob.svelte";
     import {jobStore,current} from '$lib/stores.js'
+    import { writable } from "svelte/store";
 
 
     jobStore.set([])
     let jobs = $jobStore;
     export let profile;
     export let own = 0;
+    export let selectedJob = writable(null);
 
     export let id;
 
@@ -72,10 +74,11 @@
     });
 </script>
 {#each $jobStore as job}
-    <div class="clicker" on:click={() => current.set(job)}>
-        <FeedJob job={job} id={id}/>
+    <div class="clicker" on:click={() => {selectedJob.set(job); current.set(job)}}>
+        <FeedJob job={job} id={id} selected={job === $selectedJob ? true : false}/>
     </div>
 {/each}
-<style>
 
+
+<style>
 </style>

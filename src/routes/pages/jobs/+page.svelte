@@ -139,7 +139,7 @@
         display: flex;
         flex-direction: row;
         margin-right: 5px;
-        height: 100vh;
+        height: 92vh;
         flex:4;
     }
     

@@ -157,6 +157,23 @@
             flex-direction: column;
         }
     }
+
+    .noth {
+        background: rgb(189, 189, 189);
+        padding:1rem;
+        border-radius:7px;
+        margin:.5rem;
+    }
+
+    .recom-button {
+        width:97.3%;
+        margin:.5rem;
+        border-radius:5px;
+        border:none;
+        background-color: rgb(235, 184, 235);
+        padding:.6rem;
+
+    }
 </style>
 
 <div class="feed">
@@ -165,7 +182,12 @@
     </div>
     <div class='MiddleCol'>
         <NewPost user={user} pfp={user.profile_pic_url}/>
-        <button on:click={toggleRecommened}>VIEWING {recent ? 'RECENT' : 'RECOMMENDED'} POSTS</button>
+        <button class="recom-button" on:click={toggleRecommened}>VIEWING {recent ? 'RECENT' : 'RECOMMENDED'} POSTS</button>
+            {#if !user.posts.length}
+                <div class="noth">
+                    <p>There are no posts to show. Connect with users to show their posts here</p>
+                </div>
+            {/if}
             {#each user.posts as post}
                 <FeedPost
                     user={user}

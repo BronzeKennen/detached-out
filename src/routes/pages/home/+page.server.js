@@ -43,6 +43,7 @@ export async function load({ locals, request }) {
         }
     }
     sortedPosts = sortedPosts.filter(postID => !postsToRemove.includes(postID));
+    console.log(sortedPosts);
 
 
 

@@ -1,9 +1,54 @@
-import { getFriends, getUniversityById, getUserSkillsById,getSkillById } from '../../../../getters.js';
+import { getAllJobImpressions, getFriends, getUniversityById } from '../../../../getters.js';
+import { getFriends, getUniversityById, getUserSkillsById,getSkillById, getJobAdvertById, getImpressionsByJobId, getJobApplicationsByAdvertId } from '../../../../getters.js';
 import { getAllJobs, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
+import { calculateJobScores } from '../../../../factorization-funcs.js';
+import { MatrixFactorization } from '../../../../bonus/MatrixFactorization.js';
 
 
 export async function load({ locals, request }) {
     const id = locals.user?.id;
+    let table = [];
+    table = calculateJobScores(table);
+    const cTable = table;
+    // console.log("Users x Posts Table:", cTable);
+    let userJobsFact = new MatrixFactorization(cTable, 2, 0.01);
+    userJobsFact.train();
+    let predictedUsersJobs = userJobsFact.predict();
+    // console.log("Users x Posts Prediction Table:", predictedUsersPosts);
+    
+    // Get the recommended jobs for this user.
+    let userPredictedJobs = predictedUsersJobs[id];
+    let sortedJobs = userPredictedJobs
+    .map((score, index) => ({ id: index, score }))  
+    .sort((a, b) => b.score - a.score)              
+    .map(item => item.id);                          
+    console.log(sortedJobs);
+    let jobsToRemove = []
+    for(let jobID of sortedJobs) {
+        let currentJob = getJobAdvertById(jobID);
+        if(!currentJob[0]) {
+            jobsToRemove.push(jobID);
+            continue;
+        }
+        if(currentJob[0].PosterId === id) {
+            jobsToRemove.push(jobID);
+        }
+        let applications = getJobApplicationsByAdvertId(jobID);
+        for(const application of applications) {
+            if(application.ApplicantId === id) {
+                jobsToRemove.push(jobID);
+                continue;
+            }
+        }
+    }
+    sortedJobs = sortedJobs.filter(jobID => !jobsToRemove.includes(jobID));
+    console.log(sortedJobs);
+
+
+
+
+
+
 
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';

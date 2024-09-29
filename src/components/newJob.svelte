@@ -327,7 +327,7 @@
         border-radius: 10px;
         box-sizing: border-box;
         background-color: rgb(250, 240, 255);
-        min-width: 80%;
+        min-width: 70%;
         width: fit-content;
         display: flex;
         position: relative;
@@ -362,12 +362,12 @@
         width: 100%;
     }
 
-    #title:focus, #moreInfo:focus {
+    #title:focus, #moreInfo:focus, #job-desc:focus {
         outline: none;
         box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
     }
 
-    #title:hover, #moreInfo:focus {
+    #title:hover, #moreInfo:focus, #job-desc:hover {
         animation-duration: 0.5s;
         box-shadow: 0px 0px 5px rgba(75, 17, 113, 1.452);
     }

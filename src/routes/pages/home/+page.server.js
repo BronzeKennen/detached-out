@@ -24,6 +24,11 @@ export async function load({ locals, request }) {
         const profile = await res.json();
         let friends = getFriends(profile.UserId)
         let connections = 0;
+        for(const friend of friends) {
+            if(friend.Status === 'accepted') {
+                connections++;
+            }
+        }
         let posts = getLatestFriendPostsByUserIdPaged(id,1,5);
 
         for (const post of posts) {

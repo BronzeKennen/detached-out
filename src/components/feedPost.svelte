@@ -27,9 +27,7 @@
 
     const defaultPfp = '/defaultpfp.png'
     let posterPfp = user.profile_pic_url;
-    $: {
-        if(!posterPfp) posterPfp = defaultPfp
-    }
+    if(!posterPfp) posterPfp = defaultPfp
 
 
     $: commentCount = comments.length;
@@ -123,6 +121,20 @@
         autoResize();
     }
     
+    async function createImpression() {
+        const resp = await fetch("/api/posts/impressions",{
+            method:"POST",
+            body:JSON.stringify({
+                postId:postId
+            })
+        })
+        if(resp.ok) {
+            console.log("success")
+        } else {
+            console.log("An error has occured")
+        }
+
+    }
     
     const submitComment = (async () => {
         commenter = !commenter;
@@ -254,9 +266,9 @@
 
 </script>
     {#if !deleted}
-    <div class="feed-post">
-        <div class="stats" on:click={() => window.location = `/pages/posts/${postId}`} >
-            <ProfileIcon  id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
+    <div class="feed-post" on:click={createImpression}>
+        <div class="stats">
+            <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed">
                 <div >{timePassed} <i class="fa-regular fa-clock"></i></div>
                 {#if poster.UserId === userId}

@@ -322,7 +322,10 @@ export function getRecommendedJobByUserIdPages(userId,page,limit) {
         job = job[0]
         return job.PosterId !== userId;
     })
-    let jobs = []
+    let jobs = [];
+    if(filteredScores.length < offset) {
+        return [];
+    }
     try {
         for(let i = offset; i < offset+limit && i < filteredScores.length; i++) {
             jobs = [...jobs, ...getJobAdvertById(filteredScores[i].AdvertId)];

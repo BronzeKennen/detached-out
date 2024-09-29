@@ -296,7 +296,7 @@
         <div class="post">
             <div class="jobTitle">{job.JobTitle}</div>
             <div id="basicInfo">• {job.EnrollmentType}</div>
-            <div id="basicInfo">• Location: ({job.WorkplaceType})</div>
+            <div id="basicInfo">• Location: {job.Location} ({job.WorkplaceType})</div>
             <div id="basicInfo">• Monthly wage: {job.MonthlyWage}€</div>
             <div id="basicInfo">• Desired Skills:
                 <div class="desiredSkills">

@@ -1,20 +1,27 @@
 
 import express from 'express';
-import { createServer } from 'http';
+import { createServer } from 'https';
 import { WebSocketServer } from 'ws';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs'
 import { getConversationBySender } from './getters.js';
 import { saveMessageSent } from './setters.js';
 import { startMatrixUpdateCycle } from './factorization-funcs.js';
 
 const app = express();
-const server = createServer(app);
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'selfsigned_key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'selfsigned.pem')),
+}
+
+const server = createServer(options,app);
+
+
 
 
 
@@ -66,8 +73,8 @@ export async function createWebSocketServer(server) {
 createViteServer({
   server: { middlewareMode: true }
 }).then((vite) => {
-  app.use(vite.middlewares);
 
+  app.use(vite.middlewares);
   app.use(express.static(path.join(__dirname, 'public')));
 
   //Matrix will update every 5 hours

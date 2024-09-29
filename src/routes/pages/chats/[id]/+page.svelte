@@ -32,7 +32,7 @@
     }
 
     function initializeWSS() {
-        ws = new WebSocket(`ws://localhost:5173/${userId.loggedId},${data.userProfile.UserId}`);
+        ws = new WebSocket(`wss://localhost:5173/${userId.loggedId},${data.userProfile.UserId}`);
     
         ws.onopen = () => {
             console.log("Connected to WebSocket")

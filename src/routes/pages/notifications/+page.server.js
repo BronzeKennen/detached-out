@@ -14,7 +14,7 @@ export async function load({ locals, request }) {
     const cookies = request.headers.get('cookie') || '';
 
     try {
-        const res = await fetch(`http://localhost:5173/api/users/${id}`, {
+        const res = await fetch(`https://localhost:5173/api/users/${id}`, {
             headers: {
                 'cookie': cookies 
             }

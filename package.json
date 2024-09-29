@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "node server.js",
+		"dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 node server.js",
 		"build": "vite build",
 		"preview": "vite preview"
 	},

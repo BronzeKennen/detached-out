@@ -12,7 +12,7 @@ export async function load ({request,params,locals}) {
 
     try {
         // Include the JWT cookie in the fetch request headers
-        const res = await fetch(`http://localhost:5173/api/users/${recId}`, {
+        const res = await fetch(`https://localhost:5173/api/users/${recId}`, {
             headers: {
                 'cookie': cookies // Pass the token in Authorization header
             }

@@ -1,8 +1,11 @@
 import { getUserById, getAllSkills, getCompanyById, getFriends, getJobTitleById, getSkillById, getUniversityById, getUsers, getUserSkillsById, getWorkExperience, getWorkExperienceById, getPostsByUserId, getJobsByUserId } from "../../../getters";
-
+import { redirect } from "@sveltejs/kit";
 
 export async function load({locals}) {
     const id = locals.user?.id;
+    if(id !== 1) {
+        throw redirect(303, '/pages/home')
+    }
 
     const allUsers = getUsers();
     for(const user of allUsers) {
@@ -19,7 +22,7 @@ export async function load({locals}) {
 
         user.work_experience = workExp;
 
-        user.friends = getFriends(id);
+        user.friends = getFriends(user.UserId);
         for(const friendship of user.friends) {
             let self = getUserById(id);
             self = self.username
@@ -40,14 +43,14 @@ export async function load({locals}) {
             skill.name = skill.name.SkillName
         }
 
-        user.posts = getPostsByUserId(id);
-        let self = getUserById(id)
+        user.posts = getPostsByUserId(user.UserId);
+        let self = getUserById(user.UserId)
         
         for(const post of user.posts) {
             post.posterUsername = self.username
         }
 
-        user.job_adverts = getJobsByUserId(id);
+        user.job_adverts = getJobsByUserId(user.UserId);
         
     }
     return {allUsers}

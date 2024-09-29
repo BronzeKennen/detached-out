@@ -2,6 +2,34 @@
 
     export let data;
     const users = data.allUsers;
+    const jsonToXml = (json) => {
+        let xml = '<users>';
+        json.forEach(user => {
+            xml += '<user>';
+            xml += convertToXml(user)
+            xml += '</user>';
+        });
+        xml += '</users>';
+        return xml;
+    };
+
+    const convertToXml = (obj) => {
+    let xml = '';
+    for (const key in obj) {
+        if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+            xml += `<${key}>${convertToXml(obj[key])}</${key}>`;
+        } else if (Array.isArray(obj[key])) {
+            xml += `<${key}>`;
+            obj[key].forEach(item => {
+                xml += `<item>${convertToXml(item)}</item>`;
+            });
+            xml += `</${key}>`;
+        } else {
+            xml += `<${key}>${obj[key]}</${key}>`;
+        }
+    }
+    return xml;
+};
 
     const jsonExport = () => {
         const userString = JSON.stringify(users);
@@ -18,6 +46,50 @@
         URL.revokeObjectURL(url);
 
     }
+
+    const exportUser = (id) => {
+        const userString = JSON.stringify(users[id])
+        const blob = new Blob([userString], {type: 'application/json'});
+
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${users[id].username}.json`
+        a.click();
+        
+        URL.revokeObjectURL(url);
+        
+    }
+
+    const xmlExport = () => {
+        const xmlString = jsonToXml(users);
+          const blob = new Blob([xmlString], { type: 'application/xml' });
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'All-Users.xml';
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
+    const exportUserXml = (id) => {
+         const xmlString = jsonToXml([users[id]]);
+          const blob = new Blob([xmlString], { type: 'application/xml' });
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${users[id].username}.xml`
+        a.click();
+
+        URL.revokeObjectURL(url);
+
+    }
 </script> 
 
 <div class="header">
@@ -25,7 +97,7 @@
     <h3>You can do bunch of bs like...</h3>
     <div class="buttons head-buttons">
         <button on:click={jsonExport}>EXPORT ALL USERS IN JSON</button>
-        <button>EXPORT ALL USERS IN XML</button>
+        <button on:click={xmlExport}>EXPORT ALL USERS IN XML</button>
 
     </div>
 </div>
@@ -79,8 +151,8 @@
         <p>Joined in {user.date_created}</p>
         <a href="pages/profile/{user.UserId}">Profile Page</a>
         <div class="buttons">
-            <button class="export">Export in JSON</button>
-            <button class="export">Export in XML</button>
+            <button class="export" on:click={() => {exportUser(user.UserId)}}>Export in JSON</button>
+            <button class="export" on:click={() => {exportUserXml(user.UserId)}}>Export in XML</button>
         </div>
     </div>
 {/each}

@@ -106,6 +106,12 @@
     <div class="pfp" style={`background-image: url('${pfp}')`}></div>
     <div class="details">
         <div class="info-box">
+            {#if profile.Status === 'pending' && !addButtons}
+            <h6 style="color: orange;">{profile.Status}</h6>
+            {:else if profile.Status === 'accepted'}
+            <h5 style="color: green;">Connected</h5>
+            {/if}
+            <h3 id="username"><a href="/pages/profile/{user.UserId}">{user.username}</a> </h3>
             {#if !user.job_title && !user.current_company}
                 <p>This user hasn't set their profile</p>
 
@@ -115,10 +121,6 @@
             {/if}
             {#if user.current_company}
             <p>{user.current_company.company_name}</p>
-            {/if}
-            <h2 id="username"><a href="/pages/profile/{user.UserId}">{user.username}</a> </h2>
-            {#if profile.Status === 'pending' && !addButtons}
-            <h6 style="color: orange;">{profile.Status}</h6>
             {/if}
             {#if addButtons}
             <div class="buttons">
@@ -140,7 +142,6 @@
     }
     #username {
         top:100px;
-        position:absolute;
     }
     a {
         text-decoration: none;

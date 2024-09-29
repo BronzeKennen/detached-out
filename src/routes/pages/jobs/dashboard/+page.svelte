@@ -23,9 +23,30 @@
     $: {
         if (setWidth > 600) setWidth = 600;
     }
+
+    $: if(innerWidth > 600) {
+        if(!$current) {
+            current.set(jobs[0])
+        }
+    }
+
+
+    const resetCurrent = () => {
+        current.set(null)
+    }
 </script>
 <svelte:window bind:innerWidth />
 <div class="wrapper">
+    <!-- {#if $current !== '' && $current !== null}
+            <div class="with-x">
+                <button on:click={resetCurrent}>X</button>
+                {#if $current}
+                    {#each applications as application}
+                        <ShowApplication applications={application}/>
+                    {/each}
+                {/if}
+            </div>
+    {:else} -->
     <div class="LeftCol">
     <div class="create-job">
         <div class="text">
@@ -55,6 +76,7 @@
             </div>
         {/if}
     </div>
+    <!-- {/if} -->
 </div>
 <style>
     #noapps {
@@ -92,5 +114,15 @@
     }
     .LeftCol,.RightCol {
         width:50%;
+    }
+
+    @media (max-width : 600px) {
+        .RightCol {
+            display: none;
+        }
+
+        .LeftCol {
+            width: 100%;
+        }
     }
 </style>

@@ -74,9 +74,8 @@
         </div>
         <!-- #if {user.adverts}  -->
         <div class="separator"></div>
-        <div class="feed-job">
-        </div>
-            <LoadJobs profile={user} own={0}/>
+        <div class="feed-job"></div>
+        <LoadJobs profile={user} own={0}/>
     </div>  
     <div class='RightCol'>
         {#if $current !== ''}

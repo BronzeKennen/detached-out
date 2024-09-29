@@ -24,11 +24,6 @@
         if (setWidth > 600) setWidth = 600;
     }
 
-    $: if(innerWidth > 600) {
-        if(!$current) {
-            current.set(jobs[0])
-        }
-    }
 
 
     const resetCurrent = () => {
@@ -37,7 +32,8 @@
 </script>
 <svelte:window bind:innerWidth />
 <div class="wrapper">
-    <!-- {#if $current !== '' && $current !== null}
+    {#if innerWidth < 900}
+        {#if $current !== '' && $current !== null}  
             <div class="with-x">
                 <button on:click={resetCurrent}>X</button>
                 {#if $current}
@@ -46,18 +42,31 @@
                     {/each}
                 {/if}
             </div>
-    {:else} -->
+        {:else}
+            <div class="LeftCol">
+                <div class="create-job">
+                    <div class="text">
+                        <h2>Create a job Advert</h2>
+                        <p>Looking to hire? Create a job advert here</p>
+                    </div>
+                    <NewJob />
+                </div>
+                <h1 align="center">Your job adverts</h1>
+                <LoadJobs profile={profile} own={1} id={profile.UserId}/>
+            </div>
+        {/if}
+    {:else}
     <div class="LeftCol">
-    <div class="create-job">
-        <div class="text">
-            <h2>Create a job Advert</h2>
-            <p>Looking to hire? Create a job advert here</p>
+        <div class="create-job">
+            <div class="text">
+                <h2>Create a job Advert</h2>
+                <p>Looking to hire? Create a job advert here</p>
+            </div>
+            <NewJob />
         </div>
-        <NewJob />
-    </div>
-    <h1 align="center">Your job adverts</h1>
+        <h1 align="center">Your job adverts</h1>
         <LoadJobs profile={profile} own={1} id={profile.UserId}/>
-    </div>
+        </div>
     <div class='RightCol'>
         {#if !$current}
         <div class="fixed-c" id="noapps" style="width:{setWidth}px">
@@ -76,9 +85,25 @@
             </div>
         {/if}
     </div>
-    <!-- {/if} -->
+    {/if}
 </div>
 <style>
+    .with-x {
+        min-width:95.5%;
+        position:relative;
+    }
+    .with-x button {
+        position:absolute;
+        top:1%;
+        right:-.5%;
+        border-radius:20px;
+        border:none;
+        background-color: rgb(201, 201, 201);
+        width:30px;
+        height:30px;
+
+    }
+
     #noapps {
         overflow: hidden;
     }
@@ -116,7 +141,7 @@
         width:50%;
     }
 
-    @media (max-width : 600px) {
+    @media (max-width : 900px) {
         .RightCol {
             display: none;
         }

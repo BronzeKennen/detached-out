@@ -27,7 +27,9 @@
 
     const defaultPfp = '/defaultpfp.png'
     let posterPfp = user.profile_pic_url;
-    if(!posterPfp) posterPfp = defaultPfp
+    $: {
+        if(!posterPfp) posterPfp = defaultPfp
+    }
 
 
     $: commentCount = comments.length;
@@ -254,7 +256,7 @@
     {#if !deleted}
     <div class="feed-post">
         <div class="stats" on:click={() => window.location = `/pages/posts/${postId}`} >
-            <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
+            <ProfileIcon  id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
             <div id="timePassed">
                 <div >{timePassed} <i class="fa-regular fa-clock"></i></div>
                 {#if poster.UserId === userId}

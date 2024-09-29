@@ -9,17 +9,15 @@
     
 
     const defaultPfp = '/defaultpfp.png'
-    if(!pfp) pfp = defaultPfp
+    $: {
+        if(!pfp) pfp = defaultPfp
+    }
 
     let resp;
     
 </script>
     <span class="stats">
-        {#if pfp}
-            <span id="pfp" style={`background-image: url(${pfp})`}></span>
-        {:else}
-            <span id="pfp" ></span>
-        {/if}
+        <span id="pfp" style={`background-image: url(${pfp})`}></span>
         <div class="substats">
             <h3 class="username"><a href="/pages/profile/{id}">{user}</a></h3>
             {#if edu}

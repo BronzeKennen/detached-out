@@ -4,6 +4,10 @@
     import ProfileIcon from "./profileIcon.svelte";
     $: postBody =''
     export let pfp;
+    const defaultPfp = '/defaultpfp.png'
+    $: {
+        if(!pfp) pfp = defaultPfp
+    }
     let postButton;
 
     export let user;
@@ -95,11 +99,7 @@
 
     <div class="new-post">
         <div class="pfpText">
-            {#if pfp}
                 <div id="pfp" style={`background-image: url('${pfp}')`}></div>
-            {:else}
-                <span id="pfp"></span> 
-            {/if}
 
             <textarea
                 id="postBody"

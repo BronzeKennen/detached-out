@@ -291,7 +291,6 @@
             {/if}
         </div>
     </div>
-    <div class="separator"></div>
     <div class="fieldTitle">Soft Skills</div>
     <div class="mandFields">
         {#if !profile.skills.length}
@@ -300,10 +299,4 @@
         <SoftSkillsView skills={profile.skills}/>
     </div>
     <div class="separator"></div>
-        <div class="fieldTitle">User Posts</div>
-        <div class="posts">
-            <div class="post">
-                <LoadPosts profile={profile}/>
-            </div>
-        </div>
 </div>

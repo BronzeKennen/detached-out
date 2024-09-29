@@ -1,5 +1,6 @@
 import { MatrixFactorization } from "./bonus/MatrixFactorization.js";
 import { getUsers,getAllPosts,getAllJobs, getUserById, getPostById, getLikesById, getCommentsById, getImpressionsByUserId, getImpressionsByPostId, getFriends, getAcceptedFriends, getPostScoresByUserId } from "./getters.js";
+import { insertOrUpdateScore } from "./setters.js";
 
 
 let nUsers;
@@ -53,6 +54,7 @@ export function calculatePostScores(table) {
                 }
             }
             row.push(score);
+            insertOrUpdateScore(userID,postID,score);
         }
         table.push(row);
     }

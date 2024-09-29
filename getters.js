@@ -73,6 +73,9 @@ export function getRecommendedPostsByUserIdPages(userId,page,limit) {
     if(page === 1) offset = 0;    
     const stmt = db.prepare('SELECT * FROM post_scores WHERE UserId = ? ORDER BY score DESC') 
     const scores = stmt.all(userId)
+    if(!scores.length) {
+        return getAllPosts(userId,page,limit);
+    }
     const filteredScores = scores.filter(score => {
         let post = getPostById(score.PostId);
         if(!post.length) return false;
@@ -150,14 +153,19 @@ export function getLikesById(postId, type) {
     return stmt.all(postId, type);
 }
 
-export function getAllPosts() {
-    const stmt = db.prepare('SELECT * FROM posts ORDER BY createdAt DESC;')
-    const resp = stmt.all();
-    for (const line of resp) {
+export function getAllPosts(userId,page,limit) {
+    let offset = (page-1)*limit - limit;
+    if(page === 1) offset = 0;
+    const friendPosts = db.prepare('SELECT * FROM posts');
+    let allFriendPosts = friendPosts.all();
+
+    allFriendPosts.sort((b, a) => new Date(a.CreatedAt) - new Date(b.CreatedAt));
+    for (const line of allFriendPosts) {
         line.Comments = getCommentsById(line.PostId)
         line.Likes = getLikesById(line.PostId, 'post')
     }
-    return resp;
+    const a = allFriendPosts.slice(offset,offset+limit);
+    return a;
 }
 
 

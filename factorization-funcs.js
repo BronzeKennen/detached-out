@@ -1,6 +1,7 @@
 import { MatrixFactorization } from "./bonus/MatrixFactorization.js";
-import { getUsers,getAllPosts,getAllJobs, getUserById, getPostById, getLikesById, getCommentsById, getImpressionsByUserId, getImpressionsByPostId, getFriends, getAcceptedFriends, getPostScoresByUserId } from "./getters.js";
-import { insertOrUpdateScore } from "./setters.js";
+import { getImpressionsByJobId,getJobApplicationsByAdvertId, getUsers,getAllPosts,getAllJobs, getUserById, getPostById, getLikesById, getCommentsById, getJobAdvertById, getImpressionsByPostId, getFriends, getAcceptedFriends, getPostScoresByUserId, getUserSkillsById } from "./getters.js";
+import { insertOrUpdateJobScore, insertOrUpdateScore } from "./setters.js";
+import { getPosts } from "./getters.js";
 
 
 let nUsers;
@@ -54,7 +55,6 @@ export function calculatePostScores(table) {
                 }
             }
             row.push(score);
-            insertOrUpdateScore(userID,postID,score);
         }
         table.push(row);
     }
@@ -66,6 +66,7 @@ export function calculateJobScores(table) {
     for (let userID = 1; userID <= nUsers.length; userID++) {
         let currentUser = getUserById(userID);
         const row = [];
+        const userSkills = getUserSkillsById(userID,'User')
         for (let jobID = 0; jobID < nJobAdverts.length; jobID++) {
             let currentJobAdvert = getJobAdvertById(jobID);
             let score = 0;
@@ -83,9 +84,19 @@ export function calculateJobScores(table) {
                         break;
                     }
                 }
+                if(userSkills.length) {
+                    const jobSkills = getUserSkillsById(jobID,'Job')
+                    if(jobSkills.length) {
+
+                         const commonSkills = userSkills.filter(userSkill =>
+                            jobSkills.some(jobSkill => jobSkill.SkillId === userSkill.SkillId)
+                        );
+                        score += commonSkills.length * 2;
+                    }
+
+                }
             }
             row.push(score);
-            insertOrUpdateJobScore(userID,jobID,score);
         }
         table.push(row);
     }
@@ -94,17 +105,22 @@ export function calculateJobScores(table) {
 
 export function createMatrix() {
     nUsers = getUsers();
-    nPosts = getAllPosts();
+    nPosts = getPosts();
     nJobAdverts = getAllJobs();
     console.log("Creating a new matrix with post scores. Dimensions",nUsers.length,"(Users) X (Posts)",nPosts.length);
     console.log("Creating a new matrix with job advert scores. Dimensions",nUsers.length,"(Users) X (Job Adverts)",nJobAdverts.length);
     let table = [];
+    let jobTable = []
     table = calculatePostScores(table);
+    jobTable = calculateJobScores(jobTable)
     const cTable = table;
     // console.log("Users x Posts Table:", cTable);
     let userPostsFact = new MatrixFactorization(cTable, 2, 0.01);
     userPostsFact.train();
-    let predictedUsersPosts = userPostsFact.predict();
+    let jobFact = new MatrixFactorization(jobTable, 2, 0.01);
+    jobFact.train();
+    let predictedUsersPosts = userPostsFact.predict(0);
+    let predictedJobPosts = jobFact.predict(1);
 }
 
 export function startMatrixUpdateCycle(hours) {

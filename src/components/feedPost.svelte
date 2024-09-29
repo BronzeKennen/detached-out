@@ -273,10 +273,10 @@
                 <div >{timePassed} <i class="fa-regular fa-clock"></i></div>
                 {#if poster.UserId === userId}
                     {#if !editing}
-                        <button class="edit-button" on:click={() => {event.stopPropagation(); editPost();}}>Edit</button>
+                        <button class="edit-button" on:click={() => {editPost();}}>Edit</button>
                     {:else}
-                        <button class="delete-button" on:click={() => {event.stopPropagation(); deletePost();}}>Delete Post</button>
-                        <button class="discard-button-top" on:click={() => {event.stopPropagation(); editing = false;  content = ogContent}}>X</button>
+                        <button class="delete-button" on:click={() => {deletePost();}}>Delete Post</button>
+                        <button class="discard-button-top" on:click={() => {editing = false;  content = ogContent}}>X</button>
                     {/if}
                 {/if}
             </div>
@@ -291,9 +291,8 @@
                     placeholder="Write something..."
                     bind:value={content}
                     on:input={autoResize} 
-                    on:click={() => event.stopPropagation()}
                 />
-                <button bind:this={postButton}  id="postButton" class="under-text-button" on:click={() => {event.stopPropagation(); saveChanges();}}>Save</button>
+                <button bind:this={postButton}  id="postButton" class="under-text-button" on:click={() => {saveChanges();}}>Save</button>
             {/if}
             
             <div class="image-slider">
@@ -309,7 +308,6 @@
                         <button id="right" on:click={handleRight} disabled={slider === images.length - 1}> {'>'}</button>
                     </div>
                 {/if}
-            <!-- <img src="https://res.cloudinary.com/dsyxmtqbu/image/upload/v1724873933/wjxxl74rtlxdbrmkcivq.png" class="post-image"> -->
             </div>
         </div>
         <div class="likes-buttons">

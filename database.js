@@ -142,7 +142,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_adverts (
     JobDescription TEXT,
     MonthlyWage INTEGER,
     AdditionalInfo TEXT,
-    FOREIGN KEY (PosterId) REFERENCES users(UserId)
+    FOREIGN KEY (PosterId) REFERENCES users(UserId) ON DELETE CASCADE
 
 );`)
 
@@ -180,8 +180,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_impressions (
     ImpressionId INTEGER PRIMARY KEY AUTOINCREMENT,
     UserId INTEGER NOT NULL,
     AdvertId INTEGER NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES users(UserId),
-    FOREIGN KEY (AdvertId) REFERENCES job_adverts(AdvertId),
+    FOREIGN KEY (UserId) REFERENCES users(UserId) ON DELETE CASCADE,
+    FOREIGN KEY (AdvertId) REFERENCES job_adverts(AdvertId) ON DELETE CASCADE,
     UNIQUE (UserId,AdvertId)
 )`)
 

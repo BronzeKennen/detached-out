@@ -1,6 +1,6 @@
 // import getAllPosts from '../getters.js'
 import {getAllJobs, getAllPosts, getPostById, getUserById, getUsers} from '../getters.js'
-import { insertOrUpdateScore } from '../setters.js';
+import { insertOrUpdateScore , insertOrUpdateJobScore} from '../setters.js';
 // import getAllJobs from '../getters.js'
 
 export class MatrixFactorization {
@@ -46,14 +46,18 @@ export class MatrixFactorization {
         }
     }
 
-    predict() {
+    predict(num) {
         let predictedMatrix = Array.from({ length: this.nUsers }, () => Array(this.nItems).fill(0));
 
         // Perform matrix multiplication: V * F
         for (let i = 0; i < this.nUsers; i++) {
             for (let j = 0; j < this.nItems; j++) {
                 predictedMatrix[i][j] = this.dotProduct(this.V[i], this.getCol(this.F, j));
-                insertOrUpdateScore(i,j,predictedMatrix[i][j])
+                if(num === 0) {
+                    insertOrUpdateScore(i,j,predictedMatrix[i][j])
+                } else {
+                    insertOrUpdateJobScore(i,j,predictedMatrix[i][j]);
+                } 
             }
         }
         return predictedMatrix;

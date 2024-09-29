@@ -13,11 +13,15 @@
     export let selectedJob = writable(null);
 
     export let id;
+    $: {
+        console.log($jobStore)
+
+    }
 
 
     let isLoading;
     let allJobsLoaded = false;
-    let page = 2;
+    let page = 1;
 
     async function createJobImpression() {
         const resp = await fetch('/api/jobs/impression',{

@@ -282,7 +282,6 @@ export function updateMandInfobyId(id, updateData, partial = false) {
 
 export function updateEducationById(id,updateData) {
     let filteredUpdateData = {...updateData}
-    console.log(filteredUpdateData)
     delete filteredUpdateData.UserId;
     let uniId;
 

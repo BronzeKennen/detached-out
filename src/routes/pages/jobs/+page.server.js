@@ -8,42 +8,7 @@ import { MatrixFactorization } from '../../../../bonus/MatrixFactorization.js';
 export async function load({ locals, request }) {
     const id = locals.user?.id;
     let table = [];
-    // table = calculateJobScores(table);
-    // const cTable = table;
-    // let userJobsFact = new MatrixFactorization(cTable, 2, 0.01);
-    // userJobsFact.train();
-    // let predictedUsersJobs = userJobsFact.predict();
-    // 
-    // let userPredictedJobs = predictedUsersJobs[id];
-    // let sortedJobs = userPredictedJobs
-    // .map((score, index) => ({ id: index, score }))  
-    // .sort((a, b) => b.score - a.score)              
-    // .map(item => item.id);                          
-    // console.log(sortedJobs);
-    // let jobsToRemove = []
-    // for(let jobID of sortedJobs) {
-        // let currentJob = getJobAdvertById(jobID);
-        // if(!currentJob[0]) {
-            // jobsToRemove.push(jobID);
-            // continue;
-        // }
-        // if(currentJob[0].PosterId === id) {
-            // jobsToRemove.push(jobID);
-        // }
-        // let applications = getJobApplicationsByAdvertId(jobID);
-        // for(const application of applications) {
-            // if(application.ApplicantId === id) {
-                // jobsToRemove.push(jobID);
-                // continue;
-            // }
-        // }
-    // }
-    // sortedJobs = sortedJobs.filter(jobID => !jobsToRemove.includes(jobID));
-    // console.log(sortedJobs);
-// 
-
-
-
+    console.log(getAllJobs());
 
 
 

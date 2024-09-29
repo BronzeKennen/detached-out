@@ -88,7 +88,9 @@
         }
     }
 
+    let deleted = false;
     const deleteJob = async () => {
+        deleted = true
         const resp  = await fetch('/api/jobs',{
             method:'DELETE',
             body:JSON.stringify({
@@ -188,6 +190,7 @@
     let workplaceOptions = ['On-Site', 'Hybrid', 'Remote'];
 </script>
 
+{#if !deleted}
 <div class="feed-post {selected ? 'selected' : ''}" transition:fade={{duration:200}}>
     <div class="stats">
         <ProfileIcon id={poster.UserId} user={poster.username} pfp={poster.profile_pic_url} edu={poster.university}/>
@@ -317,10 +320,8 @@
         </div>
         {/if}
     {/if}
-    <!-- {#if id !== poster.UserId} -->
-        <!-- <button id="applyButton" class="under-text-button" on:click={applyToJob}>{apply ? 'Applied' : 'Apply'}</button> -->
-    <!-- {/if} -->
 </div>
+{/if}
     
 <style>
     .save-button {
@@ -542,6 +543,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        max-width: 100%;
     }
 
     .selected {

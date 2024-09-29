@@ -102,6 +102,8 @@ export function getRecommendedPostsByUserIdPages(userId,page,limit) {
 
 }
 
+
+
 export function getPostById(postId) {
     const stmt = db.prepare('SELECT * FROM posts WHERE PostId = ?')
     const resp = stmt.all(postId);
@@ -162,6 +164,11 @@ export function getLikesById(postId, type) {
     let stmt;
     stmt = db.prepare('SELECT * FROM likes where EntityId = ? AND EntityType = ?');
     return stmt.all(postId, type);
+}
+
+export function getPosts() {
+    const posts = db.prepare('SELECT * FROM posts');
+    return posts.all();
 }
 
 export function getAllPosts(userId,page,limit) {
@@ -297,6 +304,33 @@ export function getAllJobsPaged(id,page,limit) {
     const offset = (page-1)*limit - limit;
     const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId != ? ORDER BY DateCreated DESC LIMIT ? OFFSET ?');
     return stmt.all(id,limit,offset);
+}
+
+export function getRecommendedJobByUserIdPages(userId,page,limit) {
+    let offset = (page)*limit - limit;
+    const stmt = db.prepare('SELECT * FROM job_scores WHERE UserId = ? ORDER BY score DESC')
+    const scores = stmt.all(userId);
+    if(!scores.length) {
+        return getAllJobsPaged(userId,page,limit);
+    }
+    const filteredScores = scores.filter(score => {
+        let job = getJobAdvertById(score.AdvertId);
+        if(!job.length) return false;
+        job = job[0]
+        return job.PosterId !== userId;
+    })
+    let jobs = []
+    try {
+        for(let i = offset; i < offset+limit && i < filteredScores.length; i++) {
+            console.log(filteredScores[i])
+            jobs = [...jobs, ...getJobAdvertById(filteredScores[i].AdvertId)];
+        }
+    } catch (error) {
+        console.log(error)
+        return jobs;
+    }
+    return jobs;
+
 }
 
 

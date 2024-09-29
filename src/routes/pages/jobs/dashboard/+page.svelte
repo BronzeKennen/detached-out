@@ -36,10 +36,15 @@
         {#if $current !== '' && $current !== null}  
             <div class="with-x">
                 <button on:click={resetCurrent}>X</button>
+                <h1> Applications for {$current.JobTitle}:</h1>
                 {#if $current}
-                    {#each applications as application}
-                        <ShowApplication applications={application}/>
-                    {/each}
+                    {#if applications.length}
+                        {#each applications as application}
+                            <ShowApplication applications={application}/>
+                        {/each}
+                    {:else}
+                        <h4>No applications yet.</h4>
+                    {/if}
                 {/if}
             </div>
         {:else}
@@ -89,13 +94,17 @@
 </div>
 <style>
     .with-x {
-        min-width:95.5%;
+        border-radius: 10px;
+        margin: auto auto;
+        padding: 1rem;
+        min-width:90%;
         position:relative;
+        background-color: white;
     }
     .with-x button {
         position:absolute;
-        top:1%;
-        right:-.5%;
+        top: 2.5%;
+        right: 1%;
         border-radius:20px;
         border:none;
         background-color: rgb(201, 201, 201);

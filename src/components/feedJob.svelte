@@ -388,13 +388,13 @@
 
     #title, #moreInfo {
         min-height: 2rem;
-        height: 2rem;
+        height: fit-content;
         border: none;
         border-radius: 10px;
         box-sizing: border-box;
         background-color: rgb(250, 240, 255);
         min-width: 50%;
-        width: fit-content;
+        max-width: 100%;
         display: flex;
         position: relative;
         resize: none;
@@ -404,7 +404,8 @@
     }
 
     #moreInfo {
-        width: 100%;
+        word-wrap: break-word;  
+        white-space: normal;
     }
 
     #title:focus, #moreInfo:focus, #jobDesc:focus {
@@ -480,7 +481,7 @@
         display: flex;
         flex-direction: row;
         font-weight: bold;
-        text-wrap: nowrap;
+        text-wrap: wrap;
         margin-bottom: 0.25rem;
     }
 

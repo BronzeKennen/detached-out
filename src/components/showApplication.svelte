@@ -31,6 +31,7 @@ a {
 
 .text {
     background-color: black;
+    color: white;
     width: fit-content;
     display: flex;
     margin-left: 1rem;

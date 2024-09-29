@@ -85,7 +85,7 @@ export function calculateJobScores(table) {
                 }
             }
             row.push(score);
-            insertOrUpdateScore(userID,postID,score);
+            insertOrUpdateJobScore(userID,jobID,score);
         }
         table.push(row);
     }

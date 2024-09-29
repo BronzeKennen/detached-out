@@ -191,6 +191,12 @@ db.exec(`CREATE TABLE IF NOT EXISTS post_scores (
     score REAL,
     PRIMARY KEY (UserId,PostId)    
 )`);
+db.exec(`CREATE TABLE IF NOT EXISTS job_scores (
+    UserId INTEGER,
+    AdvertId INTEGER,
+    score REAL,
+    PRIMARY KEY (UserId,AdvertId)    
+)`);
 
 db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),

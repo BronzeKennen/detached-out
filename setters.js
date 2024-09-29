@@ -81,6 +81,16 @@ export function insertOrUpdateScore(userId,postId,score) {
     return stmt.run(userId,postId,score);
 }
 
+export function insertOrUpdateJobScore(userId,jobId,score) {
+    const stmt = db.prepare(`
+        INSERT INTO job_scores (UserId,AdvertId,score)
+        VALUES (?,?,?)
+        ON CONFLICT(UserId,AdvertId)
+        DO UPDATE SET score = excluded.score
+    `);
+    return stmt.run(userId,jobId,score);
+}
+
 export function newPost(UserId,postData) {
     const imagesForDb = JSON.stringify(postData.images)
     const stmt = db.prepare('INSERT INTO posts (UserId,Content,ImagesJson) VALUES (?,?,?);')

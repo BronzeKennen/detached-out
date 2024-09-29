@@ -65,6 +65,7 @@ export async function load({ locals, request }) {
 
 
             let userProfile = { //remove email password 
+                loggedUser: id,
                 UserId: profile.UserId,
                 username: profile.username,
                 fname: profile.fname,

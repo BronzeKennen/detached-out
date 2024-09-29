@@ -68,16 +68,18 @@ export function changeProfilePicture(UserId,url) {
 
 export function updateJobAdvertById(jobId,title,location,enrollment,workplace,description,wage,additional) {
     const stmt = db.prepare('UPDATE job_adverts SET JobTitle = ?,Location = ?,EnrollmentType = ?,WorkplaceType = ?,JobDescription = ?,MonthlyWage = ?,AdditionalInfo = ? WHERE AdvertId = ?');
-    console.log(additional)
     return stmt.run(title,location,enrollment,workplace,description,wage,additional,jobId);
 }
-// jobId:job.AdvertId,
-// JobTitle: job.JobTitle,
-// JobDescription: job.JobDescription,
-// EnrollmentType: job.EnrollmentType,
-// Location: job.Location,
-// MonthlyWage: job.MonthlyWage,
-// WorkplaceType: job.WorkplaceType
+
+export function insertOrUpdateScore(userId,postId,score) {
+    const stmt = db.prepare(`
+        INSERT INTO post_scores (UserId,PostId,score)
+        VALUES (?,?,?)
+        ON CONFLICT(UserId,PostId)
+        DO UPDATE SET score = excluded.score
+    `);
+    return stmt.run(userId,postId,score);
+}
 
 export function newPost(UserId,postData) {
     const imagesForDb = JSON.stringify(postData.images)

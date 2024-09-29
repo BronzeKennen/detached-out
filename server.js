@@ -7,6 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { getConversationBySender } from './getters.js';
 import { saveMessageSent } from './setters.js';
+import { startMatrixUpdateCycle } from './factorization-funcs.js';
 
 const app = express();
 const server = createServer(app);
@@ -69,6 +70,8 @@ createViteServer({
 
   app.use(express.static(path.join(__dirname, 'public')));
 
+  //Matrix will update every 5 hours
+  startMatrixUpdateCycle(5);
   createWebSocketServer(server);
 
   server.listen(5173, () => {

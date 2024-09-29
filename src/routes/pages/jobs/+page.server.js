@@ -1,4 +1,4 @@
-import { getFriends, getUniversityById, getUserSkillsById,getSkillById } from '../../../../getters.js';
+import { getFriends, getUniversityById, getUserSkillsById,getSkillById, getPostScoresByUserId } from '../../../../getters.js';
 import { getAllJobs, getCompanyById,getUserById,getJobTitleById } from '/getters.js' 
 
 

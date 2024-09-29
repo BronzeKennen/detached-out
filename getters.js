@@ -10,6 +10,8 @@ export function getImpressionsByPostId(postId) {
     return stmt.all(postId);
 }
 
+
+
 export function getJobsByUserIdPaged(userId,page,limit) {
     const offset = (page-1)*limit - limit;
     const stmt = db.prepare('SELECT * FROM job_adverts WHERE PosterId = ? ORDER BY DateCreated DESC LIMIT ? OFFSET ?');
@@ -40,6 +42,56 @@ export function getPostsByUserIdPaged(userId,page,limit) {
         line.Likes = getLikesById(line.PostId, 'post')
     }
     return resp;
+}
+
+export function getLatestFriendPostsByUserIdPaged(userId,page,limit) {
+    let offset = (page-1)*limit - limit;
+    if(page === 1) offset = 0;
+    const friends = getAcceptedFriends(userId)
+    let allFriendPosts = [];
+    for(const friend of friends) {
+        const friendPosts = db.prepare('SELECT * FROM posts WHERE UserId = ?');
+        let resp;
+        if(friend.Sender === userId)
+            resp = friendPosts.all(friend.Recipient)
+        else 
+            resp = friendPosts.all(friend.Sender)
+    
+        allFriendPosts = [...allFriendPosts,...resp]        
+
+    }
+    allFriendPosts.sort((b, a) => new Date(a.CreatedAt) - new Date(b.CreatedAt));
+    for (const line of allFriendPosts) {
+        line.Comments = getCommentsById(line.PostId)
+        line.Likes = getLikesById(line.PostId, 'post')
+    }
+    return allFriendPosts.slice(offset,offset+limit);
+}
+
+export function getRecommendedPostsByUserIdPages(userId,page,limit) {
+    let offset = (page )*limit - limit;
+    if(page === 1) offset = 0;    
+    const stmt = db.prepare('SELECT * FROM post_scores WHERE UserId = ? ORDER BY score DESC') 
+    const scores = stmt.all(userId)
+    const filteredScores = scores.filter(score => {
+        let post = getPostById(score.PostId);
+        if(!post.length) return false;
+        post = post[0]
+        for(const comment of post.Comments) {
+            if(comment.UserFrom.UserId === userId) return false;
+        }
+        for(const like of post.Likes) {
+            if(like.SenderId === userId) return false;
+
+        }
+        return post.UserId !== userId;
+    });
+    let posts = []
+    for(let i = offset; i < offset+limit; i++) {
+        posts = [...posts, ...getPostById(filteredScores[i].PostId)];
+    }
+    return posts;
+
 }
 
 export function getPostById(postId) {
@@ -120,11 +172,19 @@ export function getFriends(id) {
     return stmt.all(id, id);
 }
 
+export function getAcceptedFriends(id) {
+    const stmt = db.prepare('SELECT * FROM friends WHERE (Recipient = ? OR Sender = ?) AND Status = \'accepted\';');
+    return stmt.all(id, id);
+}
+
+export function getPostScoresByUserId(userId) {
+    const stmt = db.prepare('SELECT * FROM post_scores WHERE UserId = ?');
+    return stmt.all(userId)
+}
 
 export function getNotifications(id) {
     const stmt = db.prepare('SELECT * FROM notifications WHERE UserTo = ? ORDER BY DateCreated DESC;');
     const resp = stmt.all(id);
-    console.log(resp)
     return resp;
 }
 

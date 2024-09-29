@@ -15,6 +15,8 @@
 
     let isLoading = false;
 
+    let recommendedPosts = [];
+
     function checkScroll() {
         const scrollableHeight = document.documentElement.scrollHeight;
         const scrollTop = window.scrollY;
@@ -23,7 +25,7 @@
         if (scrollableHeight - scrollTop <= windowHeight * 1.5) {
             if (!isLoading) {
                 isLoading = true;
-                fetchPosts();
+                recommended ? fetchRecommended() : fetchPosts();
             }
         }
     }
@@ -48,6 +50,32 @@
         isLoading = false;
     }
 
+    async function fetchRecommended() {
+
+        const resp = await fetch(`/api/posts?page=${page}&limit=5&recommended=1`,{
+            method:'GET'
+        })
+        if(resp.ok) {
+            const data = await resp.json();
+            if(data.body.length > 0) {
+                let tempPosts = []
+                for(const newPost of data.body) {
+                    tempPosts = [newPost,...tempPosts]
+    
+                }
+                user.posts = [...user.posts,...tempPosts]
+            page += 1;
+            } else {
+                allPostsLoaded = true;
+
+            }
+        }
+        console.log(user.posts, page)
+        isLoading = false;
+    }
+
+
+
     onMount(() => {
         if(typeof window !== 'undefined')
         window.addEventListener('scroll', checkScroll);
@@ -59,12 +87,15 @@
     });
 
 
-    let recent = true;
-    let recommended = false;
+    $: recent = true;
+    $: recommended = false;
 
     function toggleRecommened() {
         recent = !recent;
         recommended = !recommended;
+        page = 1;
+        user.posts = [];
+        recommended ? fetchRecommended() : fetchPosts();
     }
 
 </script>
@@ -135,7 +166,6 @@
     <div class='MiddleCol'>
         <NewPost user={user} pfp={user.profile_pic_url}/>
         <button on:click={toggleRecommened}>VIEWING {recent ? 'RECENT' : 'RECOMMENDED'} POSTS</button>
-        {#if recent}
             {#each user.posts as post}
                 <FeedPost
                     user={user}
@@ -150,12 +180,6 @@
                     created={post.CreatedAt}
                 />
             {/each}
-        {/if}
-        {#if recommended}
-            {#each user.posts as post}
-                
-            {/each}
-        {/if}
     </div>  
     <div class='RightCol'>
         <Connections />

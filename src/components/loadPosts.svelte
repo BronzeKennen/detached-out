@@ -5,6 +5,7 @@
     let posts = [];
     export let profile;
 
+    console.log(profile)
     let isLoading;
     let allPostsLoaded = false;
     let page = 2;
@@ -27,6 +28,7 @@
         }
         isLoading = false;
     }
+
     function checkScroll() {
         const scrollableHeight = document.documentElement.scrollHeight;
         const scrollTop = window.scrollY;
@@ -55,7 +57,7 @@
     <div on:click={() => window.location = `/pages/posts/${post.PostId}`}>
         <FeedPost
             user={profile}
-            userId={profile.UserId}
+            userId={profile.loggedUser}
             postId={post.PostId}
             poster={profile}
             likes={post.Likes}

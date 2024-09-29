@@ -1,4 +1,4 @@
-import { getCompanyById,getJobTitleById,getUniversityById,getFriends, getPostsByUserIdPaged, getUserById } from "../../../../getters"
+import { getCompanyById,getJobTitleById,getUniversityById,getFriends, getPostsByUserIdPaged, getUserById, getLatestFriendPostsByUserIdPaged, getRecommendedPostsByUserIdPages } from "../../../../getters"
 
 
 export async function GET({locals,request,params}) {
@@ -8,27 +8,15 @@ export async function GET({locals,request,params}) {
     const page = parseInt(url.searchParams.get('page')) || 1; 
     const limit = parseInt(url.searchParams.get('limit')) || 5;
     const own = parseInt(url.searchParams.get('own')) || 0; 
+    const recommended = parseInt(url.searchParams.get('recommended')) || 0; 
     id = parseInt(url.searchParams.get('id')) || locals.user?.id; 
 
 
     let friends = getFriends(id)
     let connections = 0;
-    let posts = []
-    for(const friend of friends) {
-        if (friend.Status === 'accepted') {
-            connections++;
-            if(!own) {
-                if(friend.Sender === id) {
-                    posts = [...posts,getPostsByUserIdPaged(friend.Recipient,page,limit)]
-                } else {
-                    posts = [...posts,getPostsByUserIdPaged(friend.Sender,page,limit)]
-                }
-            }
-        }
-    }
+    let posts = recommended ? getRecommendedPostsByUserIdPages(id,page,limit) : getLatestFriendPostsByUserIdPaged(id,page,limit) 
 
     if(own) posts = getPostsByUserIdPaged(id,page,limit);
-    else posts = posts[1]
 
     for (const post of posts) {
         const poster = getUserById(post.UserId);
@@ -51,6 +39,7 @@ export async function GET({locals,request,params}) {
 
         }
     }
+    posts.sort((b, a) => new Date(a.CreatedAt) - new Date(b.CreatedAt));
     return new Response(JSON.stringify({status:200,body:posts}))
 
 }

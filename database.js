@@ -173,9 +173,10 @@ db.exec(`CREATE TABLE IF NOT EXISTS impressions (
     UserId INTEGER NOT NULL,
     PostId INTEGER NOT NULL,
     FOREIGN KEY (UserId) REFERENCES users(UserId),
-    FOREIGN KEY (PostId) REFERENCES posts(PostId),
+    FOREIGN KEY (PostId) REFERENCES posts(PostId) ON DELETE CASCADE,
     UNIQUE (UserId,PostId)
 )`)
+
 
 db.exec(`CREATE TABLE IF NOT EXISTS job_impressions (
     ImpressionId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -185,6 +186,13 @@ db.exec(`CREATE TABLE IF NOT EXISTS job_impressions (
     FOREIGN KEY (AdvertId) REFERENCES job_adverts(AdvertId),
     UNIQUE (UserId,AdvertId)
 )`)
+
+db.exec(`CREATE TABLE IF NOT EXISTS post_scores (
+    UserId INTEGER,
+    PostId INTEGER,
+    score REAL,
+    PRIMARY KEY (UserId,PostId)    
+)`);
 
 db.exec(`INSERT OR IGNORE INTO softskills (SkillName) VALUES 
     ('Communication'),

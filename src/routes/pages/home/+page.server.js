@@ -1,54 +1,11 @@
-import { getAllJobImpressions, getFriends, getPostById, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
+import { getAllJobImpressions, getFriends, getLatestFriendPostsByUserIdPaged, getPostById, getPostsByUserId, getPostsByUserIdPaged,getUniversityById } from '../../../../getters.js';
 import { getAllPosts, getCompanyById,getUserById,getJobTitleById,getImpressionsByPostId } from '/getters.js' 
-import { calculatePostScores } from '../../../../factorization-funcs.js';
-import { MatrixFactorization } from '../../../../bonus/MatrixFactorization.js';
 
 
 export async function load({ locals, request }) {
 
 
     const id = locals.user?.id;
-    let table = [];
-    table = calculatePostScores(table);
-    const cTable = table;
-    // console.log("Users x Posts Table:", cTable);
-    let userPostsFact = new MatrixFactorization(cTable, 2, 0.01);
-    userPostsFact.train();
-    let predictedUsersPosts = userPostsFact.predict();
-    // console.log("Users x Posts Prediction Table:", predictedUsersPosts);
-    
-    // Get the recommended posts for this user.
-    let userPredictedPosts = predictedUsersPosts[id];
-    let sortedPosts = userPredictedPosts
-    .map((score, index) => ({ id: index, score }))  
-    .sort((a, b) => b.score - a.score)              
-    .map(item => item.id);                          
-    console.log(sortedPosts);
-    let postsToRemove = []
-    for(let postID of sortedPosts) {
-        let currentPost = getPostById(postID);
-        if(!currentPost[0]) {
-            postsToRemove.push(postID);
-            continue;
-        }
-        if(currentPost[0].UserId === id) {
-            postsToRemove.push(postID);
-        }
-        let impressions = getImpressionsByPostId(postID);
-        for(const impression of impressions) {
-            if(impression.UserId === id) {
-                postsToRemove.push(postID);
-                continue;
-            }
-        }
-    }
-    sortedPosts = sortedPosts.filter(postID => !postsToRemove.includes(postID));
-
-
-
-
-
-
     // Extract the cookie from the request headers
     const cookies = request.headers.get('cookie') || '';
 
@@ -67,18 +24,7 @@ export async function load({ locals, request }) {
         const profile = await res.json();
         let friends = getFriends(profile.UserId)
         let connections = 0;
-        let posts = []
-        for(const friend of friends) {
-            if (friend.Status === 'accepted') {
-                connections++;
-                if(friend.Sender === id) {
-                    posts = [...posts,...getPostsByUserIdPaged(friend.Recipient,1,5)]
-                } else {
-                    posts = [...posts,...getPostsByUserIdPaged(friend.Sender,1,5)]
-                }
-            }
-            //modify a new object
-        }
+        let posts = getLatestFriendPostsByUserIdPaged(id,1,5);
 
         for (const post of posts) {
             const poster = getUserById(post.UserId);
@@ -101,6 +47,7 @@ export async function load({ locals, request }) {
 
             }
         }
+        posts.sort((b, a) => new Date(a.CreatedAt) - new Date(b.CreatedAt));
 
         let userProfile = { //remove email password 
             UserId: profile.UserId,

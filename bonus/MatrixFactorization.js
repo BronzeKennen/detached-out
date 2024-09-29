@@ -53,13 +53,13 @@ export class MatrixFactorization {
         let predictedMatrix = Array.from({ length: this.nUsers }, () => Array(this.nItems).fill(0));
 
         // Perform matrix multiplication: V * F
-        for (let i = 0; i < this.nUsers; i++) {
-            for (let j = 0; j < this.nItems; j++) {
-                predictedMatrix[i][j] = this.dotProduct(this.V[i], this.getCol(this.F, j));
+        for (let i = 1; i <= this.nUsers; i++) {
+            for (let j = 1; j <= this.nItems; j++) {
+                predictedMatrix[i-1][j-1] = this.dotProduct(this.V[i-1], this.getCol(this.F, j-1));
                 if(num === 0) {
-                    insertOrUpdateScore(i,j,predictedMatrix[i][j])
+                    insertOrUpdateScore(i,j,predictedMatrix[i-1][j-1])
                 } else {
-                    insertOrUpdateJobScore(i,j,predictedMatrix[i][j]);
+                    insertOrUpdateJobScore(i,j,predictedMatrix[i-1][j-1]);
                 } 
             }
         }

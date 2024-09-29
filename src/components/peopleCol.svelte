@@ -1,5 +1,6 @@
 <script>
     export let users;
+    const defaultPfp = '/defaultpfp.png'
 </script>
 
 <style>
@@ -87,7 +88,7 @@
                 {#if user.profile_pic_url}
                     <span id="pfp" style={`background-image: url(${user.profile_pic_url})`}></span>
                 {:else}
-                    <span id="pfp" ></span>
+                    <span id="pfp" style={`background-image: url(${defaultPfp})`}></span>
                 {/if}
             <div id="name">{user.username}</div>
         </div>

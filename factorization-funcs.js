@@ -21,7 +21,7 @@ export function calculatePostScores(table) {
             }
         }
         const row = [];
-        for (let jobID = 0; jobID < nPosts.length; jobID++) {
+        for (let jobID = 1; jobID <= nPosts.length; jobID++) {
             let currentPost = getPostById(jobID);
             let score = 0;
             if(friendIds.includes(currentPost.UserId)) {
@@ -67,7 +67,7 @@ export function calculateJobScores(table) {
         let currentUser = getUserById(userID);
         const row = [];
         const userSkills = getUserSkillsById(userID,'User')
-        for (let jobID = 0; jobID < nJobAdverts.length; jobID++) {
+        for (let jobID = 1; jobID <= nJobAdverts.length; jobID++) {
             let currentJobAdvert = getJobAdvertById(jobID);
             let score = 0;
             if(currentJobAdvert.length) {

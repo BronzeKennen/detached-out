@@ -69,7 +69,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS work_experience (
     FOREIGN KEY (JobTitleId) REFERENCES JobTitles(JobTitleId),
     FOREIGN KEY (CompanyId) REFERENCES Companies(CompanyId)   
 )`);
-
+// 
 db.exec(`CREATE TABLE IF NOT EXISTS comments (
     CommentId INTEGER PRIMARY KEY AUTOINCREMENT,
     PostId INTEGER NOT NULL,

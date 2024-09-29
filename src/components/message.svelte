@@ -9,6 +9,9 @@
     export let created = ''
     let timePassed = '';
 
+    const defaultPfp = '/defaultpfp.png'
+    if(!pfp) pfp = defaultPfp
+
      function calculateTimePassed(timestamp) {
         const now = new Date();
         const diff = now - timestamp; // Difference in milliseconds
@@ -133,7 +136,6 @@
             <span class="pfp" ></span>
         {/if}
     <p>{message}</p>
-    <div class="timestamp">{timePassed}</div>
 </div>
 {/if}
 {#if type === 'received'}
@@ -144,6 +146,5 @@
             <span class="pfp" ></span>
         {/if}
     <p>{message}</p>
-    <div class="timestamp">{timePassed}</div>
 </div>
 {/if}

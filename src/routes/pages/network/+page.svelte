@@ -8,15 +8,12 @@
     $: friendStore
     if(!$friendStore) {
         friendStore.set(profile.friends)
-        console.log('aaaa')
-        console.log($friendStore)
     }
     else {
         const newFriends = profile.friends.filter(
             newFriend => !$friendStore.some(existingFriend => existingFriend.UserId === newFriend.UserId)
         );
         friendStore.update(friends => [...friends, ...newFriends])
-        console.log($friendStore)
     }
     let pendingExist = false;
     let friendsExist = false;
@@ -54,7 +51,7 @@
     }
 </style>
 
-<h1>Friends</h1>
+<h1>Connections</h1>
 <div class="friends-tab">
     {#each $friendStore as friend,index }
         {#if friend.Status === 'accepted'}
@@ -63,10 +60,10 @@
     {/each}
 </div>
 {#if !friendsExist}
-    <p> No friends, no bitches, no money, no nothin</p>
+    <p> Connected users will appear here</p>
 {/if}
 <div class="separator"></div>
-<h1> Pending Friend Requests</h1>
+<h1> Pending Connection Requests</h1>
 <div class="friends-tab pending">
     {#each $friendStore as friend,index}
         {#if friend.Status === 'pending'}
@@ -76,5 +73,5 @@
 </div>
 
 {#if !pendingExist}
-    <p> No pending friend requests </p>
+    <p> No pending connection requests </p>
 {/if}

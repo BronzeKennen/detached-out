@@ -83,7 +83,10 @@ export function getRecommendedPostsByUserIdPages(userId,page,limit) {
     }
     const filteredScores = scores.filter(score => {
         let post = getPostById(score.PostId);
-        if(!post.length) return false;
+        if(!post.length)  {
+
+            return false;
+        }
         post = post[0]
         for(const comment of post.Comments) {
             if(comment.UserFrom.UserId === userId) return false;
@@ -95,7 +98,7 @@ export function getRecommendedPostsByUserIdPages(userId,page,limit) {
         return post.UserId !== userId;
     });
     let posts = []
-    for(let i = offset; i < offset+limit; i++) {
+    for(let i = offset; i <= offset+limit && i < filteredScores.length; i++) {
         posts = [...posts, ...getPostById(filteredScores[i].PostId)];
     }
     return posts;
@@ -322,7 +325,6 @@ export function getRecommendedJobByUserIdPages(userId,page,limit) {
     let jobs = []
     try {
         for(let i = offset; i < offset+limit && i < filteredScores.length; i++) {
-            console.log(filteredScores[i])
             jobs = [...jobs, ...getJobAdvertById(filteredScores[i].AdvertId)];
         }
     } catch (error) {

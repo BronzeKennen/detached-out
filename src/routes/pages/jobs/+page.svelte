@@ -20,6 +20,7 @@
     $: {
         const storeValue = $jobStore;
         if(storeValue.length) {
+            console.log('test')
             jobs = storeValue;
             if($current === '')
                 current.set(jobs[0]) 
@@ -28,10 +29,14 @@
 
     }
 
-    $: if(innerWidth > 600) {
-        if(!$current) {
-            current.set(jobs[0])
-        }
+    $: if(innerWidth > 700) {
+        const storeValue = $jobStore;
+        if(storeValue.length) {
+            jobs = storeValue;
+            if(!$current || $current === '')
+                current.set(jobs[0]) 
+
+        } 
     }
 
 
@@ -43,7 +48,7 @@
 <svelte:window bind:innerWidth />
 
 <div class="feed">
-    {#if innerWidth < 600}
+    {#if innerWidth < 700}
         {#if $current !== '' && $current !== null}
             <div class="with-x">
                 <button on:click={resetCurrent}>X</button>

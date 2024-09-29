@@ -12,10 +12,6 @@
     let jobs = [];
     let innerWidth = 0;
 
-
-        
-
-
     $: setWidth = (innerWidth / 2) + 40;
     $: {
         if (setWidth > 645) setWidth = 645;
@@ -25,11 +21,17 @@
         const storeValue = $jobStore;
         if(storeValue.length) {
             jobs = storeValue;
-            if($current === '' || $current.PosterId === user.UserId)
+            if($current === '')
                 current.set(jobs[0]) 
 
         } 
 
+    }
+
+    $: if(innerWidth > 600) {
+        if(!$current) {
+            current.set(jobs[0])
+        }
     }
 
 
@@ -45,7 +47,9 @@
         {#if $current !== '' && $current !== null}
             <div class="with-x">
                 <button on:click={resetCurrent}>X</button>
-                <DetailedFeedJob job={$current}/>
+                {#if $current}
+                    <DetailedFeedJob job={$current}/>
+                {/if}
             </div>
         {:else}
             <div class="feed-job">

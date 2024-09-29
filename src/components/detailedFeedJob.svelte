@@ -4,12 +4,13 @@
     import ProfileIcon from "./profileIcon.svelte";
 
     export let job;
-    $: poster = job.Poster
+    let poster 
     $: apply = false;
     let showApplyDiv = apply;
     $: if(job) {
         applicationStatus = 2;
         apply = false;
+        poster = job.Poster
     }
 
     $: applicationStatus = 2;

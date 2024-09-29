@@ -23,20 +23,55 @@
     $: {
         if (setWidth > 600) setWidth = 600;
     }
+
+
+
+    const resetCurrent = () => {
+        current.set(null)
+    }
 </script>
 <svelte:window bind:innerWidth />
 <div class="wrapper">
+    {#if innerWidth < 900}
+        {#if $current !== '' && $current !== null}  
+            <div class="with-x">
+                <button on:click={resetCurrent}>X</button>
+                <h1> Applications for {$current.JobTitle}:</h1>
+                {#if $current}
+                    {#if applications.length}
+                        {#each applications as application}
+                            <ShowApplication applications={application}/>
+                        {/each}
+                    {:else}
+                        <h4>No applications yet.</h4>
+                    {/if}
+                {/if}
+            </div>
+        {:else}
+            <div class="LeftCol">
+                <div class="create-job">
+                    <div class="text">
+                        <h2>Create a job Advert</h2>
+                        <p>Looking to hire? Create a job advert here</p>
+                    </div>
+                    <NewJob />
+                </div>
+                <h1 align="center">Your job adverts</h1>
+                <LoadJobs profile={profile} own={1} id={profile.UserId}/>
+            </div>
+        {/if}
+    {:else}
     <div class="LeftCol">
-    <div class="create-job">
-        <div class="text">
-            <h2>Create a job Advert</h2>
-            <p>Looking to hire? Create a job advert here</p>
+        <div class="create-job">
+            <div class="text">
+                <h2>Create a job Advert</h2>
+                <p>Looking to hire? Create a job advert here</p>
+            </div>
+            <NewJob />
         </div>
-        <NewJob />
-    </div>
-    <h1 align="center">Your job adverts</h1>
+        <h1 align="center">Your job adverts</h1>
         <LoadJobs profile={profile} own={1} id={profile.UserId}/>
-    </div>
+        </div>
     <div class='RightCol'>
         {#if !$current}
         <div class="fixed-c" id="noapps" style="width:{setWidth}px">
@@ -55,8 +90,29 @@
             </div>
         {/if}
     </div>
+    {/if}
 </div>
 <style>
+    .with-x {
+        border-radius: 10px;
+        margin: auto auto;
+        padding: 1rem;
+        min-width:90%;
+        position:relative;
+        background-color: white;
+    }
+    .with-x button {
+        position:absolute;
+        top: 2.5%;
+        right: 1%;
+        border-radius:20px;
+        border:none;
+        background-color: rgb(201, 201, 201);
+        width:30px;
+        height:30px;
+
+    }
+
     #noapps {
         overflow: hidden;
     }
@@ -92,5 +148,15 @@
     }
     .LeftCol,.RightCol {
         width:50%;
+    }
+
+    @media (max-width : 900px) {
+        .RightCol {
+            display: none;
+        }
+
+        .LeftCol {
+            width: 100%;
+        }
     }
 </style>

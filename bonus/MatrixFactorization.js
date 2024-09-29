@@ -6,6 +6,9 @@ import { insertOrUpdateScore , insertOrUpdateJobScore} from '../setters.js';
 export class MatrixFactorization {
     constructor(R, K, h) {
         // Set values
+        if(R.length === 0 || R[0].length === 0) {
+            return;
+        }
         this.R = R;
         this.nUsers = R.length;
         this.nItems = R[0].length;
@@ -85,10 +88,3 @@ export class MatrixFactorization {
 
 };
 
-let rMatrix = [
-    [1, 2, 0, 0, 1],
-    [1, 2, 0, 2, 1],
-    [0, 2, 2, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 2, 1, 1, 2],
-];

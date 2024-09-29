@@ -10,7 +10,9 @@
     export let likes;
     export let liked = false;
     export let sender;
-    const pfp = sender.profile_pic_url;
+    const defaultPfp = '/defaultpfp.png'
+    let pfp = user.profile_pic_url;
+    if(!pfp) pfp = defaultPfp;
     $: likeCount = likes.length;
 
 

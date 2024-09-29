@@ -8,12 +8,17 @@
 <div class="show">
     <span class="ff">
         <ProfileIcon user={applicant.username} id={applicant.UserId} edu={applicant.university} pfp={applicant.profile_pic_url}/>
-        <button class="message"><i class="fa-solid fa-paper-plane"></i> Message</button>
+        <a class="message" href="/pages/chats/{applicant.UserId}"><i class="fa-solid fa-paper-plane"></i> Message</a>
     </span>
     <div class="text"><div id="apmessage">Applicant Message:</div>{applications.Message}</div>
 </div>
 
 <style>
+a {
+    text-decoration: none;
+    color:inherit;
+}
+
 .show {
     border-radius: 10px;
     background-color: #f2eaf3;
@@ -25,8 +30,12 @@
 }
 
 .text {
+    background-color: black;
+    width: fit-content;
     display: flex;
-    padding-left: 1rem;
+    margin-left: 1rem;
+    padding: 0.25rem;
+    border-radius: 8px;
 }
 
 .message {
@@ -34,11 +43,13 @@
         width: fit-content;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
         border:2px black solid;
         background:none;
         border-radius:40px;
         text-wrap: nowrap;
-        height: 2rem;
+        height: 1.5rem;
     }
 .message:hover {
     background-color: rgba(0, 0, 0, 0.171);

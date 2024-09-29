@@ -20,8 +20,8 @@ export function calculatePostScores(table) {
             }
         }
         const row = [];
-        for (let postID = 0; postID < nPosts.length; postID++) {
-            let currentPost = getPostById(postID);
+        for (let jobID = 0; jobID < nPosts.length; jobID++) {
+            let currentPost = getPostById(jobID);
             let score = 0;
             if(friendIds.includes(currentPost.UserId)) {
                 score += 3
@@ -45,7 +45,38 @@ export function calculatePostScores(table) {
                         }
                     }
                 }
-                let impressions = getImpressionsByPostId(postID);
+                let impressions = getImpressionsByPostId(jobID);
+                for(const impression of impressions) {
+                    if(impression.UserId === currentUser.UserId) {
+                        score += 1;
+                        break;
+                    }
+                }
+            }
+            row.push(score);
+            insertOrUpdateScore(userID,postID,score);
+        }
+        table.push(row);
+    }
+    return table;
+}
+
+
+export function calculateJobScores(table) {
+    for (let userID = 1; userID <= nUsers.length; userID++) {
+        let currentUser = getUserById(userID);
+        const row = [];
+        for (let jobID = 0; jobID < nJobAdverts.length; jobID++) {
+            let currentJobAdvert = getJobAdvertById(jobID);
+            let score = 0;
+            if(currentJobAdvert.length) {
+                let applications = getJobApplicationsByAdvertId(jobID);
+                for(const application of applications) {
+                    if(application.ApplicantId === currentUser.UserId) {
+                        score += 3;
+                    }
+                }
+                let impressions = getImpressionsByJobId(jobID);
                 for(const impression of impressions) {
                     if(impression.UserId === currentUser.UserId) {
                         score += 1;

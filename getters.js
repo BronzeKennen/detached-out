@@ -23,6 +23,11 @@ export function getJobsByUserId(userId) {
     return stmt.all(userId);
 }
 
+export function getImpressionsByJobId(jobId) {
+    const stmt = db.prepare('SELECT * FROM job_impressions WHERE AdvertId = ?');
+    return stmt.all(jobId);
+}
+
 export function getJobImpressionsByUserId(userId) {
     const stmt = db.prepare('SELECT * FROM job_impressions WHERE UserId = ?');
     return stmt.all(userId);
@@ -104,6 +109,12 @@ export function getPostById(postId) {
         line.Comments = getCommentsById(line.PostId)
         line.Likes = getLikesById(line.PostId, 'post')
     }
+    return resp;
+}
+
+export function getJobAdvertById(advertId) {
+    const stmt = db.prepare('SELECT * FROM job_adverts WHERE AdvertId = ?')
+    const resp = stmt.all(advertId);
     return resp;
 }
 

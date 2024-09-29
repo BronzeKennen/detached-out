@@ -274,8 +274,7 @@
                             {/each}
                         </div>
                     {/if}
-                    <div id="field" class="with-save">
-                        <span style="display:flex;flex-direction:row;">
+                    <div id="field">
                             <div class="fieldTitle">Additional Info:</div>
                             <textarea
                                 id="moreInfo"
@@ -284,9 +283,8 @@
                                 bind:value={job.AdditionalInfo}
                                 on:input={autoResize} 
                             />
-                        </span>
-                        <button class="save-button" on:click={saveChanges}>Save</button>
                     </div>
+                    <button class="save-button" on:click={saveChanges}>Save</button>
 
                 {/if}
             {/if}
@@ -325,26 +323,98 @@
 </div>
     
 <style>
-
-    .with-save {
-        display:flex;
-        justify-content: space-between;
-    }
     .save-button {
         border-radius:7px;
         border:none;
-        width:40%;
-        margin:.3rem;
-        background-color: rgb(235, 169, 235);
-    }
-    #moreInfo,#title,#jobDesc{
-        background-color: rgb(255, 236, 255);
-        border-radius:10px;
-        border:none;
+        width:25%;
+        height: 1.5rem;
+        margin:.3rem 70%;
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
     }
 
-    #moreInfo:focus,#title:focus,#jobDesc:focus {
+    .save-button:hover, .delete-button:hover, .discard-button-top:hover {
+        box-shadow: 0 2px 8px rgb(185, 50, 238);
+    }
+
+    .delete-button {
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border:none;
+        margin:0 .2rem;
+        border-radius:10px;
+        padding:.3em;
+    }
+
+    .discard-button-top {
+        box-shadow:0 2px 5px rgb(185, 50, 238);
+        background-color: #9145a0; 
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius:20px;
+        border:none;
+        width:25px;
+        height:25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right:.5em;
+    
+    }
+
+    #jobDesc {
+        min-height: 2rem;
+        min-height:200px;
         border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: rgb(250, 240, 255);
+        min-width: 70%;
+        width: fit-content;
+        display: flex;
+        position: relative;
+        resize: none;
+        padding: .5rem;
+        padding-left: 0.5;
+        margin: auto 0.5rem;
+    }
+
+    #title, #moreInfo {
+        min-height: 2rem;
+        height: 2rem;
+        border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: rgb(250, 240, 255);
+        min-width: 50%;
+        width: fit-content;
+        display: flex;
+        position: relative;
+        resize: none;
+        padding: .5rem;
+        padding-left: 0.5;
+        margin: auto 0.5rem;
+    }
+
+    #moreInfo {
+        width: 100%;
+    }
+
+    #title:focus, #moreInfo:focus, #jobDesc:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(155, 17, 113, 1.452);
+    }
+
+    #title:hover, #moreInfo:focus, #jobDesc:hover {
+        animation-duration: 0.5s;
+        box-shadow: 0px 0px 5px rgba(75, 17, 113, 1.452);
     }
 
      #deleteSkill {
@@ -355,26 +425,6 @@
         margin-left: 0.5rem;
         margin-right: -0.25rem;
         font-size: xx-small;
-    }
-
-     .delete-button {
-        background-color: rgb(235, 169, 235);
-        border:none;
-        margin:0 .2rem;
-        border-radius:10px;
-        padding:.3em;
-    }
-    .discard-button-top {
-        background-color: rgb(235, 169, 235);
-        border-radius:20px;
-        border:none;
-        width:25px;
-        height:25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right:.5em;
-    
     }
 
     .applications-received {
@@ -479,25 +529,6 @@
         transition-duration: .25s; 
     }
 
-    .delete-button {
-        background-color: rgb(235, 169, 235);
-        border:none;
-        margin:0 .2rem;
-        border-radius:10px;
-        padding:.3em;
-    }
-    .discard-button-top {
-        background-color: rgb(235, 169, 235);
-        border-radius:20px;
-        border:none;
-        width:25px;
-        height:25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right:.5em;
-    
-    }
     .edit-button {
         border:none;
         background-color: white;

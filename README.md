@@ -12,21 +12,6 @@
 
 ---
 
-## Table of Contents
-
-1. [Key Features](#key-features)  
-2. [Technical Stack](#technical-stack)  
-3. [Repository Structure](#repository-structure)  
-4. [Setup & Installation](#setup--installation)  
-5. [Usage & Examples](#usage--examples)  
-6. [Real-Time Communication](#real-time-communication)  
-7. [Database & Models](#database--models)  
-8. [Testing & Debugging](#testing--debugging)  
-9. [Limitations & Future Ideas](#limitations--future-ideas)  
-10. [License & Attribution](#license--attribution)  
-
----
-
 ## Key Features
 
 - **User accounts**: registration, authentication, profile editing  
@@ -38,21 +23,6 @@
 - **Jobs**: create job adverts, browse listings, apply for positions  
 - **Notifications**: e.g. new friend request, message received, job updates  
 - **Basic UI / navigation**: landing page, dashboard, profile pages, jobs tab  
-
----
-
-## Technical Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend / Routing | SvelteKit |
-| Backend API & Logic | Node.js / SvelteKit server endpoints |
-| Realtime Messaging | WebSockets |
-| Database | SQLite3 |
-| File uploads | Local file storage |
-| State & Session | Signed cookies / server session in SvelteKit |
-| Utilities | Environment variables, input validation, etc. |
-
 ---
 ## Setup & Installation
 
@@ -77,23 +47,27 @@
    yarn install
    ```
 
-3. **Configure environment variables**  
+3. **Configure environment variables**
+   Note: You will need to set up an account on cloudinary and an api key if you want image and video functionality
    Copy `.env.example` to `.env` and update values:
    ```
    DATABASE_URL=sqlite://./data/detached.sqlite
-   SESSION_SECRET=your_secret_here
    WS_PORT=4001
+   ACCESS_TOKEN_SECRET = YOUR_SECRET_HERE
+   CLOUD_NAME = YOUR_CLOUD_NAME
+   API_KEY = YOUR_API_KEY
+   API_SECRET = YOUR_API_SECRET
    ```
 
-4. **Initialize database / run migrations**  
+5. **Initialize database / run migrations**  
    Ensure schema is created either by running scripts or using the provided SQLite file.
 
-5. **Run development server**  
+6. **Run development server**  
    ```bash
    npm run dev
    ```
 
-6. **Access application**  
+7. **Access application**  
    Open in browser: `http://localhost:3000`
 
 ---

@@ -48,9 +48,11 @@
    ```
 
 3. **Configure environment variables**
-   Note: You will need to set up an account on cloudinary and an api key if you want image and video functionality
+   
    Copy `.env.example` to `.env` and update values:
    ```
+   Note: You will need to set up an account on cloudinary and an api key if you want image and video functionality
+   
    DATABASE_URL=sqlite://./data/detached.sqlite
    WS_PORT=4001
    ACCESS_TOKEN_SECRET = YOUR_SECRET_HERE

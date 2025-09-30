@@ -51,7 +51,8 @@
    
    Copy `.env.example` to `.env` and update values:
    ```
-   Note: You will need to set up an account on cloudinary and an api key if you want image and video functionality
+   Note: You will need to set up an account on cloudinary and an api key if you want image and video functionality.
+   You will also need to set up a JWT token.
    
    DATABASE_URL=sqlite://./data/detached.sqlite
    WS_PORT=4001
@@ -68,6 +69,11 @@
 5. **Access application**  
    Open in browser: `https://localhost:5173`
    (Note, it is necessary to put https, as the app is set up to use ssl/tls. If you put http. The app won't work)
+---
+## Preview
+![Screenshot of app](./lmao.png)
+
+![Screenshot of app](./image.png)
 
 ---
 

@@ -60,17 +60,14 @@
    API_KEY = YOUR_API_KEY
    API_SECRET = YOUR_API_SECRET
    ```
-
-5. **Initialize database / run migrations**  
-   Ensure schema is created either by running scripts or using the provided SQLite file.
-
-6. **Run development server**  
+4. **Run development server**  
    ```bash
    npm run dev
    ```
 
-7. **Access application**  
-   Open in browser: `http://localhost:3000`
+5. **Access application**  
+   Open in browser: `https://localhost:5173`
+   (Note, it is necessary to put https, as the app is set up to use ssl/tls. If you put http. The app won't work)
 
 ---
 
